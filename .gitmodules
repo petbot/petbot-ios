@@ -1,0 +1,4 @@
+[submodule "kxmovie"]
+	path = kxmovie
+	url = git@github.com:petbot/kxmovie.git
+	branch = master
