@@ -9,5 +9,11 @@ Included in this repository is:
 * **kxMovie / FFMPEG**
 * **Storyboard elements for iPad and iPhone**
 
+## Compile
+
+* sh build.sh
+* open PetBot.xcodeproj
+* press build (and cross your fingers)
+
 ## License
 All content here is licensed under  GNU General Public License v3.0
