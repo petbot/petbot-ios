@@ -7,6 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CCB97FEA195119A800BE8B45 /* kxmovie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCB97FE3195119A800BE8B45 /* kxmovie.bundle */; };
+		CCB97FEB195119A800BE8B45 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE4195119A800BE8B45 /* libavcodec.a */; };
+		CCB97FEC195119A800BE8B45 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE5195119A800BE8B45 /* libavformat.a */; };
+		CCB97FED195119A800BE8B45 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE6195119A800BE8B45 /* libavutil.a */; };
+		CCB97FEE195119A800BE8B45 /* libkxmovie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE7195119A800BE8B45 /* libkxmovie.a */; };
+		CCB97FEF195119A800BE8B45 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE8195119A800BE8B45 /* libswresample.a */; };
+		CCB97FF0195119A800BE8B45 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCB97FE9195119A800BE8B45 /* libswscale.a */; };
+		CCB97FFF195119E300BE8B45 /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */; };
+		CCB98000195119E300BE8B45 /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF5195119E300BE8B45 /* WPStringUtils.m */; };
+		CCB98001195119E300BE8B45 /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF8195119E300BE8B45 /* WPXMLRPCDataCleaner.m */; };
+		CCB98002195119E300BE8B45 /* WPXMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FFA195119E300BE8B45 /* WPXMLRPCDecoder.m */; };
+		CCB98003195119E300BE8B45 /* WPXMLRPCDecoderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FFC195119E300BE8B45 /* WPXMLRPCDecoderDelegate.m */; };
+		CCB98004195119E300BE8B45 /* WPXMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FFE195119E300BE8B45 /* WPXMLRPCEncoder.m */; };
+		CCB9800E19511A1500BE8B45 /* petbot blue.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800519511A1500BE8B45 /* petbot blue.png */; };
+		CCB9800F19511A1500BE8B45 /* petbot blue_29.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800619511A1500BE8B45 /* petbot blue_29.png */; };
+		CCB9801019511A1500BE8B45 /* petbot blue_40.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800719511A1500BE8B45 /* petbot blue_40.png */; };
+		CCB9801119511A1500BE8B45 /* petbot blue_58.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800819511A1500BE8B45 /* petbot blue_58.png */; };
+		CCB9801219511A1500BE8B45 /* petbot blue_76.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800919511A1500BE8B45 /* petbot blue_76.png */; };
+		CCB9801319511A1500BE8B45 /* petbot blue_80.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800A19511A1500BE8B45 /* petbot blue_80.png */; };
+		CCB9801419511A1500BE8B45 /* petbot blue_120.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800B19511A1500BE8B45 /* petbot blue_120.png */; };
+		CCB9801519511A1500BE8B45 /* petbot blue_152.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800C19511A1500BE8B45 /* petbot blue_152.png */; };
+		CCB9801619511A1500BE8B45 /* petbot blue_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9800D19511A1500BE8B45 /* petbot blue_1024.png */; };
+		CCB9801819511A6B00BE8B45 /* dogs6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCB9801719511A6B00BE8B45 /* dogs6.jpg */; };
+		CCB9801A19511A6F00BE8B45 /* petbot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CCB9801919511A6F00BE8B45 /* petbot_logo.png */; };
 		CCC4EAE419424B550012F4F3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE319424B550012F4F3 /* Foundation.framework */; };
 		CCC4EAE619424B550012F4F3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE519424B550012F4F3 /* CoreGraphics.framework */; };
 		CCC4EAE819424B550012F4F3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE719424B550012F4F3 /* UIKit.framework */; };
@@ -28,33 +52,10 @@
 		CCC4EB3019424C1B0012F4F3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2F19424C1B0012F4F3 /* QuartzCore.framework */; };
 		CCC4EB3219424C220012F4F3 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB3119424C220012F4F3 /* OpenGLES.framework */; };
 		CCC4EB3419424C290012F4F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB3319424C290012F4F3 /* libz.dylib */; };
-		CCC4EB6019425DB50012F4F3 /* kxmovie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */; };
-		CCC4EB6119425DB50012F4F3 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5A19425DB50012F4F3 /* libavcodec.a */; };
-		CCC4EB6219425DB50012F4F3 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5B19425DB50012F4F3 /* libavformat.a */; };
-		CCC4EB6319425DB50012F4F3 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5C19425DB50012F4F3 /* libavutil.a */; };
-		CCC4EB6419425DB50012F4F3 /* libkxmovie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */; };
-		CCC4EB6519425DB50012F4F3 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5E19425DB50012F4F3 /* libswresample.a */; };
-		CCC4EB6619425DB50012F4F3 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5F19425DB50012F4F3 /* libswscale.a */; };
 		CCC4EB6819425F100012F4F3 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB6719425F100012F4F3 /* libiconv.dylib */; };
 		CCC4EBE91943BDD00012F4F3 /* LiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBE81943BDD00012F4F3 /* LiveViewController.m */; };
-		CCC4EBF81943DFB10012F4F3 /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */; };
-		CCC4EBF91943DFB10012F4F3 /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */; };
-		CCC4EBFA1943DFB10012F4F3 /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */; };
-		CCC4EBFB1943DFB10012F4F3 /* WPXMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */; };
-		CCC4EBFC1943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */; };
-		CCC4EBFD1943DFB10012F4F3 /* WPXMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */; };
-		CCC4EBFF1943DFBA0012F4F3 /* dogs6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */; };
-		CCC4EC011943DFBF0012F4F3 /* petbot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */; };
 		CCC4EC041943E33B0012F4F3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EC031943E33B0012F4F3 /* LoginViewController.m */; };
 		CCC4EC071943E4BC0012F4F3 /* PetConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EC061943E4BB0012F4F3 /* PetConnection.m */; };
-		CCC4EC1E194658BE0012F4F3 /* petbot blue_29.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */; };
-		CCC4EC1F194658BE0012F4F3 /* petbot blue_40.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */; };
-		CCC4EC20194658BE0012F4F3 /* petbot blue_58.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */; };
-		CCC4EC21194658BE0012F4F3 /* petbot blue_76.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */; };
-		CCC4EC22194658BE0012F4F3 /* petbot blue_80.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */; };
-		CCC4EC23194658BE0012F4F3 /* petbot blue_120.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */; };
-		CCC4EC24194658BE0012F4F3 /* petbot blue_152.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */; };
-		CCC4EC25194658BE0012F4F3 /* petbot blue_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,37 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		CCB97FE3195119A800BE8B45 /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = kxmovie.bundle; sourceTree = "<group>"; };
+		CCB97FE4195119A800BE8B45 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavcodec.a; sourceTree = "<group>"; };
+		CCB97FE5195119A800BE8B45 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavformat.a; sourceTree = "<group>"; };
+		CCB97FE6195119A800BE8B45 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
+		CCB97FE7195119A800BE8B45 /* libkxmovie.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libkxmovie.a; sourceTree = "<group>"; };
+		CCB97FE8195119A800BE8B45 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
+		CCB97FE9195119A800BE8B45 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		CCB97FF2195119E300BE8B45 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
+		CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
+		CCB97FF4195119E300BE8B45 /* WPStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStringUtils.h; sourceTree = "<group>"; };
+		CCB97FF5195119E300BE8B45 /* WPStringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStringUtils.m; sourceTree = "<group>"; };
+		CCB97FF6195119E300BE8B45 /* WPXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPC.h; sourceTree = "<group>"; };
+		CCB97FF7195119E300BE8B45 /* WPXMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDataCleaner.h; sourceTree = "<group>"; };
+		CCB97FF8195119E300BE8B45 /* WPXMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDataCleaner.m; sourceTree = "<group>"; };
+		CCB97FF9195119E300BE8B45 /* WPXMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoder.h; sourceTree = "<group>"; };
+		CCB97FFA195119E300BE8B45 /* WPXMLRPCDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoder.m; sourceTree = "<group>"; };
+		CCB97FFB195119E300BE8B45 /* WPXMLRPCDecoderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoderDelegate.h; sourceTree = "<group>"; };
+		CCB97FFC195119E300BE8B45 /* WPXMLRPCDecoderDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoderDelegate.m; sourceTree = "<group>"; };
+		CCB97FFD195119E300BE8B45 /* WPXMLRPCEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEncoder.h; sourceTree = "<group>"; };
+		CCB97FFE195119E300BE8B45 /* WPXMLRPCEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEncoder.m; sourceTree = "<group>"; };
+		CCB9800519511A1500BE8B45 /* petbot blue.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue.png"; sourceTree = "<group>"; };
+		CCB9800619511A1500BE8B45 /* petbot blue_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_29.png"; sourceTree = "<group>"; };
+		CCB9800719511A1500BE8B45 /* petbot blue_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_40.png"; sourceTree = "<group>"; };
+		CCB9800819511A1500BE8B45 /* petbot blue_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_58.png"; sourceTree = "<group>"; };
+		CCB9800919511A1500BE8B45 /* petbot blue_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_76.png"; sourceTree = "<group>"; };
+		CCB9800A19511A1500BE8B45 /* petbot blue_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_80.png"; sourceTree = "<group>"; };
+		CCB9800B19511A1500BE8B45 /* petbot blue_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_120.png"; sourceTree = "<group>"; };
+		CCB9800C19511A1500BE8B45 /* petbot blue_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_152.png"; sourceTree = "<group>"; };
+		CCB9800D19511A1500BE8B45 /* petbot blue_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "petbot blue_1024.png"; sourceTree = "<group>"; };
+		CCB9801719511A6B00BE8B45 /* dogs6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = dogs6.jpg; sourceTree = "<group>"; };
+		CCB9801919511A6F00BE8B45 /* petbot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = petbot_logo.png; sourceTree = "<group>"; };
 		CCC4EAE019424B550012F4F3 /* PetBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CCC4EAE319424B550012F4F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		CCC4EAE519424B550012F4F3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -94,47 +126,17 @@
 		CCC4EB3119424C220012F4F3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
 		CCC4EB3319424C290012F4F3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		CCC4EB5619425DB50012F4F3 /* KxAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxAudioManager.h; path = ../../../kxmovie/output/KxAudioManager.h; sourceTree = "<group>"; };
-		CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = kxmovie.bundle; path = ../../../kxmovie/output/kxmovie.bundle; sourceTree = "<group>"; };
 		CCC4EB5819425DB50012F4F3 /* KxMovieDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieDecoder.h; path = ../../../kxmovie/output/KxMovieDecoder.h; sourceTree = "<group>"; };
 		CCC4EB5919425DB50012F4F3 /* KxMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieViewController.h; path = ../../../kxmovie/output/KxMovieViewController.h; sourceTree = "<group>"; };
-		CCC4EB5A19425DB50012F4F3 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../../../kxmovie/output/libavcodec.a; sourceTree = "<group>"; };
-		CCC4EB5B19425DB50012F4F3 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../../../kxmovie/output/libavformat.a; sourceTree = "<group>"; };
-		CCC4EB5C19425DB50012F4F3 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../../../kxmovie/output/libavutil.a; sourceTree = "<group>"; };
-		CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkxmovie.a; path = ../../../kxmovie/output/libkxmovie.a; sourceTree = "<group>"; };
-		CCC4EB5E19425DB50012F4F3 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../../../kxmovie/output/libswresample.a; sourceTree = "<group>"; };
-		CCC4EB5F19425DB50012F4F3 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../../../kxmovie/output/libswscale.a; sourceTree = "<group>"; };
 		CCC4EB6719425F100012F4F3 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
 		CCC4EBE21943BC1E0012F4F3 /* KxLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxLogger.h; path = ../../../kxmovie/output/KxLogger.h; sourceTree = "<group>"; };
 		CCC4EBE31943BC1E0012F4F3 /* KxMovieGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieGLView.h; path = ../../../kxmovie/output/KxMovieGLView.h; sourceTree = "<group>"; };
 		CCC4EBE71943BDD00012F4F3 /* LiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveViewController.h; sourceTree = "<group>"; };
 		CCC4EBE81943BDD00012F4F3 /* LiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveViewController.m; sourceTree = "<group>"; };
-		CCC4EBEB1943DFB10012F4F3 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
-		CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
-		CCC4EBED1943DFB10012F4F3 /* WPStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStringUtils.h; sourceTree = "<group>"; };
-		CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStringUtils.m; sourceTree = "<group>"; };
-		CCC4EBEF1943DFB10012F4F3 /* WPXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPC.h; sourceTree = "<group>"; };
-		CCC4EBF01943DFB10012F4F3 /* WPXMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDataCleaner.h; sourceTree = "<group>"; };
-		CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDataCleaner.m; sourceTree = "<group>"; };
-		CCC4EBF21943DFB10012F4F3 /* WPXMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoder.h; sourceTree = "<group>"; };
-		CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoder.m; sourceTree = "<group>"; };
-		CCC4EBF41943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoderDelegate.h; sourceTree = "<group>"; };
-		CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoderDelegate.m; sourceTree = "<group>"; };
-		CCC4EBF61943DFB10012F4F3 /* WPXMLRPCEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEncoder.h; sourceTree = "<group>"; };
-		CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEncoder.m; sourceTree = "<group>"; };
-		CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = dogs6.jpg; path = ../../../petbot/code/server/petbot/petbot/static/imgs/dogs6.jpg; sourceTree = "<group>"; };
-		CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = petbot_logo.png; path = ../../../petbot/logos/petbot_logo.png; sourceTree = "<group>"; };
 		CCC4EC021943E33B0012F4F3 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		CCC4EC031943E33B0012F4F3 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
 		CCC4EC051943E4BB0012F4F3 /* PetConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PetConnection.h; path = ../PetConnection.h; sourceTree = "<group>"; };
 		CCC4EC061943E4BB0012F4F3 /* PetConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PetConnection.m; path = ../PetConnection.m; sourceTree = "<group>"; };
-		CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_29.png"; path = "../../../petbot/code/ios/imgs/petbot blue_29.png"; sourceTree = "<group>"; };
-		CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_40.png"; path = "../../../petbot/code/ios/imgs/petbot blue_40.png"; sourceTree = "<group>"; };
-		CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_58.png"; path = "../../../petbot/code/ios/imgs/petbot blue_58.png"; sourceTree = "<group>"; };
-		CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_76.png"; path = "../../../petbot/code/ios/imgs/petbot blue_76.png"; sourceTree = "<group>"; };
-		CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_80.png"; path = "../../../petbot/code/ios/imgs/petbot blue_80.png"; sourceTree = "<group>"; };
-		CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_120.png"; path = "../../../petbot/code/ios/imgs/petbot blue_120.png"; sourceTree = "<group>"; };
-		CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_152.png"; path = "../../../petbot/code/ios/imgs/petbot blue_152.png"; sourceTree = "<group>"; };
-		CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_1024.png"; path = "../../../petbot/code/ios/imgs/petbot blue_1024.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,22 +145,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCC4EB6819425F100012F4F3 /* libiconv.dylib in Frameworks */,
-				CCC4EB6319425DB50012F4F3 /* libavutil.a in Frameworks */,
 				CCC4EB3419424C290012F4F3 /* libz.dylib in Frameworks */,
 				CCC4EB3219424C220012F4F3 /* OpenGLES.framework in Frameworks */,
 				CCC4EB3019424C1B0012F4F3 /* QuartzCore.framework in Frameworks */,
-				CCC4EB6219425DB50012F4F3 /* libavformat.a in Frameworks */,
+				CCB97FED195119A800BE8B45 /* libavutil.a in Frameworks */,
 				CCC4EB2E19424C130012F4F3 /* Accelerate.framework in Frameworks */,
 				CCC4EB2C19424C0B0012F4F3 /* AudioToolbox.framework in Frameworks */,
 				CCC4EB2A19424C030012F4F3 /* CoreAudio.framework in Frameworks */,
+				CCB97FEF195119A800BE8B45 /* libswresample.a in Frameworks */,
+				CCB97FEC195119A800BE8B45 /* libavformat.a in Frameworks */,
 				CCC4EB2819424BF90012F4F3 /* MediaPlayer.framework in Frameworks */,
-				CCC4EB6119425DB50012F4F3 /* libavcodec.a in Frameworks */,
-				CCC4EB6419425DB50012F4F3 /* libkxmovie.a in Frameworks */,
 				CCC4EAE619424B550012F4F3 /* CoreGraphics.framework in Frameworks */,
+				CCB97FF0195119A800BE8B45 /* libswscale.a in Frameworks */,
+				CCB97FEE195119A800BE8B45 /* libkxmovie.a in Frameworks */,
 				CCC4EAE819424B550012F4F3 /* UIKit.framework in Frameworks */,
 				CCC4EAE419424B550012F4F3 /* Foundation.framework in Frameworks */,
-				CCC4EB6619425DB50012F4F3 /* libswscale.a in Frameworks */,
-				CCC4EB6519425DB50012F4F3 /* libswresample.a in Frameworks */,
+				CCB97FEB195119A800BE8B45 /* libavcodec.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +177,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CCB97FF1195119E300BE8B45 /* WPXMLRPC */ = {
+			isa = PBXGroup;
+			children = (
+				CCB97FF2195119E300BE8B45 /* WPBase64Utils.h */,
+				CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */,
+				CCB97FF4195119E300BE8B45 /* WPStringUtils.h */,
+				CCB97FF5195119E300BE8B45 /* WPStringUtils.m */,
+				CCB97FF6195119E300BE8B45 /* WPXMLRPC.h */,
+				CCB97FF7195119E300BE8B45 /* WPXMLRPCDataCleaner.h */,
+				CCB97FF8195119E300BE8B45 /* WPXMLRPCDataCleaner.m */,
+				CCB97FF9195119E300BE8B45 /* WPXMLRPCDecoder.h */,
+				CCB97FFA195119E300BE8B45 /* WPXMLRPCDecoder.m */,
+				CCB97FFB195119E300BE8B45 /* WPXMLRPCDecoderDelegate.h */,
+				CCB97FFC195119E300BE8B45 /* WPXMLRPCDecoderDelegate.m */,
+				CCB97FFD195119E300BE8B45 /* WPXMLRPCEncoder.h */,
+				CCB97FFE195119E300BE8B45 /* WPXMLRPCEncoder.m */,
+			);
+			path = WPXMLRPC;
+			sourceTree = "<group>";
+		};
 		CCC4EAD719424B550012F4F3 = {
 			isa = PBXGroup;
 			children = (
@@ -216,31 +238,32 @@
 		CCC4EAE919424B550012F4F3 /* PetBot */ = {
 			isa = PBXGroup;
 			children = (
-				CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */,
-				CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */,
-				CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */,
-				CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */,
-				CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */,
-				CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */,
-				CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */,
-				CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */,
+				CCB97FF1195119E300BE8B45 /* WPXMLRPC */,
 				CCC4EC051943E4BB0012F4F3 /* PetConnection.h */,
 				CCC4EC061943E4BB0012F4F3 /* PetConnection.m */,
-				CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */,
-				CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */,
-				CCC4EBEA1943DFB10012F4F3 /* WPXMLRPC */,
+				CCB9800519511A1500BE8B45 /* petbot blue.png */,
+				CCB9800619511A1500BE8B45 /* petbot blue_29.png */,
+				CCB9800719511A1500BE8B45 /* petbot blue_40.png */,
+				CCB9800819511A1500BE8B45 /* petbot blue_58.png */,
+				CCB9800919511A1500BE8B45 /* petbot blue_76.png */,
+				CCB9800A19511A1500BE8B45 /* petbot blue_80.png */,
+				CCB9800B19511A1500BE8B45 /* petbot blue_120.png */,
+				CCB9800C19511A1500BE8B45 /* petbot blue_152.png */,
+				CCB9800D19511A1500BE8B45 /* petbot blue_1024.png */,
+				CCB9801919511A6F00BE8B45 /* petbot_logo.png */,
 				CCC4EBE21943BC1E0012F4F3 /* KxLogger.h */,
 				CCC4EBE31943BC1E0012F4F3 /* KxMovieGLView.h */,
 				CCC4EB5619425DB50012F4F3 /* KxAudioManager.h */,
-				CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */,
 				CCC4EB5819425DB50012F4F3 /* KxMovieDecoder.h */,
+				CCB9801719511A6B00BE8B45 /* dogs6.jpg */,
+				CCB97FE3195119A800BE8B45 /* kxmovie.bundle */,
+				CCB97FE4195119A800BE8B45 /* libavcodec.a */,
+				CCB97FE5195119A800BE8B45 /* libavformat.a */,
+				CCB97FE6195119A800BE8B45 /* libavutil.a */,
+				CCB97FE7195119A800BE8B45 /* libkxmovie.a */,
+				CCB97FE8195119A800BE8B45 /* libswresample.a */,
+				CCB97FE9195119A800BE8B45 /* libswscale.a */,
 				CCC4EB5919425DB50012F4F3 /* KxMovieViewController.h */,
-				CCC4EB5A19425DB50012F4F3 /* libavcodec.a */,
-				CCC4EB5B19425DB50012F4F3 /* libavformat.a */,
-				CCC4EB5C19425DB50012F4F3 /* libavutil.a */,
-				CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */,
-				CCC4EB5E19425DB50012F4F3 /* libswresample.a */,
-				CCC4EB5F19425DB50012F4F3 /* libswscale.a */,
 				CCC4EAF219424B550012F4F3 /* AppDelegate.h */,
 				CCC4EAF319424B550012F4F3 /* AppDelegate.m */,
 				CCC4EAF519424B550012F4F3 /* Main_iPhone.storyboard */,
@@ -282,27 +305,6 @@
 				CCC4EB0E19424B550012F4F3 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		CCC4EBEA1943DFB10012F4F3 /* WPXMLRPC */ = {
-			isa = PBXGroup;
-			children = (
-				CCC4EBEB1943DFB10012F4F3 /* WPBase64Utils.h */,
-				CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */,
-				CCC4EBED1943DFB10012F4F3 /* WPStringUtils.h */,
-				CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */,
-				CCC4EBEF1943DFB10012F4F3 /* WPXMLRPC.h */,
-				CCC4EBF01943DFB10012F4F3 /* WPXMLRPCDataCleaner.h */,
-				CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */,
-				CCC4EBF21943DFB10012F4F3 /* WPXMLRPCDecoder.h */,
-				CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */,
-				CCC4EBF41943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.h */,
-				CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */,
-				CCC4EBF61943DFB10012F4F3 /* WPXMLRPCEncoder.h */,
-				CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */,
-			);
-			name = WPXMLRPC;
-			path = "../../../../../Downloads/wpxmlrpc-master/WPXMLRPC";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -381,21 +383,22 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CCC4EC24194658BE0012F4F3 /* petbot blue_152.png in Resources */,
+				CCB9801A19511A6F00BE8B45 /* petbot_logo.png in Resources */,
+				CCB9800E19511A1500BE8B45 /* petbot blue.png in Resources */,
 				CCC4EAFA19424B550012F4F3 /* Main_iPad.storyboard in Resources */,
-				CCC4EBFF1943DFBA0012F4F3 /* dogs6.jpg in Resources */,
-				CCC4EB6019425DB50012F4F3 /* kxmovie.bundle in Resources */,
-				CCC4EC22194658BE0012F4F3 /* petbot blue_80.png in Resources */,
+				CCB9801419511A1500BE8B45 /* petbot blue_120.png in Resources */,
+				CCB9801619511A1500BE8B45 /* petbot blue_1024.png in Resources */,
+				CCB9801819511A6B00BE8B45 /* dogs6.jpg in Resources */,
+				CCB9801219511A1500BE8B45 /* petbot blue_76.png in Resources */,
 				CCC4EAFF19424B550012F4F3 /* Images.xcassets in Resources */,
-				CCC4EC011943DFBF0012F4F3 /* petbot_logo.png in Resources */,
-				CCC4EC20194658BE0012F4F3 /* petbot blue_58.png in Resources */,
-				CCC4EC1F194658BE0012F4F3 /* petbot blue_40.png in Resources */,
+				CCB9801019511A1500BE8B45 /* petbot blue_40.png in Resources */,
+				CCB9801319511A1500BE8B45 /* petbot blue_80.png in Resources */,
+				CCB97FEA195119A800BE8B45 /* kxmovie.bundle in Resources */,
 				CCC4EAF719424B550012F4F3 /* Main_iPhone.storyboard in Resources */,
-				CCC4EC21194658BE0012F4F3 /* petbot blue_76.png in Resources */,
+				CCB9800F19511A1500BE8B45 /* petbot blue_29.png in Resources */,
+				CCB9801519511A1500BE8B45 /* petbot blue_152.png in Resources */,
 				CCC4EAEE19424B550012F4F3 /* InfoPlist.strings in Resources */,
-				CCC4EC25194658BE0012F4F3 /* petbot blue_1024.png in Resources */,
-				CCC4EC23194658BE0012F4F3 /* petbot blue_120.png in Resources */,
-				CCC4EC1E194658BE0012F4F3 /* petbot blue_29.png in Resources */,
+				CCB9801119511A1500BE8B45 /* petbot blue_58.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,16 +418,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				CCC4EAF419424B550012F4F3 /* AppDelegate.m in Sources */,
+				CCB98001195119E300BE8B45 /* WPXMLRPCDataCleaner.m in Sources */,
+				CCB97FFF195119E300BE8B45 /* WPBase64Utils.m in Sources */,
 				CCC4EC071943E4BC0012F4F3 /* PetConnection.m in Sources */,
+				CCB98003195119E300BE8B45 /* WPXMLRPCDecoderDelegate.m in Sources */,
+				CCB98004195119E300BE8B45 /* WPXMLRPCEncoder.m in Sources */,
 				CCC4EBE91943BDD00012F4F3 /* LiveViewController.m in Sources */,
-				CCC4EBF91943DFB10012F4F3 /* WPStringUtils.m in Sources */,
 				CCC4EAF019424B550012F4F3 /* main.m in Sources */,
+				CCB98000195119E300BE8B45 /* WPStringUtils.m in Sources */,
+				CCB98002195119E300BE8B45 /* WPXMLRPCDecoder.m in Sources */,
 				CCC4EC041943E33B0012F4F3 /* LoginViewController.m in Sources */,
-				CCC4EBFA1943DFB10012F4F3 /* WPXMLRPCDataCleaner.m in Sources */,
-				CCC4EBFC1943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m in Sources */,
-				CCC4EBF81943DFB10012F4F3 /* WPBase64Utils.m in Sources */,
-				CCC4EBFB1943DFB10012F4F3 /* WPXMLRPCDecoder.m in Sources */,
-				CCC4EBFD1943DFB10012F4F3 /* WPXMLRPCEncoder.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -566,6 +569,7 @@
 					"$(inherited)",
 					/Users/miskodzamba/research/petbot/kxmovie/libs/FFmpeg,
 					/Users/miskodzamba/research/petbot/kxmovie/output,
+					"$(PROJECT_DIR)/PetBot",
 				);
 				PRODUCT_NAME = PetBot;
 				WRAPPER_EXTENSION = app;
@@ -584,6 +588,7 @@
 					"$(inherited)",
 					/Users/miskodzamba/research/petbot/kxmovie/libs/FFmpeg,
 					/Users/miskodzamba/research/petbot/kxmovie/output,
+					"$(PROJECT_DIR)/PetBot",
 				);
 				PRODUCT_NAME = PetBot;
 				WRAPPER_EXTENSION = app;
