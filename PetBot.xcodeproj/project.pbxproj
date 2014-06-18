@@ -1,0 +1,666 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		CCC4EAE419424B550012F4F3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE319424B550012F4F3 /* Foundation.framework */; };
+		CCC4EAE619424B550012F4F3 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE519424B550012F4F3 /* CoreGraphics.framework */; };
+		CCC4EAE819424B550012F4F3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE719424B550012F4F3 /* UIKit.framework */; };
+		CCC4EAEE19424B550012F4F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EAEC19424B550012F4F3 /* InfoPlist.strings */; };
+		CCC4EAF019424B550012F4F3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EAEF19424B550012F4F3 /* main.m */; };
+		CCC4EAF419424B550012F4F3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EAF319424B550012F4F3 /* AppDelegate.m */; };
+		CCC4EAF719424B550012F4F3 /* Main_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EAF519424B550012F4F3 /* Main_iPhone.storyboard */; };
+		CCC4EAFA19424B550012F4F3 /* Main_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EAF819424B550012F4F3 /* Main_iPad.storyboard */; };
+		CCC4EAFF19424B550012F4F3 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EAFE19424B550012F4F3 /* Images.xcassets */; };
+		CCC4EB0619424B550012F4F3 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB0519424B550012F4F3 /* XCTest.framework */; };
+		CCC4EB0719424B550012F4F3 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE319424B550012F4F3 /* Foundation.framework */; };
+		CCC4EB0819424B550012F4F3 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EAE719424B550012F4F3 /* UIKit.framework */; };
+		CCC4EB1019424B550012F4F3 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EB0E19424B550012F4F3 /* InfoPlist.strings */; };
+		CCC4EB1219424B550012F4F3 /* PetBotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EB1119424B550012F4F3 /* PetBotTests.m */; };
+		CCC4EB2819424BF90012F4F3 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2719424BF90012F4F3 /* MediaPlayer.framework */; };
+		CCC4EB2A19424C030012F4F3 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2919424C030012F4F3 /* CoreAudio.framework */; };
+		CCC4EB2C19424C0B0012F4F3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2B19424C0B0012F4F3 /* AudioToolbox.framework */; };
+		CCC4EB2E19424C130012F4F3 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2D19424C130012F4F3 /* Accelerate.framework */; };
+		CCC4EB3019424C1B0012F4F3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB2F19424C1B0012F4F3 /* QuartzCore.framework */; };
+		CCC4EB3219424C220012F4F3 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB3119424C220012F4F3 /* OpenGLES.framework */; };
+		CCC4EB3419424C290012F4F3 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB3319424C290012F4F3 /* libz.dylib */; };
+		CCC4EB6019425DB50012F4F3 /* kxmovie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */; };
+		CCC4EB6119425DB50012F4F3 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5A19425DB50012F4F3 /* libavcodec.a */; };
+		CCC4EB6219425DB50012F4F3 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5B19425DB50012F4F3 /* libavformat.a */; };
+		CCC4EB6319425DB50012F4F3 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5C19425DB50012F4F3 /* libavutil.a */; };
+		CCC4EB6419425DB50012F4F3 /* libkxmovie.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */; };
+		CCC4EB6519425DB50012F4F3 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5E19425DB50012F4F3 /* libswresample.a */; };
+		CCC4EB6619425DB50012F4F3 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB5F19425DB50012F4F3 /* libswscale.a */; };
+		CCC4EB6819425F100012F4F3 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = CCC4EB6719425F100012F4F3 /* libiconv.dylib */; };
+		CCC4EBE91943BDD00012F4F3 /* LiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBE81943BDD00012F4F3 /* LiveViewController.m */; };
+		CCC4EBF81943DFB10012F4F3 /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */; };
+		CCC4EBF91943DFB10012F4F3 /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */; };
+		CCC4EBFA1943DFB10012F4F3 /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */; };
+		CCC4EBFB1943DFB10012F4F3 /* WPXMLRPCDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */; };
+		CCC4EBFC1943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */; };
+		CCC4EBFD1943DFB10012F4F3 /* WPXMLRPCEncoder.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */; };
+		CCC4EBFF1943DFBA0012F4F3 /* dogs6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */; };
+		CCC4EC011943DFBF0012F4F3 /* petbot_logo.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */; };
+		CCC4EC041943E33B0012F4F3 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EC031943E33B0012F4F3 /* LoginViewController.m */; };
+		CCC4EC071943E4BC0012F4F3 /* PetConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = CCC4EC061943E4BB0012F4F3 /* PetConnection.m */; };
+		CCC4EC1E194658BE0012F4F3 /* petbot blue_29.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */; };
+		CCC4EC1F194658BE0012F4F3 /* petbot blue_40.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */; };
+		CCC4EC20194658BE0012F4F3 /* petbot blue_58.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */; };
+		CCC4EC21194658BE0012F4F3 /* petbot blue_76.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */; };
+		CCC4EC22194658BE0012F4F3 /* petbot blue_80.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */; };
+		CCC4EC23194658BE0012F4F3 /* petbot blue_120.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */; };
+		CCC4EC24194658BE0012F4F3 /* petbot blue_152.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */; };
+		CCC4EC25194658BE0012F4F3 /* petbot blue_1024.png in Resources */ = {isa = PBXBuildFile; fileRef = CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		CCC4EB0919424B550012F4F3 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = CCC4EAD819424B550012F4F3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = CCC4EADF19424B550012F4F3;
+			remoteInfo = PetBot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		CCC4EAE019424B550012F4F3 /* PetBot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PetBot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCC4EAE319424B550012F4F3 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		CCC4EAE519424B550012F4F3 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		CCC4EAE719424B550012F4F3 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		CCC4EAEB19424B550012F4F3 /* PetBot-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PetBot-Info.plist"; sourceTree = "<group>"; };
+		CCC4EAED19424B550012F4F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CCC4EAEF19424B550012F4F3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		CCC4EAF119424B550012F4F3 /* PetBot-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PetBot-Prefix.pch"; sourceTree = "<group>"; };
+		CCC4EAF219424B550012F4F3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		CCC4EAF319424B550012F4F3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		CCC4EAF619424B550012F4F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPhone.storyboard; sourceTree = "<group>"; };
+		CCC4EAF919424B550012F4F3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main_iPad.storyboard; sourceTree = "<group>"; };
+		CCC4EAFE19424B550012F4F3 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		CCC4EB0419424B550012F4F3 /* PetBotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PetBotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		CCC4EB0519424B550012F4F3 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		CCC4EB0D19424B550012F4F3 /* PetBotTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "PetBotTests-Info.plist"; sourceTree = "<group>"; };
+		CCC4EB0F19424B550012F4F3 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		CCC4EB1119424B550012F4F3 /* PetBotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PetBotTests.m; sourceTree = "<group>"; };
+		CCC4EB2719424BF90012F4F3 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
+		CCC4EB2919424C030012F4F3 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		CCC4EB2B19424C0B0012F4F3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		CCC4EB2D19424C130012F4F3 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		CCC4EB2F19424C1B0012F4F3 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CCC4EB3119424C220012F4F3 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		CCC4EB3319424C290012F4F3 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		CCC4EB5619425DB50012F4F3 /* KxAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxAudioManager.h; path = ../../../kxmovie/output/KxAudioManager.h; sourceTree = "<group>"; };
+		CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = kxmovie.bundle; path = ../../../kxmovie/output/kxmovie.bundle; sourceTree = "<group>"; };
+		CCC4EB5819425DB50012F4F3 /* KxMovieDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieDecoder.h; path = ../../../kxmovie/output/KxMovieDecoder.h; sourceTree = "<group>"; };
+		CCC4EB5919425DB50012F4F3 /* KxMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieViewController.h; path = ../../../kxmovie/output/KxMovieViewController.h; sourceTree = "<group>"; };
+		CCC4EB5A19425DB50012F4F3 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../../../kxmovie/output/libavcodec.a; sourceTree = "<group>"; };
+		CCC4EB5B19425DB50012F4F3 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../../../kxmovie/output/libavformat.a; sourceTree = "<group>"; };
+		CCC4EB5C19425DB50012F4F3 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../../../kxmovie/output/libavutil.a; sourceTree = "<group>"; };
+		CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkxmovie.a; path = ../../../kxmovie/output/libkxmovie.a; sourceTree = "<group>"; };
+		CCC4EB5E19425DB50012F4F3 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../../../kxmovie/output/libswresample.a; sourceTree = "<group>"; };
+		CCC4EB5F19425DB50012F4F3 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../../../kxmovie/output/libswscale.a; sourceTree = "<group>"; };
+		CCC4EB6719425F100012F4F3 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = usr/lib/libiconv.dylib; sourceTree = SDKROOT; };
+		CCC4EBE21943BC1E0012F4F3 /* KxLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxLogger.h; path = ../../../kxmovie/output/KxLogger.h; sourceTree = "<group>"; };
+		CCC4EBE31943BC1E0012F4F3 /* KxMovieGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = KxMovieGLView.h; path = ../../../kxmovie/output/KxMovieGLView.h; sourceTree = "<group>"; };
+		CCC4EBE71943BDD00012F4F3 /* LiveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveViewController.h; sourceTree = "<group>"; };
+		CCC4EBE81943BDD00012F4F3 /* LiveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveViewController.m; sourceTree = "<group>"; };
+		CCC4EBEB1943DFB10012F4F3 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
+		CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
+		CCC4EBED1943DFB10012F4F3 /* WPStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStringUtils.h; sourceTree = "<group>"; };
+		CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPStringUtils.m; sourceTree = "<group>"; };
+		CCC4EBEF1943DFB10012F4F3 /* WPXMLRPC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPC.h; sourceTree = "<group>"; };
+		CCC4EBF01943DFB10012F4F3 /* WPXMLRPCDataCleaner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDataCleaner.h; sourceTree = "<group>"; };
+		CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDataCleaner.m; sourceTree = "<group>"; };
+		CCC4EBF21943DFB10012F4F3 /* WPXMLRPCDecoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoder.h; sourceTree = "<group>"; };
+		CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoder.m; sourceTree = "<group>"; };
+		CCC4EBF41943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCDecoderDelegate.h; sourceTree = "<group>"; };
+		CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCDecoderDelegate.m; sourceTree = "<group>"; };
+		CCC4EBF61943DFB10012F4F3 /* WPXMLRPCEncoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPXMLRPCEncoder.h; sourceTree = "<group>"; };
+		CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPXMLRPCEncoder.m; sourceTree = "<group>"; };
+		CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = dogs6.jpg; path = ../../../petbot/code/server/petbot/petbot/static/imgs/dogs6.jpg; sourceTree = "<group>"; };
+		CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = petbot_logo.png; path = ../../../petbot/logos/petbot_logo.png; sourceTree = "<group>"; };
+		CCC4EC021943E33B0012F4F3 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
+		CCC4EC031943E33B0012F4F3 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
+		CCC4EC051943E4BB0012F4F3 /* PetConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PetConnection.h; path = ../PetConnection.h; sourceTree = "<group>"; };
+		CCC4EC061943E4BB0012F4F3 /* PetConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PetConnection.m; path = ../PetConnection.m; sourceTree = "<group>"; };
+		CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_29.png"; path = "../../../petbot/code/ios/imgs/petbot blue_29.png"; sourceTree = "<group>"; };
+		CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_40.png"; path = "../../../petbot/code/ios/imgs/petbot blue_40.png"; sourceTree = "<group>"; };
+		CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_58.png"; path = "../../../petbot/code/ios/imgs/petbot blue_58.png"; sourceTree = "<group>"; };
+		CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_76.png"; path = "../../../petbot/code/ios/imgs/petbot blue_76.png"; sourceTree = "<group>"; };
+		CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_80.png"; path = "../../../petbot/code/ios/imgs/petbot blue_80.png"; sourceTree = "<group>"; };
+		CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_120.png"; path = "../../../petbot/code/ios/imgs/petbot blue_120.png"; sourceTree = "<group>"; };
+		CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_152.png"; path = "../../../petbot/code/ios/imgs/petbot blue_152.png"; sourceTree = "<group>"; };
+		CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_1024.png"; path = "../../../petbot/code/ios/imgs/petbot blue_1024.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		CCC4EADD19424B550012F4F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EB6819425F100012F4F3 /* libiconv.dylib in Frameworks */,
+				CCC4EB6319425DB50012F4F3 /* libavutil.a in Frameworks */,
+				CCC4EB3419424C290012F4F3 /* libz.dylib in Frameworks */,
+				CCC4EB3219424C220012F4F3 /* OpenGLES.framework in Frameworks */,
+				CCC4EB3019424C1B0012F4F3 /* QuartzCore.framework in Frameworks */,
+				CCC4EB6219425DB50012F4F3 /* libavformat.a in Frameworks */,
+				CCC4EB2E19424C130012F4F3 /* Accelerate.framework in Frameworks */,
+				CCC4EB2C19424C0B0012F4F3 /* AudioToolbox.framework in Frameworks */,
+				CCC4EB2A19424C030012F4F3 /* CoreAudio.framework in Frameworks */,
+				CCC4EB2819424BF90012F4F3 /* MediaPlayer.framework in Frameworks */,
+				CCC4EB6119425DB50012F4F3 /* libavcodec.a in Frameworks */,
+				CCC4EB6419425DB50012F4F3 /* libkxmovie.a in Frameworks */,
+				CCC4EAE619424B550012F4F3 /* CoreGraphics.framework in Frameworks */,
+				CCC4EAE819424B550012F4F3 /* UIKit.framework in Frameworks */,
+				CCC4EAE419424B550012F4F3 /* Foundation.framework in Frameworks */,
+				CCC4EB6619425DB50012F4F3 /* libswscale.a in Frameworks */,
+				CCC4EB6519425DB50012F4F3 /* libswresample.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC4EB0119424B550012F4F3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EB0619424B550012F4F3 /* XCTest.framework in Frameworks */,
+				CCC4EB0819424B550012F4F3 /* UIKit.framework in Frameworks */,
+				CCC4EB0719424B550012F4F3 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		CCC4EAD719424B550012F4F3 = {
+			isa = PBXGroup;
+			children = (
+				CCC4EAE919424B550012F4F3 /* PetBot */,
+				CCC4EB0B19424B550012F4F3 /* PetBotTests */,
+				CCC4EAE219424B550012F4F3 /* Frameworks */,
+				CCC4EAE119424B550012F4F3 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		CCC4EAE119424B550012F4F3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EAE019424B550012F4F3 /* PetBot.app */,
+				CCC4EB0419424B550012F4F3 /* PetBotTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		CCC4EAE219424B550012F4F3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EB6719425F100012F4F3 /* libiconv.dylib */,
+				CCC4EB3319424C290012F4F3 /* libz.dylib */,
+				CCC4EB3119424C220012F4F3 /* OpenGLES.framework */,
+				CCC4EB2F19424C1B0012F4F3 /* QuartzCore.framework */,
+				CCC4EB2D19424C130012F4F3 /* Accelerate.framework */,
+				CCC4EB2B19424C0B0012F4F3 /* AudioToolbox.framework */,
+				CCC4EB2919424C030012F4F3 /* CoreAudio.framework */,
+				CCC4EB2719424BF90012F4F3 /* MediaPlayer.framework */,
+				CCC4EAE319424B550012F4F3 /* Foundation.framework */,
+				CCC4EAE519424B550012F4F3 /* CoreGraphics.framework */,
+				CCC4EAE719424B550012F4F3 /* UIKit.framework */,
+				CCC4EB0519424B550012F4F3 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		CCC4EAE919424B550012F4F3 /* PetBot */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EC16194658BE0012F4F3 /* petbot blue_29.png */,
+				CCC4EC17194658BE0012F4F3 /* petbot blue_40.png */,
+				CCC4EC18194658BE0012F4F3 /* petbot blue_58.png */,
+				CCC4EC19194658BE0012F4F3 /* petbot blue_76.png */,
+				CCC4EC1A194658BE0012F4F3 /* petbot blue_80.png */,
+				CCC4EC1B194658BE0012F4F3 /* petbot blue_120.png */,
+				CCC4EC1C194658BE0012F4F3 /* petbot blue_152.png */,
+				CCC4EC1D194658BE0012F4F3 /* petbot blue_1024.png */,
+				CCC4EC051943E4BB0012F4F3 /* PetConnection.h */,
+				CCC4EC061943E4BB0012F4F3 /* PetConnection.m */,
+				CCC4EBFE1943DFBA0012F4F3 /* dogs6.jpg */,
+				CCC4EC001943DFBF0012F4F3 /* petbot_logo.png */,
+				CCC4EBEA1943DFB10012F4F3 /* WPXMLRPC */,
+				CCC4EBE21943BC1E0012F4F3 /* KxLogger.h */,
+				CCC4EBE31943BC1E0012F4F3 /* KxMovieGLView.h */,
+				CCC4EB5619425DB50012F4F3 /* KxAudioManager.h */,
+				CCC4EB5719425DB50012F4F3 /* kxmovie.bundle */,
+				CCC4EB5819425DB50012F4F3 /* KxMovieDecoder.h */,
+				CCC4EB5919425DB50012F4F3 /* KxMovieViewController.h */,
+				CCC4EB5A19425DB50012F4F3 /* libavcodec.a */,
+				CCC4EB5B19425DB50012F4F3 /* libavformat.a */,
+				CCC4EB5C19425DB50012F4F3 /* libavutil.a */,
+				CCC4EB5D19425DB50012F4F3 /* libkxmovie.a */,
+				CCC4EB5E19425DB50012F4F3 /* libswresample.a */,
+				CCC4EB5F19425DB50012F4F3 /* libswscale.a */,
+				CCC4EAF219424B550012F4F3 /* AppDelegate.h */,
+				CCC4EAF319424B550012F4F3 /* AppDelegate.m */,
+				CCC4EAF519424B550012F4F3 /* Main_iPhone.storyboard */,
+				CCC4EAF819424B550012F4F3 /* Main_iPad.storyboard */,
+				CCC4EBE71943BDD00012F4F3 /* LiveViewController.h */,
+				CCC4EC021943E33B0012F4F3 /* LoginViewController.h */,
+				CCC4EC031943E33B0012F4F3 /* LoginViewController.m */,
+				CCC4EBE81943BDD00012F4F3 /* LiveViewController.m */,
+				CCC4EAFE19424B550012F4F3 /* Images.xcassets */,
+				CCC4EAEA19424B550012F4F3 /* Supporting Files */,
+			);
+			path = PetBot;
+			sourceTree = SOURCE_ROOT;
+		};
+		CCC4EAEA19424B550012F4F3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EAEB19424B550012F4F3 /* PetBot-Info.plist */,
+				CCC4EAEC19424B550012F4F3 /* InfoPlist.strings */,
+				CCC4EAEF19424B550012F4F3 /* main.m */,
+				CCC4EAF119424B550012F4F3 /* PetBot-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CCC4EB0B19424B550012F4F3 /* PetBotTests */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EB1119424B550012F4F3 /* PetBotTests.m */,
+				CCC4EB0C19424B550012F4F3 /* Supporting Files */,
+			);
+			path = PetBotTests;
+			sourceTree = SOURCE_ROOT;
+		};
+		CCC4EB0C19424B550012F4F3 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EB0D19424B550012F4F3 /* PetBotTests-Info.plist */,
+				CCC4EB0E19424B550012F4F3 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		CCC4EBEA1943DFB10012F4F3 /* WPXMLRPC */ = {
+			isa = PBXGroup;
+			children = (
+				CCC4EBEB1943DFB10012F4F3 /* WPBase64Utils.h */,
+				CCC4EBEC1943DFB10012F4F3 /* WPBase64Utils.m */,
+				CCC4EBED1943DFB10012F4F3 /* WPStringUtils.h */,
+				CCC4EBEE1943DFB10012F4F3 /* WPStringUtils.m */,
+				CCC4EBEF1943DFB10012F4F3 /* WPXMLRPC.h */,
+				CCC4EBF01943DFB10012F4F3 /* WPXMLRPCDataCleaner.h */,
+				CCC4EBF11943DFB10012F4F3 /* WPXMLRPCDataCleaner.m */,
+				CCC4EBF21943DFB10012F4F3 /* WPXMLRPCDecoder.h */,
+				CCC4EBF31943DFB10012F4F3 /* WPXMLRPCDecoder.m */,
+				CCC4EBF41943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.h */,
+				CCC4EBF51943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m */,
+				CCC4EBF61943DFB10012F4F3 /* WPXMLRPCEncoder.h */,
+				CCC4EBF71943DFB10012F4F3 /* WPXMLRPCEncoder.m */,
+			);
+			name = WPXMLRPC;
+			path = "../../../../../Downloads/wpxmlrpc-master/WPXMLRPC";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		CCC4EADF19424B550012F4F3 /* PetBot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCC4EB1519424B550012F4F3 /* Build configuration list for PBXNativeTarget "PetBot" */;
+			buildPhases = (
+				CCC4EADC19424B550012F4F3 /* Sources */,
+				CCC4EADD19424B550012F4F3 /* Frameworks */,
+				CCC4EADE19424B550012F4F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PetBot;
+			productName = PetBot;
+			productReference = CCC4EAE019424B550012F4F3 /* PetBot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		CCC4EB0319424B550012F4F3 /* PetBotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = CCC4EB1819424B550012F4F3 /* Build configuration list for PBXNativeTarget "PetBotTests" */;
+			buildPhases = (
+				CCC4EB0019424B550012F4F3 /* Sources */,
+				CCC4EB0119424B550012F4F3 /* Frameworks */,
+				CCC4EB0219424B550012F4F3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				CCC4EB0A19424B550012F4F3 /* PBXTargetDependency */,
+			);
+			name = PetBotTests;
+			productName = PetBotTests;
+			productReference = CCC4EB0419424B550012F4F3 /* PetBotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		CCC4EAD819424B550012F4F3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = PetBot;
+				TargetAttributes = {
+					CCC4EB0319424B550012F4F3 = {
+						TestTargetID = CCC4EADF19424B550012F4F3;
+					};
+				};
+			};
+			buildConfigurationList = CCC4EADB19424B550012F4F3 /* Build configuration list for PBXProject "PetBot" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = CCC4EAD719424B550012F4F3;
+			productRefGroup = CCC4EAE119424B550012F4F3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				CCC4EADF19424B550012F4F3 /* PetBot */,
+				CCC4EB0319424B550012F4F3 /* PetBotTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		CCC4EADE19424B550012F4F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EC24194658BE0012F4F3 /* petbot blue_152.png in Resources */,
+				CCC4EAFA19424B550012F4F3 /* Main_iPad.storyboard in Resources */,
+				CCC4EBFF1943DFBA0012F4F3 /* dogs6.jpg in Resources */,
+				CCC4EB6019425DB50012F4F3 /* kxmovie.bundle in Resources */,
+				CCC4EC22194658BE0012F4F3 /* petbot blue_80.png in Resources */,
+				CCC4EAFF19424B550012F4F3 /* Images.xcassets in Resources */,
+				CCC4EC011943DFBF0012F4F3 /* petbot_logo.png in Resources */,
+				CCC4EC20194658BE0012F4F3 /* petbot blue_58.png in Resources */,
+				CCC4EC1F194658BE0012F4F3 /* petbot blue_40.png in Resources */,
+				CCC4EAF719424B550012F4F3 /* Main_iPhone.storyboard in Resources */,
+				CCC4EC21194658BE0012F4F3 /* petbot blue_76.png in Resources */,
+				CCC4EAEE19424B550012F4F3 /* InfoPlist.strings in Resources */,
+				CCC4EC25194658BE0012F4F3 /* petbot blue_1024.png in Resources */,
+				CCC4EC23194658BE0012F4F3 /* petbot blue_120.png in Resources */,
+				CCC4EC1E194658BE0012F4F3 /* petbot blue_29.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC4EB0219424B550012F4F3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EB1019424B550012F4F3 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CCC4EADC19424B550012F4F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EAF419424B550012F4F3 /* AppDelegate.m in Sources */,
+				CCC4EC071943E4BC0012F4F3 /* PetConnection.m in Sources */,
+				CCC4EBE91943BDD00012F4F3 /* LiveViewController.m in Sources */,
+				CCC4EBF91943DFB10012F4F3 /* WPStringUtils.m in Sources */,
+				CCC4EAF019424B550012F4F3 /* main.m in Sources */,
+				CCC4EC041943E33B0012F4F3 /* LoginViewController.m in Sources */,
+				CCC4EBFA1943DFB10012F4F3 /* WPXMLRPCDataCleaner.m in Sources */,
+				CCC4EBFC1943DFB10012F4F3 /* WPXMLRPCDecoderDelegate.m in Sources */,
+				CCC4EBF81943DFB10012F4F3 /* WPBase64Utils.m in Sources */,
+				CCC4EBFB1943DFB10012F4F3 /* WPXMLRPCDecoder.m in Sources */,
+				CCC4EBFD1943DFB10012F4F3 /* WPXMLRPCEncoder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		CCC4EB0019424B550012F4F3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				CCC4EB1219424B550012F4F3 /* PetBotTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		CCC4EB0A19424B550012F4F3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = CCC4EADF19424B550012F4F3 /* PetBot */;
+			targetProxy = CCC4EB0919424B550012F4F3 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		CCC4EAEC19424B550012F4F3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCC4EAED19424B550012F4F3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		CCC4EAF519424B550012F4F3 /* Main_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCC4EAF619424B550012F4F3 /* Base */,
+			);
+			name = Main_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		CCC4EAF819424B550012F4F3 /* Main_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCC4EAF919424B550012F4F3 /* Base */,
+			);
+			name = Main_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+		CCC4EB0E19424B550012F4F3 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				CCC4EB0F19424B550012F4F3 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		CCC4EB1319424B550012F4F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		CCC4EB1419424B550012F4F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		CCC4EB1619424B550012F4F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PetBot/PetBot-Prefix.pch";
+				INFOPLIST_FILE = "PetBot/PetBot-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/miskodzamba/research/petbot/kxmovie/libs/FFmpeg,
+					/Users/miskodzamba/research/petbot/kxmovie/output,
+				);
+				PRODUCT_NAME = PetBot;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		CCC4EB1719424B550012F4F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PetBot/PetBot-Prefix.pch";
+				INFOPLIST_FILE = "PetBot/PetBot-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/miskodzamba/research/petbot/kxmovie/libs/FFmpeg,
+					/Users/miskodzamba/research/petbot/kxmovie/output,
+				);
+				PRODUCT_NAME = PetBot;
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		CCC4EB1919424B550012F4F3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PetBot.app/PetBot";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PetBot/PetBot-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "PetBotTests/PetBotTests-Info.plist";
+				PRODUCT_NAME = PetBotTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		CCC4EB1A19424B550012F4F3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/PetBot.app/PetBot";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "PetBot/PetBot-Prefix.pch";
+				INFOPLIST_FILE = "PetBotTests/PetBotTests-Info.plist";
+				PRODUCT_NAME = PetBotTests;
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		CCC4EADB19424B550012F4F3 /* Build configuration list for PBXProject "PetBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC4EB1319424B550012F4F3 /* Debug */,
+				CCC4EB1419424B550012F4F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCC4EB1519424B550012F4F3 /* Build configuration list for PBXNativeTarget "PetBot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC4EB1619424B550012F4F3 /* Debug */,
+				CCC4EB1719424B550012F4F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		CCC4EB1819424B550012F4F3 /* Build configuration list for PBXNativeTarget "PetBotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCC4EB1919424B550012F4F3 /* Debug */,
+				CCC4EB1A19424B550012F4F3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = CCC4EAD819424B550012F4F3 /* Project object */;
+}
