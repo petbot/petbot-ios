@@ -10,15 +10,19 @@
 #import "WPXMLRPCEncoder.h"
 #import "WPXMLRPCDecoder.h"
 
+
+
 @implementation PetConnection
 
 
 static PetConnection *instance = nil;
+static NSTimer * streamVideoTimer=nil;
 static NSString *session=@"";
-static NSString *loginUrl=@"https://petbot.ca/login";
-static NSString *relayUrl=@"https://petbot.ca/relay";
-static NSString *logoutUrl=@"https://petbot.ca/logout";
+static NSString *loginUrl=@"http://petbot.ca:5100/login";
+static NSString *relayUrl=@"http://petbot.ca:5100/relay";
+static NSString *logoutUrl=@"http://petbot.ca:5100/logout";
 static NSString *streamUrl=@"";
+
 
 
 +(PetConnection *)getInstance
@@ -28,6 +32,7 @@ static NSString *streamUrl=@"";
         if(instance==nil)
         {
             instance= [PetConnection new];
+            
         }
     }
     return instance;
@@ -35,6 +40,7 @@ static NSString *streamUrl=@"";
 
 +(NSInteger)loginUsername:(NSString *)username password:(NSString *)password
 {
+    [PetConnection logout];
     NSDictionary *tmp = [[NSDictionary alloc] initWithObjectsAndKeys:
                          username, @"email",
                          password, @"password",
@@ -47,7 +53,7 @@ static NSString *streamUrl=@"";
     
     NSData * responseData = [PetConnection postDataToUrl:loginUrl jsonData:postdata];
     NSDictionary* dictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
-    //NSLog(@"array : %@",dictionary);
+    NSLog(@"array : %@",dictionary);
     
     
     if ([ dictionary valueForKey:@"meta" ]!=nil) {
@@ -60,6 +66,7 @@ static NSString *streamUrl=@"";
         } else {
             //logged in
             NSLog(@"logged in");
+
             return CONNECTION_OK;
         }
     }
@@ -109,7 +116,7 @@ static NSString *streamUrl=@"";
         return nil;
     }
     NSDictionary* headers = [(NSHTTPURLResponse *)response allHeaderFields];
-    //NSLog(@"array w : %@",headers);
+    NSLog(@"array w : %@",headers);
     
     if ([headers valueForKey:@"Set-Cookie"]) {
         //PetConnection *obj=[PetConnection getInstance];
@@ -121,8 +128,8 @@ static NSString *streamUrl=@"";
     NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
     NSDictionary *fields = [HTTPResponse allHeaderFields];
     
-    // NSLog(@"array : %@",fields);
-    //NSLog(@"the final output is:%@",responseString);
+    NSLog(@"array : %@",fields);
+    NSLog(@"the final output is:%@",responseString);
     
     return responseData;
 }
@@ -131,7 +138,7 @@ static NSString *streamUrl=@"";
     return streamUrl;
 }
 
-+ (BOOL)streamVideo {
++ (NSDictionary*)streamVideo {
     NSURL *URL = [NSURL URLWithString:relayUrl];
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
     [request setHTTPMethod:@"POST"];
@@ -149,12 +156,21 @@ static NSString *streamUrl=@"";
         return false;
     }
     WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:responseData];
+    //NSLog(@"object is type %@",NSStringFromClass([[decoder object] class]));
+    NSString * type =NSStringFromClass([[decoder object] class]);
+    if (![type isEqualToString:@"__NSArrayM"]) {
+        //NSLog(@"failed in streamVideo call");
+        return nil;
+    }
     NSArray *parsedResult = [decoder object];
-    streamUrl = [parsedResult objectAtIndex:1];
+       //if petbot is offline this next line will segfault
+    //NSLog(@"parsed results has %lu entries",(unsigned long)[parsedResult count]);
+    NSDictionary * streams = [parsedResult objectAtIndex:1];
+    //streamUrl = [parsedResult objectAtIndex:1];
     
     //NSLog(@"startStream %@",parsedResult);
     
-    return true;
+    return streams;
 }
 
 + (BOOL)cookieDrop {

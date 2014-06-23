@@ -24,7 +24,7 @@ enum {
 +(BOOL)cookieDrop;
 +(BOOL)logout;
 +(BOOL)playSound:(NSInteger)index;
-+(BOOL)streamVideo;
++(NSDictionary*)streamVideo;
 +(NSString*)streamURL;
 
 @end

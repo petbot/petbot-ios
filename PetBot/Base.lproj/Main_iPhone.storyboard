@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13C1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ns1-vR-UmZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13D65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ns1-vR-UmZ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
     </dependencies>
@@ -13,15 +13,15 @@
                         <viewControllerLayoutGuide type="bottom" id="eHU-38-IYQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="adm-UX-GnX">
-                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dogs6.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="T18-9r-qMj">
-                                <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dogs4.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="T18-9r-qMj">
+                                <rect key="frame" x="0.0" y="59" width="320" height="568"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             </imageView>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L86-jD-of1">
-                                <rect key="frame" x="152" y="35" width="207" height="30"/>
+                                <rect key="frame" x="15" y="60" width="173" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -31,7 +31,7 @@
                                 </connections>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vgI-bv-NHl">
-                                <rect key="frame" x="152" y="78" width="207" height="30"/>
+                                <rect key="frame" x="15" y="91" width="173" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -41,12 +41,12 @@
                                 </connections>
                             </textField>
                             <button opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCd-hA-bMM">
-                                <rect key="frame" x="367" y="35" width="104" height="76"/>
+                                <rect key="frame" x="196" y="60" width="104" height="61"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="1" blue="0.99607849120000003" alpha="1" colorSpace="deviceRGB"/>
+                                <color key="backgroundColor" red="0.53333336114883423" green="0.82745105028152466" blue="0.91372555494308472" alpha="1" colorSpace="deviceRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                 <state key="normal" title="Login">
-                                    <color key="titleColor" red="0.64313727620000005" green="0.090196080509999998" blue="0.1019607931" alpha="1" colorSpace="deviceRGB"/>
+                                    <color key="titleColor" red="1" green="0.9960784912109375" blue="0.9960784912109375" alpha="1" colorSpace="deviceRGB"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -60,33 +60,30 @@
                                 </connections>
                             </button>
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="petbot_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="svb-8M-XIl">
-                                <rect key="frame" x="15" y="46" width="129" height="54"/>
+                                <rect key="frame" x="15" y="13" width="129" height="54"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <button opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RUL-F3-Zcp">
-                                <rect key="frame" x="152" y="290" width="117" height="30"/>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="nRr-DG-1v1">
+                                <rect key="frame" x="15" y="129" width="51" height="31"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Forget username">
-                                    <color key="titleColor" red="1" green="0.9960784912109375" blue="0.9960784912109375" alpha="1" colorSpace="deviceRGB"/>
-                                    <color key="titleShadowColor" red="0.019607843831181526" green="0.0039215688593685627" blue="0.0039215688593685627" alpha="1" colorSpace="deviceRGB"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
-                                </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="forgetUsername:" destination="Ns1-vR-UmZ" eventType="touchDown" id="8w2-t8-eid"/>
+                                    <action selector="remeberSwitched:" destination="Ns1-vR-UmZ" eventType="valueChanged" id="Ekf-4Z-WMD"/>
                                 </connections>
-                            </button>
+                            </switch>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remember" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8GM-Da-x4E">
+                                <rect key="frame" x="72" y="134" width="85" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="loginButton" destination="KCd-hA-bMM" id="1eD-vE-4Lx"/>
                         <outlet property="password" destination="vgI-bv-NHl" id="HdO-Z0-VGp"/>
+                        <outlet property="rememberSwitch" destination="nRr-DG-1v1" id="GSH-TG-YNd"/>
                         <outlet property="username" destination="L86-jD-of1" id="szH-6X-TRa"/>
                         <segue destination="vXZ-lx-hvc" kind="modal" identifier="login" id="h7J-da-YEe"/>
                     </connections>
@@ -94,6 +91,24 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="muX-eB-tna" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-402" y="149"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="V4Y-LA-iDB">
+            <objects>
+                <viewController id="KgC-73-EwL" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="0Ja-bi-cWn"/>
+                        <viewControllerLayoutGuide type="bottom" id="6X0-C2-tD2"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="UR0-wu-dyK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iGl-oE-QDk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-366" y="635"/>
         </scene>
         <!--Live View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -109,7 +124,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="dogs6.jpg" width="1440" height="900"/>
+        <image name="dogs4.jpg" width="1920" height="1200"/>
         <image name="petbot_logo.png" width="1024" height="292"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
