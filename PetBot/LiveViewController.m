@@ -22,6 +22,12 @@
 #import "KxAudioManager.h"
 #import "KxMovieGLView.h"
 #import "KxLogger.h"
+#import "GCDAsyncUdpSocket.h"
+#import "STUNClient.h"
+
+#import <MessageUI/MFMailComposeViewController.h>
+#import <Social/Social.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -46,11 +52,13 @@ static NSString * formatTimeInterval(CGFloat seconds, BOOL isLeft)
 
 
 static NSMutableDictionary * gHistory;
+static dispatch_queue_t _streamVideoDispatchQueue;
 
 
 @interface LiveViewController () {
     
     KxMovieDecoder      *_decoder;
+    NSUInteger            _wantsLogout;
     dispatch_queue_t    _dispatchQueue;
     NSMutableArray      *_videoFrames;
     NSMutableArray      *_subtitles;
@@ -65,6 +73,8 @@ static NSMutableDictionary * gHistory;
     BOOL                _restoreIdleTimer;
     BOOL                _interrupted;
     NSString            *_path;
+    
+    NSTimer * streamVideoTimer;
     
     KxMovieGLView       *_glView;
     UIImageView         *_imageView;
@@ -81,6 +91,7 @@ static NSMutableDictionary * gHistory;
     UIBarButtonItem     *_fixedSpaceItem;
     
     UIButton            *_logoutButton;
+    UIButton            *_snapButton;
     UIButton            *_cookieButton;
     UIButton            *_soundButton;
     UILabel             *_progressLabel;
@@ -88,6 +99,10 @@ static NSMutableDictionary * gHistory;
     UIButton            *_infoButton;
     UIActivityIndicatorView *_activityIndicatorView;
     UILabel             *_subtitlesLabel;
+    
+    NSInteger           _local_port;
+    NSInteger            _advertised_port;
+    GCDAsyncUdpSocket *udpSocket;
     
     
 #ifdef DEBUG
@@ -117,35 +132,114 @@ static NSMutableDictionary * gHistory;
 
 @implementation LiveViewController
 
+-(void)didReceivePublicIPandPort:(NSDictionary *) data{
+    NSLog(@"Public IP=%@, public Port=%@ ", [data objectForKey:publicIPKey],
+          [data objectForKey:publicPortKey]);
+    NSNumber * nat_port =[data objectForKey:publicPortKey];
+    [udpSocket close];
+    _advertised_port=[nat_port integerValue];
+    [self finishInit];
+}
+
+
+-(void)streamVideoTimerF: (NSTimer *)timer {
+    NSDictionary * d = [PetConnection streamVideo];
+    if ([d objectForKey:@"rtsp"]==nil) {
+        //NSLog(@"NO RTSP STREAM AVAILABLE");
+    } else {
+        //NSLog(@" RTSP STREAM AVAILABLE %@" , [d objectForKey:@"rtsp"]);
+        if (_path==nil) {
+            //NSLog(@"Should start streaming");
+            _path=[d objectForKey:@"rtsp"];
+            [self initWithContent];
+            [timer invalidate];
+            streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+                                                                target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
+        } else {
+           // NSLog(@"already playing?");
+        }
+    }
+}
+
 + (void)initialize
 {
+    //_streamVideoDispatchQueue = dispatch_queue_create("streamVideo", DISPATCH_QUEUE_SERIAL);
+    //[ _streamVideoDispatchQueue ]
     if (!gHistory)
         gHistory = [NSMutableDictionary dictionary];
 }
 
 - (BOOL)prefersStatusBarHidden { return YES; }
 
-+ (id) movieViewControllerWithContentPath: (NSString *) path
-                               parameters: (NSDictionary *) parameters
-{
-    return [[LiveViewController alloc] initWithContentPath: path parameters: parameters];
-}
 
-- (id) initWithContentPath: (NSString *) path
-                parameters: (NSDictionary *) parameters
-{
+- (void) finishInit {
+    NSLog(@"setting advertised to %d and local to %d", _advertised_port,_local_port);
     
-    path=@"rtsp://162.243.126.214/proxyStream";
-    _path = path;
-    _missed=0;
-    NSAssert(path.length > 0, @"empty path");
-    
-    self = [super initWithNibName:nil bundle:nil];
-    if (self) {
         _moviePosition = 0;
         //        self.wantsFullScreenLayout = YES;
         
-        _parameters = parameters;
+        
+        __weak LiveViewController *weakSelf = self;
+    
+    
+    if (_wantsLogout==1) {
+        [self lastTick];
+    }
+
+        KxMovieDecoder *decoder = [[KxMovieDecoder alloc] init];
+        
+    decoder.local_port=_local_port;
+    decoder.advertised_port=_advertised_port;
+    
+        decoder.interruptCallback = ^BOOL(){
+            
+            __strong LiveViewController *strongSelf = weakSelf;
+            return strongSelf ? [strongSelf interruptDecoder] : YES;
+        };
+        
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            
+            NSError *error = nil;
+            [decoder openFile:_path error:&error ];
+            
+            if (error) {
+                NSLog(@"something bad happened should probably stop and kill it");
+            }
+            
+            __strong LiveViewController *strongSelf = weakSelf;
+            if (strongSelf) {
+                
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    
+                    [strongSelf setMovieDecoder:decoder withError:error];
+                });
+            }
+        });
+}
+
+- (id) initWithContent
+{
+
+    //path=@"rtsp://162.243.126.214:8554/test";
+    //path=@"rtsp://162.243.126.214:48062/000000007221d3e3";
+    //_path = path;
+    udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    
+    
+    STUNClient *stunClient = [[STUNClient alloc] init];
+    [stunClient requestPublicIPandPortWithUDPSocket:udpSocket delegate:self];
+    NSLog(@"Local port %d", [udpSocket localPort_IPv4]);
+    _local_port=[udpSocket localPort_IPv4];
+    
+    /*path=@"rtsp://162.243.126.214/proxyStream?max_port=19091&min_port=19092"*/
+    _missed=0;
+    NSAssert(_path.length > 0, @"empty path");
+    
+    self = [super initWithNibName:nil bundle:nil];
+    /*if (self) {
+        _moviePosition = 0;
+        //        self.wantsFullScreenLayout = YES;
+        
         
         __weak LiveViewController *weakSelf = self;
         
@@ -172,7 +266,7 @@ static NSMutableDictionary * gHistory;
                 });
             }
         });
-    }
+    }*/
     return self;
 }
 
@@ -184,9 +278,9 @@ static NSMutableDictionary * gHistory;
     
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     
-    if (_dispatchQueue) {
+    /*if (_dispatchQueue) {
         _dispatchQueue = NULL;
-    }
+    }*/
     
     LoggerStream(1, @"%@ dealloc", self);
 }
@@ -237,8 +331,7 @@ static NSMutableDictionary * gHistory;
 
 - (void) logout {
     [self stopStream];
-    [PetConnection logout];
-    [self performSegueWithIdentifier:@"logout" sender:self];
+
 }
 
 - (void)loadView
@@ -343,14 +436,17 @@ static NSMutableDictionary * gHistory;
      [_topHUD addSubview:_leftLabel];
      [_topHUD addSubview:_infoButton];*/
     
+    
+    UIColor * c = [UIColor colorWithRed:0.469124 green:0.789775 blue:0.891733 alpha:1];
+    
     // bottom hud
     _cookieButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _cookieButton.frame = CGRectMake(10, height-90, MIN(width/3,200), 80);
-    _cookieButton.backgroundColor = [self colorWithHexString:@"d9534f"];
+    _cookieButton.frame = CGRectMake(10, height-55, MIN(width/3,200), 45);
+    _cookieButton.backgroundColor = c;
     [_cookieButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_cookieButton setTitle:NSLocalizedString(@"Cookie", nil) forState:UIControlStateNormal];
     _cookieButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
-    //_doneButton.showsTouchWhenHighlighted = YES;
+    _cookieButton.showsTouchWhenHighlighted = YES;
     [_cookieButton addTarget:self action:@selector(dropCookie)
           forControlEvents:UIControlEventTouchUpInside];
     _cookieButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;// | UIViewAutoresizingFlexibleWidth;
@@ -360,12 +456,12 @@ static NSMutableDictionary * gHistory;
     [[ self view] addSubview: _cookieButton];
     
     _soundButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _soundButton.frame = CGRectMake(width-MIN(width/3,200)-10, height-90, MIN(width/3,200), 80);
-    _soundButton.backgroundColor = [self colorWithHexString:@"f0ad4e"];
+    _soundButton.frame = CGRectMake(width-MIN(width/3,200)-10, height-55, MIN(width/3,200), 45);
+    _soundButton.backgroundColor = c;
     [_soundButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_soundButton setTitle:NSLocalizedString(@"Sound", nil) forState:UIControlStateNormal];
     _soundButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
-    //_doneButton.showsTouchWhenHighlighted = YES;
+    _soundButton.showsTouchWhenHighlighted = YES;
     [_soundButton addTarget:self action:@selector(playSound)
           forControlEvents:UIControlEventTouchUpInside];
     _soundButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |  UIViewAutoresizingFlexibleLeftMargin;// | UIViewAutoresizingFlexibleWidth;
@@ -375,19 +471,36 @@ static NSMutableDictionary * gHistory;
     [[ self view] addSubview: _soundButton];
     
     _logoutButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    _logoutButton.frame = CGRectMake(width-MIN(width/3,200)-10, 10, MIN(width/3,200), 80);
-    _logoutButton.backgroundColor = [UIColor whiteColor];
-    [_logoutButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    
+    _logoutButton.frame = CGRectMake(width-MIN(width/3,200)-10, 10, MIN(width/3,200), 45);
+    _logoutButton.backgroundColor = c;
+    [_logoutButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [_logoutButton setTitle:NSLocalizedString(@"Logout", nil) forState:UIControlStateNormal];
     _logoutButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
-    //_doneButton.showsTouchWhenHighlighted = YES;
+    _logoutButton.showsTouchWhenHighlighted = YES;
     [_logoutButton addTarget:self action:@selector(logout)
           forControlEvents:UIControlEventTouchUpInside];
-    _logoutButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |  UIViewAutoresizingFlexibleLeftMargin;// | UIViewAutoresizingFlexibleWidth;
+    _logoutButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |   UIViewAutoresizingFlexibleLeftMargin;// | UIViewAutoresizingFlexibleWidth;
     _logoutButton.alpha=0.8;
     _logoutButton.layer.cornerRadius=10;
     _logoutButton.layer.masksToBounds=true;
     [[ self view] addSubview: _logoutButton];
+    
+    _snapButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    //_cookieButton.frame = CGRectMake(10, height-90, MIN(width/3,200), 80);
+    _snapButton.frame = CGRectMake(10, 10, MIN(width/3,200), 45);
+    _snapButton.backgroundColor = c;
+    [_snapButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [_snapButton setTitle:NSLocalizedString(@"Share", nil) forState:UIControlStateNormal];
+    _snapButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
+    _snapButton.showsTouchWhenHighlighted = YES;
+    [_snapButton addTarget:self action:@selector(snapshot)
+            forControlEvents:UIControlEventTouchUpInside];
+    _snapButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |  UIViewAutoresizingFlexibleRightMargin;// | UIViewAutoresizingFlexibleWidth;
+    _snapButton.alpha=0.8;
+    _snapButton.layer.cornerRadius=10;
+    _snapButton.layer.masksToBounds=true;
+    [[ self view] addSubview: _snapButton];
     
     //[_topHUD addSubview:_doneButton];
     
@@ -435,6 +548,86 @@ static NSMutableDictionary * gHistory;
     }
 }
 
+- (UIImage *)imageWithImage:(UIImage *)image scaled:(float)scale {
+    //UIGraphicsBeginImageContext(newSize);
+    // In next line, pass 0.0 to use the current device's pixel scaling factor (and thus account for Retina resolution).
+    // Pass 1.0 to force exact pixel size.
+    CGSize newSize = CGSizeMake(image.size.width*scale,image.size.height*scale);
+    UIGraphicsBeginImageContextWithOptions(newSize, NO, 0.0);
+    [image drawInRect:CGRectMake(0, 0, newSize.width, newSize.height)];
+    UIImage *newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return newImage;
+}
+
+- (UIImage*) maskImage:(UIImage *)image {
+    UIImage *maskImage = [self imageWithImage:[UIImage imageNamed:@"logo_smaller.png"] scaled:0.2];
+    
+    
+    
+    CGImageRef maskRef = maskImage.CGImage;
+    
+    /*CGImageRef mask = CGImageMaskCreate(CGImageGetWidth(maskRef),
+                                        CGImageGetHeight(maskRef),
+                                        CGImageGetBitsPerComponent(maskRef),
+                                        CGImageGetBitsPerPixel(maskRef),
+                                        CGImageGetBytesPerRow(maskRef),
+                                        CGImageGetDataProvider(maskRef), NULL, false);
+    
+    CGImageRef masked = CGImageCreateWithMask([image CGImage], mask);
+    
+    return [UIImage imageWithCGImage:masked];*/
+    
+    
+    UIImage *backgroundImage = image;
+    UIImage *watermarkImage = maskImage;
+    
+    UIGraphicsBeginImageContext(backgroundImage.size);
+    [backgroundImage drawInRect:CGRectMake(0, 0, backgroundImage.size.width, backgroundImage.size.height)];
+    [watermarkImage drawInRect:CGRectMake(backgroundImage.size.width - watermarkImage.size.width, backgroundImage.size.height - watermarkImage.size.height, watermarkImage.size.width, watermarkImage.size.height)];
+    UIImage *result = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return result;
+}
+
+-(BOOL)snapshot {
+    UIImage * img = [self maskImage:[_decoder currentImage] ];
+    //camera roll
+    /*
+    UIImageWriteToSavedPhotosAlbum(img, nil, nil, nil);*/
+    
+    
+    //facebook
+    /*SLComposeViewController *controller = [SLComposeViewController composeViewControllerForServiceType:SLServiceTypeFacebook];
+    [controller setInitialText:@"test"];
+    [controller addImage:img];
+    [self presentViewController:controller animated:YES completion:Nil];*/
+    
+    NSMutableArray *sharingItems = [NSMutableArray new];
+
+    
+    NSArray *quotes; //TODO download more quotes
+    quotes = [NSArray arrayWithObjects:
+            @"Another awesome PetSelfie! #petbot",
+            @"Where my treats at dawg? #petbot",
+            @"Who let the dog out? #petbot",
+            @"My best puppy face. #petbot",
+            @"What I do when you're not here. #petbot",
+            nil];
+    uint32_t rnd = arc4random_uniform([quotes count]);
+    NSString *randomQuote = [quotes objectAtIndex:rnd];
+    
+    [sharingItems addObject:randomQuote];
+    [sharingItems addObject:img];
+    //[sharingItems addObject:url];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
+    
+    //[_glView captureToPhotoAlbum];
+    return true;
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -472,17 +665,26 @@ static NSMutableDictionary * gHistory;
     }
 }
 
+
+
 - (void)viewDidLoad
 {
+    _wantsLogout=0;
     [super viewDidLoad];
+    if ([streamVideoTimer isValid]) {
+        [streamVideoTimer invalidate];
+    }
+    streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
+                                                        target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
     
     LoggerStream(1, @"ViewDidload");
-    NSString * streamURL = [PetConnection streamURL];
+    //[self initWithContentPath:@"" parameters:nil];
+    /*NSString * streamURL = [PetConnection streamURL];
     if (streamURL.length>1) {
         [self initWithContentPath:streamURL parameters:nil];
     } else {
         NSLog(@"Fatal error view did load stream");
-    }
+    }*/
 }
 
 
@@ -564,30 +766,40 @@ static NSMutableDictionary * gHistory;
 
 - (void) applicationWillResignActive: (NSNotification *)notification
 {
-    //[self showHUD:YES];
-    [self stopStream];
+    //[self pause]; // should do this but need to then resume
     LoggerStream(1, @"applicationWillResignActive");
 }
 
 -(void) stopStream {
     
-    @synchronized(self) {
-        [self pause];
+        NSLog(@"CHKP1");
+        _wantsLogout=1;
+        NSLog(@"CHKP2");
+
+        /*
         if (_dispatchQueue!=nil) {
-            dispatch_sync(_dispatchQueue,^(void) {
-                NSLog(@"done waiting...");
-            });
+            
+            if (_decoder!=nil) {
+                [_decoder closeFile];
+                
+            }
+            //dispatch_sync(_dispatchQueue,^(void) {
+            //    NSLog(@"done waiting...");
+            //});
+            dispatch_suspend(_dispatchQueue); //not the best solution but hopefully wont get caught in frame processing
+            
+            
             //[[NSNotificationCenter defaultCenter] removeObserver:self];
             //dispatch_suspend(_dispatchQueue);
-            if (_dispatchQueue) {
-                _dispatchQueue = NULL;
-            }
+            //if (_dispatchQueue) {
+            //    _dispatchQueue = NULL;
+            //}
         } else {
             NSLog(@"DISPATCH Q IS NILL");
         }
-        /*if (_dispatchQueue) {
-            _dispatchQueue = NULL;
-        }*/
+        //if (_dispatchQueue) {
+        //    _dispatchQueue = NULL;
+        //}
         if (_glView!=nil) {
             [_glView removeFromSuperview];
         }
@@ -595,16 +807,14 @@ static NSMutableDictionary * gHistory;
             [_decoder closeFile];
         }
         _decoder=nil;
-        _glView=nil;
-    }
+        _glView=nil;*/
 }
 
 -(void) startStream {
-    
     @synchronized(self) {
-        NSString *streamURL = [PetConnection streamURL];
-        if (streamURL.length>1) {
-            [self initWithContentPath:streamURL parameters:nil];
+        //NSString *streamURL = [PetConnection streamURL];
+        if (_path.length>1) {
+            [self initWithContent];
             if (_decoder) {
                 //NSLog(@"restore play");
                 [self restorePlay];
@@ -644,6 +854,9 @@ static NSMutableDictionary * gHistory;
 
 -(void) play
 {
+    
+    
+    
     if (self.playing)
         return;
     
@@ -665,6 +878,11 @@ static NSMutableDictionary * gHistory;
 #ifdef DEBUG
     _debugStartTime = -1;
 #endif
+    
+    if (_wantsLogout==1) {
+        [self lastTick];
+    }
+    
     
     [self asyncDecodeFrames];
     //[self updatePlayButton];
@@ -688,10 +906,15 @@ static NSMutableDictionary * gHistory;
         return;
     
     self.playing = NO;
+    //Stop streaming, give error and go to login?
+    //try to reconnect, give error and go to login
+    
+    
     //_interrupted = YES;
     //[self enableAudio:NO];
     //[self updatePlayButton];
     LoggerStream(1, @"pause movie");
+    //[self restartStream];
 }
 
 - (void) setMoviePosition: (CGFloat) position
@@ -938,7 +1161,8 @@ static NSMutableDictionary * gHistory;
     __weak LiveViewController *weakSelf = self;
     __weak KxMovieDecoder *weakDecoder = _decoder;
     
-    const CGFloat duration = _decoder.isNetwork ? .0f : 0.1f;
+    //const CGFloat duration = _decoder.isNetwork ? .0f : 0.1f; //TODO check this
+    const CGFloat duration = .0f ; //0.15f; //TODO check this
     
     self.decoding = YES;
     dispatch_async(_dispatchQueue, ^{
@@ -981,11 +1205,11 @@ static NSMutableDictionary * gHistory;
 - (void) tick
 {
     
-    if ((_tickCounter++ % 450)==0) {
+    /*if ((_tickCounter++ % 450)==0) {
         [PetConnection streamVideo];
-    }
+    }*/
     //NSLog(@"tick1");
-    if ((_tickCounter++ % 50)==0) {
+    /*if ((_tickCounter++ % 50)==0) {
         if (![_glView isDescendantOfView:self.view]) {
             NSLog(@"IS NOT descendant");
         }
@@ -1017,7 +1241,7 @@ static NSMutableDictionary * gHistory;
                 NSLog(@"%0.2f %0.2f %0.2f %0.2f",mtime , _moviePosition - _stream_time, now-_prog_time, (mtime - _stream_time) - (now-_prog_time));
             }
         }
-    }
+    }*/
     if (_buffered && ((_bufferedDuration > _minBufferedDuration) || _decoder.isEOF)) {
         
         _tickCorrectionTime = 0;
@@ -1040,8 +1264,9 @@ static NSMutableDictionary * gHistory;
             
             if (_decoder.isEOF) {
                 
-                [self pause];
-                [self updateHUD];
+                //[self pause];
+                [self restartStream];
+                //[self updateHUD];
                 return;
             }
             
@@ -1053,22 +1278,49 @@ static NSMutableDictionary * gHistory;
         
         
         if (!leftFrames ||
-            !(_bufferedDuration > _minBufferedDuration)) {
+            !(_bufferedDuration > _minBufferedDuration) ) {
+            if (_wantsLogout==0)  {
             [self asyncDecodeFrames];
+            }
         }
         
         const NSTimeInterval correction = [self tickCorrection];
         const NSTimeInterval time = MAX(interval + correction, 0.01);
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self tick];
-        });
+        if (_wantsLogout==1 && !self.decoding) {
+            NSLog(@"STOPPING TICK");
+            _wantsLogout=2;
+            [self lastTick];
+        } else {
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self tick];
+            });
+        }
     }
+    //NSLog(@"tick");
     _tickCounter++;
+    
     //if ((_tickCounter++ % 3) == 0) {
     //    [self updateHUD];
     //}
 }
+
+-(void) lastTick {
+    [self pause];
+    if (_dispatchQueue!=nil) {
+        dispatch_suspend(_dispatchQueue);
+    }
+    [_glView removeFromSuperview];
+    [_decoder closeFile];
+    if ([streamVideoTimer isValid]) {
+        [streamVideoTimer invalidate];
+    }
+    [PetConnection logout];
+    [self performSegueWithIdentifier:@"logout" sender:self];
+    
+}
+
+
 
 - (CGFloat) tickCorrection
 {
@@ -1276,8 +1528,7 @@ static NSMutableDictionary * gHistory;
 {
     [self updateBottomBar];
 }*/
-
-- (void) updateHUD
+/*- (void) updateHUD
 {
     if (_disableUpdateHUD)
         return;
@@ -1293,7 +1544,7 @@ static NSMutableDictionary * gHistory;
         _leftLabel.text = formatTimeInterval(duration - position, YES);
     
 #ifdef DEBUG
-    /*const NSTimeInterval timeSinceStart = [NSDate timeIntervalSinceReferenceDate] - _debugStartTime;
+    const NSTimeInterval timeSinceStart = [NSDate timeIntervalSinceReferenceDate] - _debugStartTime;
      NSString *subinfo = _decoder.validSubtitles ? [NSString stringWithFormat: @" %d",_subtitles.count] : @"";
      
      NSString *audioStatus;
@@ -1319,9 +1570,9 @@ static NSMutableDictionary * gHistory;
      //timeSinceStart > _moviePosition + 0.5 ? @" (lags)" : @"",
      _decoder.isEOF ? @"- END" : @"",
      audioStatus,
-     _buffered ? [NSString stringWithFormat:@"buffering %.1f%%", _bufferedDuration / _minBufferedDuration * 100] : @""];*/
+     _buffered ? [NSString stringWithFormat:@"buffering %.1f%%", _bufferedDuration / _minBufferedDuration * 100] : @""];
 #endif
-}
+}*/
 
 - (void) showHUD: (BOOL) show
 {
@@ -1466,6 +1717,12 @@ _bufferedDuration);
                                               otherButtonTitles:nil];
     
     [alertView show];
+    [self stopStream];
+    if ([streamVideoTimer isValid]) {
+        [streamVideoTimer invalidate];
+    }
+    [PetConnection logout];
+    [self performSegueWithIdentifier:@"logout" sender:self];
 }
 
 - (BOOL) interruptDecoder

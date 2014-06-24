@@ -7,13 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "GCDAsyncUdpSocket.h"
+#import "STUNClient.h"
 #import "KxMovieGLView.h"
 @class KxMovieDecoder;
 
-@interface LiveViewController : UIViewController
-+ (id) movieViewControllerWithContentPath: (NSString *) path
-                               parameters: (NSDictionary *) parameters;
+@interface LiveViewController : UIViewController <STUNClientDelegate>
 @property (readonly) BOOL playing;
 
 - (void) play;

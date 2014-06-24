@@ -52,6 +52,9 @@ static NSString *streamUrl=@"";
     }
     
     NSData * responseData = [PetConnection postDataToUrl:loginUrl jsonData:postdata];
+    if (responseData==nil) {
+        return CONNECTION_FAILED_CONNECT;
+    }
     NSDictionary* dictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
     NSLog(@"array : %@",dictionary);
     

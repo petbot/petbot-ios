@@ -106,6 +106,8 @@ typedef BOOL(^KxMovieDecoderInterruptCallback)();
 @property (readonly, nonatomic) BOOL isNetwork;
 @property (readonly, nonatomic) CGFloat startTime;
 @property (readwrite, nonatomic) BOOL disableDeinterlacing;
+@property (readwrite, nonatomic) NSInteger advertised_port;
+@property (readwrite, nonatomic) NSInteger local_port;
 @property (readwrite, nonatomic, strong) KxMovieDecoderInterruptCallback interruptCallback;
 +(void) setLogLevel:(NSInteger)level;
 + (id) movieDecoderWithContentPath: (NSString *) path
@@ -113,9 +115,10 @@ typedef BOOL(^KxMovieDecoderInterruptCallback)();
 
 - (BOOL) openFile: (NSString *) path
             error: (NSError **) perror;
-
+- (UIImage*)uiimageFromStream;
+-(UIImage *)currentImage;
 -(void) closeFile;
-
+-(void) setEOF;
 - (BOOL) setupVideoFrameFormat: (KxVideoFrameFormat) format;
 
 - (NSArray *) decodeFrames: (CGFloat) minDuration;
