@@ -69,6 +69,13 @@
     return self;
 }
 
+
+- (void) dealloc
+{
+    NSLog(@"DEALLOC OF DECODER DELEGATE HERE");
+    
+}
+
 #pragma mark -
 
 - (void)setParent:(WPXMLRPCDecoderDelegate *)parent {
@@ -123,6 +130,7 @@
 #pragma mark -
 
 @implementation WPXMLRPCDecoderDelegate (NSXMLParserDelegate)
+
 
 - (void)parser:(NSXMLParser *)parser didStartElement:(NSString *)element namespaceURI:(NSString *)namespaceURI qualifiedName:(NSString *)qualifiedName attributes:(NSDictionary *)attributes {
     if ([element isEqualToString:@"value"] || [element isEqualToString:@"member"] || [element isEqualToString:@"name"]) {

@@ -15,6 +15,7 @@
     BOOL usernameEdited;
     __weak IBOutlet UIButton *loginButton;
     __weak IBOutlet UISwitch *rememberSwitch;
+    dispatch_semaphore_t _login_action;
 }
 
 @end
@@ -74,7 +75,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    _login_action = dispatch_semaphore_create(1); //make the login action semaphore
     NSLog(@"remember load: %@",[JNKeychain loadValueForKey:@"remember"]);
     loginButton.showsTouchWhenHighlighted = YES;
     if ([JNKeychain loadValueForKey:@"remember"]!=nil) {
@@ -84,6 +85,9 @@
         NSLog(@"remember save1: %@",[NSNumber numberWithBool:rememberSwitch.isOn]);
         [JNKeychain saveValue:[NSNumber numberWithBool:rememberSwitch.isOn] forKey:@"rememeber"];
     }
+    
+
+    
     //[loginButton setHighlighted:true];
     // Do any additional setup after loading the view.
 }
@@ -105,13 +109,8 @@
 }
 */
 
-- (IBAction)loginButtonPress:(id)sender {
-    [loginButton setHighlighted:true]; //maybe should fork a thread for rest? otherwise no highlight :(
-    //NSLog(@"%@",loginButton.backgroundColor);
-    // Do any additional setup after loading the view, typically from a nib.
-    NSString * given_username = self.username.text;
-    NSString * given_password = self.password.text;
-    switch ([PetConnection loginUsername:given_username password:self.password.text]) {
+-(void) helperLoginUsername:(NSString*)given_username password:(NSString*)given_password {
+    switch ([PetConnection loginUsername:given_username password:given_password]) {
         case CONNECTION_BAD_PASSWORD: {
             [[NSUserDefaults standardUserDefaults] setValue:nil forKey:@"username"];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -121,7 +120,7 @@
                                                      cancelButtonTitle:@"ok"
                                                      otherButtonTitles:nil];
             [theAlert show];
-
+            
             break;
         }
         case CONNECTION_ERROR: {
@@ -149,19 +148,20 @@
                                                                   delegate:self
                                                          cancelButtonTitle:@"ok"
                                                          otherButtonTitles:nil];
-                            [theAlert show];
+                [theAlert show];
             } else {
                 NSLog(@"Stream video");
                 if (rememberSwitch.isOn) {
                     [self saveLogin:given_username password:given_password];
                 }
                 /*[[NSUserDefaults standardUserDefaults] setValue:given_username forKey:@"username"];
-                [[NSUserDefaults standardUserDefaults] synchronize];*/
+                 [[NSUserDefaults standardUserDefaults] synchronize];*/
+
                 [self performSegueWithIdentifier:@"login" sender:self];
             }
             break;
         }
-        
+            
         default: {
             UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Login failed"
                                                                message:@"Username and/or Password are incorrect."
@@ -172,9 +172,33 @@
             break;
         }
             
-    
-        
+            
+            
     }
+}
+
+-(void) loginUsername:(NSString*)given_username password:(NSString*)given_password
+{
+    long acquired = dispatch_semaphore_wait(_login_action, DISPATCH_TIME_NOW);
+    if (acquired==0) {
+        //dispatch_async(dispatch_get_main_queue(), ^{
+        [self helperLoginUsername:given_username password:given_password];
+         dispatch_semaphore_signal(_login_action);
+        //});
+    } else {
+        NSLog(@"dropping login event");
+    }
+}
+
+- (IBAction)loginButtonPress:(id)sender {
+    [loginButton setHighlighted:true]; //maybe should fork a thread for rest? otherwise no highlight :(
+    //NSLog(@"%@",loginButton.backgroundColor);
+    // Do any additional setup after loading the view, typically from a nib.
+    NSString * given_username = self.username.text;
+    NSString * given_password = self.password.text;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self loginUsername:given_username password:given_password];
+    });
 }
 
 

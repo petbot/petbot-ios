@@ -11,12 +11,13 @@
 #import "WPXMLRPCDecoder.h"
 
 
-
 @implementation PetConnection
 
 
+AVAudioPlayer *player;
 static PetConnection *instance = nil;
 static NSTimer * streamVideoTimer=nil;
+static NSString *baseUrl=@"http://petbot.ca:5100/";
 static NSString *session=@"";
 static NSString *loginUrl=@"http://petbot.ca:5100/login";
 static NSString *relayUrl=@"http://petbot.ca:5100/relay";
@@ -69,7 +70,6 @@ static NSString *streamUrl=@"";
         } else {
             //logged in
             NSLog(@"logged in");
-
             return CONNECTION_OK;
         }
     }
@@ -81,16 +81,16 @@ static NSString *streamUrl=@"";
 {
     NSData* responseData = nil;
     NSURL *url=[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    responseData = [NSMutableData data] ;
+    //responseData = [NSMutableData data] ;
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     
     NSURLResponse* response;
     NSError* error = nil;
     responseData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
     
-    NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
-    NSDictionary *fields = [HTTPResponse allHeaderFields];
+    //NSHTTPURLResponse *HTTPResponse = (NSHTTPURLResponse *)response;
+   // NSDictionary *fields = [HTTPResponse allHeaderFields];
     
     //NSLog(@"array : %@",fields);
     //NSLog(@"the final output is:%@",responseString);
@@ -103,14 +103,16 @@ static NSString *streamUrl=@"";
 {
     NSData* responseData = nil;
     NSURL *url=[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    responseData = [NSMutableData data] ;
+    //responseData = [NSMutableData data] ;
     NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
     
     [request setHTTPMethod:@"POST"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
-    [request setHTTPBody:jsonData];
+    if (jsonData!=nil) {
+        [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
+        [request setHTTPBody:jsonData];
+    }
     NSURLResponse* response;
     NSError* error = nil;
     responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
@@ -142,39 +144,46 @@ static NSString *streamUrl=@"";
 }
 
 + (NSDictionary*)streamVideo {
-    NSURL *URL = [NSURL URLWithString:relayUrl];
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
-    [request setHTTPMethod:@"POST"];
-    [request setValue:session forHTTPHeaderField:@"Cookie"];
-    WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:@"streamVideo" andParameters:@[]];
-    [request setHTTPBody:encoder.body];
-    [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
-    NSURLResponse* response;
-    NSData* responseData = nil;
-    NSError* error = nil;
-    responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
-    NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
-    //NSLog(@"the final output is:%@",responseString);
-    if (error){
-        return false;
+    NSDictionary * streams;
+    @autoreleasepool {
+        
+        NSURL *URL = [NSURL URLWithString:relayUrl];
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+        [request setHTTPMethod:@"POST"];
+        [request setValue:session forHTTPHeaderField:@"Cookie"];
+        WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:@"streamVideo" andParameters:@[]];
+        [request setHTTPBody:encoder.body];
+        [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
+        NSURLResponse* response;
+        NSData* responseData = nil;
+        NSError* error = nil;
+        responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
+        //NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+        //NSLog(@"the final output is:%@",responseString);
+        if (error){
+            return false;
+        }
+        WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:responseData];
+        //NSLog(@"object is type %@",NSStringFromClass([[decoder object] class]));
+        NSString * type =NSStringFromClass([[decoder object] class]);
+        if (![type isEqualToString:@"__NSArrayM"]) {
+            //NSLog(@"failed in streamVideo call");
+            return nil;
+        }
+        NSArray *parsedResult = [[decoder object] copy];
+        //if petbot is offline this next line will segfault
+        //NSLog(@"parsed results has %lu entries",(unsigned long)[parsedResult count]);
+        streams = [parsedResult objectAtIndex:1];
+        encoder=nil;
+        decoder=nil;
+        //streamUrl = [parsedResult objectAtIndex:1];
+        
+        //NSLog(@"startStream %@",parsedResult);
     }
-    WPXMLRPCDecoder *decoder = [[WPXMLRPCDecoder alloc] initWithData:responseData];
-    //NSLog(@"object is type %@",NSStringFromClass([[decoder object] class]));
-    NSString * type =NSStringFromClass([[decoder object] class]);
-    if (![type isEqualToString:@"__NSArrayM"]) {
-        //NSLog(@"failed in streamVideo call");
-        return nil;
-    }
-    NSArray *parsedResult = [decoder object];
-       //if petbot is offline this next line will segfault
-    //NSLog(@"parsed results has %lu entries",(unsigned long)[parsedResult count]);
-    NSDictionary * streams = [parsedResult objectAtIndex:1];
-    //streamUrl = [parsedResult objectAtIndex:1];
-    
-    //NSLog(@"startStream %@",parsedResult);
     
     return streams;
 }
+
 
 + (BOOL)cookieDrop {
     NSURL *URL = [NSURL URLWithString:relayUrl];
@@ -185,9 +194,8 @@ static NSString *streamUrl=@"";
     [request setHTTPBody:encoder.body];
     [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
     NSURLResponse* response;
-    NSData* responseData = nil;
     NSError* error = nil;
-    responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
+    [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
     if (error){
         return false;
     }
@@ -225,11 +233,9 @@ static NSString *streamUrl=@"";
     [request setHTTPBody:encoder.body];
     [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
     NSURLResponse* response;
-    NSData* responseData = nil;
     NSError* error = nil;
-    responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
-                                
-                                NSString *responseString = [[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
+                                //[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
                                 
                                 //NSLog(@"the final output is:%@",responseString);
                                 if (error){
@@ -238,6 +244,102 @@ static NSString *streamUrl=@"";
     NSLog(@"play sound");
     return true;
 }
+
+
++(NSArray *) listSounds {
+        NSData * responseData = [PetConnection postDataToUrl:[NSString stringWithFormat:@"%@%@", baseUrl , @"list_sounds"] jsonData:nil];
+        if (responseData==nil) {
+            return nil;
+        }
+    
+        NSError* error = nil;
+    
+        NSDictionary* dictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+        NSLog(@"array : %@",dictionary);
+    if ([dictionary valueForKey:@"result"]!=nil) {
+        NSDictionary * d = [dictionary valueForKey:@"result"];
+        NSArray * a = [d valueForKey:@"sounds"];
+        return a;
+    }
+    return nil;
+}
+
+
++(NSString*) soundURLFromFilename:(NSString* )soundfile {
+    return [NSString stringWithFormat:@"%@get_sound/%@",baseUrl,soundfile];
+}
+
+
+
++(BOOL) playSoundfile:(NSString * )soundfile {
+    NSURL *URL = [NSURL URLWithString:relayUrl];
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+    [request setHTTPMethod:@"POST"];
+    [request setValue:session forHTTPHeaderField:@"Cookie"];
+    
+    WPXMLRPCEncoder *encoder = [[WPXMLRPCEncoder alloc] initWithMethod:@"playSound" andParameters:[[NSArray alloc] initWithObjects:[self soundURLFromFilename:soundfile], nil]];
+    [request setHTTPBody:encoder.body];
+    [request setValue:@"text/xml" forHTTPHeaderField:@"Content-Type"];
+    NSURLResponse* response;
+    NSError* error = nil;
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
+    //[[NSString alloc] initWithData:responseData encoding:NSUTF8StringEncoding];
+    
+    //NSLog(@"the final output is:%@",responseString);
+    if (error){
+        return false;
+    }
+    
+    //play sound locally
+    AVAudioSession *session = [AVAudioSession sharedInstance];
+    [session setCategory:AVAudioSessionCategoryPlayback error:nil];
+    
+    NSURL *mp3URL = [NSURL URLWithString:[PetConnection soundURLFromFilename:soundfile]];
+    NSData *audioData = [NSData dataWithContentsOfURL:mp3URL];
+    //dispatch_async(dispatch_get_main_queue(), ^{
+    error = nil;
+    player = [[AVAudioPlayer alloc] initWithData:audioData error:&error];
+    NSLog(@"%@", error);
+    player.volume=1;
+    [player setDelegate:self];
+    [player prepareToPlay];
+    [player play];
+    return true;
+}
+
+
++(BOOL) removeSoundfile:(NSString * )soundfile {
+    NSData * responseData = [PetConnection postDataToUrl:[NSString stringWithFormat:@"%@%@/%@", baseUrl , @"remove_sound",soundfile] jsonData:nil];
+    if (responseData==nil) {
+        return false;
+    }
+    return true;
+}
+
++(BOOL) uploadSoundURL:(NSURL *) soundfile withFilename:(NSString *)filename {
+    NSString *urlString = [NSString stringWithFormat:@"%@post_sound",baseUrl];
+    NSMutableURLRequest * request= [[NSMutableURLRequest alloc] init];
+    [request setURL:[NSURL URLWithString:urlString]];
+    [request setHTTPMethod:@"POST"];
+    NSString *boundary = @"---------------------------14737809831466499882746641449";
+    NSString *contentType = [NSString stringWithFormat:@"multipart/form-data; boundary=%@",boundary];
+    [request addValue:contentType forHTTPHeaderField: @"Content-Type"];
+    NSMutableData *postbody = [NSMutableData data];
+    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"file\"; filename=\"%@.m4a\"\r\n", filename] dataUsingEncoding:NSUTF8StringEncoding]];
+    [postbody appendData:[[NSString stringWithString:@"Content-Type: application/octet-stream\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
+    NSData *data = [[NSData alloc] initWithContentsOfURL:soundfile];
+    [postbody appendData:[NSData dataWithData:data]];
+    [postbody appendData:[[NSString stringWithFormat:@"\r\n--%@--\r\n",boundary] dataUsingEncoding:NSUTF8StringEncoding]];
+    [request setHTTPBody:postbody];
+    
+    NSData *returnData = [NSURLConnection sendSynchronousRequest:request returningResponse:nil error:nil];
+    NSString * returnString = [[NSString alloc] initWithData:returnData encoding:NSUTF8StringEncoding];
+    NSLog(@"filename is %@",filename);
+    NSLog(@"%@", returnString);
+    return true;
+}
+
 @end
 
 

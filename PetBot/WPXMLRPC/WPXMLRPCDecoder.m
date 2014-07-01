@@ -58,28 +58,39 @@ NSString *const WPXMLRPCErrorDomain = @"WPXMLRPCError";
     return self;
 }
 
+
+- (void) dealloc
+{
+    NSLog(@"Dealloc decoder");
+    [_parser setDelegate:nil];
+    _parser=nil;
+    _delegate=nil;
+}
+
 #pragma mark -
 
 - (void)parse {
-    [_parser setDelegate:self];
-    
-    [_parser parse];
-
-    if ([_parser parserError]) {
-        WPXMLRPCDataCleaner *cleaner = [[WPXMLRPCDataCleaner alloc] initWithData:_originalData];
-        _body = [cleaner cleanData];
-        _parser = [[NSXMLParser alloc] initWithData:_body];
+    @autoreleasepool {
         [_parser setDelegate:self];
+        
         [_parser parse];
-    }
-
-    if ([_parser parserError])
-        return;
-
-    if (_methodName) {
-        _object = @{@"methodName": _methodName, @"params": [_delegate elementValue]};
-    } else {
-        _object = [_delegate elementValue];
+        
+        if ([_parser parserError]) {
+            WPXMLRPCDataCleaner *cleaner = [[WPXMLRPCDataCleaner alloc] initWithData:_originalData];
+            _body = [cleaner cleanData];
+            _parser = [[NSXMLParser alloc] initWithData:_body];
+            [_parser setDelegate:self];
+            [_parser parse];
+        }
+        
+        if ([_parser parserError])
+            return;
+        
+        if (_methodName) {
+            _object = @{@"methodName": _methodName, @"params": [_delegate elementValue]};
+        } else {
+            _object = [_delegate elementValue];
+        }
     }
 }
 
@@ -173,6 +184,14 @@ NSString *const WPXMLRPCErrorDomain = @"WPXMLRPCError";
 
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
     [self abortParsing];
+}
+
+-(void) dealloc
+{
+    [_parser setDelegate:nil];
+    _delegate=nil;
+    _parser=nil;
+    
 }
 
 @end

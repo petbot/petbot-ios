@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <AVFoundation/AVFoundation.h>
 enum {
     CONNECTION_ERROR,
     CONNECTION_FAILED_CONNECT,
@@ -17,6 +17,7 @@ enum {
 
 
 @interface PetConnection : NSObject
+
 +(PetConnection*)getInstance;
 +(NSInteger)loginUsername:(NSString *)username password:(NSString *)password;
 +(NSData *)getUrl:(NSString*)urlString;
@@ -24,8 +25,12 @@ enum {
 +(BOOL)cookieDrop;
 +(BOOL)logout;
 +(BOOL)playSound:(NSInteger)index;
++(BOOL)playSoundfile:(NSString *)soundfile;
++(NSArray *)listSounds;
 +(NSDictionary*)streamVideo;
 +(NSString*)streamURL;
-
++(BOOL) removeSoundfile:(NSString * )soundfile;
++(NSString*) soundURLFromFilename:(NSString* )soundfile;
++(BOOL) uploadSoundURL:(NSURL *) soundfile withFilename:(NSString *)filename;
 @end
 
