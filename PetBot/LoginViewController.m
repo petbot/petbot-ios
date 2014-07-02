@@ -181,10 +181,10 @@
 {
     long acquired = dispatch_semaphore_wait(_login_action, DISPATCH_TIME_NOW);
     if (acquired==0) {
-        //dispatch_async(dispatch_get_main_queue(), ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
         [self helperLoginUsername:given_username password:given_password];
          dispatch_semaphore_signal(_login_action);
-        //});
+        });
     } else {
         NSLog(@"dropping login event");
     }

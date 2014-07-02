@@ -51,7 +51,8 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     dispatch_semaphore_t _decodeSemaphore;
     dispatch_semaphore_t _drawSemaphore;
     
-    dispatch_semaphore_t _frameMutex;
+    //dispatch_semaphore_t _frameMutex;
+    NSLock *_frameMutex;
     
     NSMutableArray      *_videoFrames;
     CGFloat             _moviePosition;
@@ -135,7 +136,8 @@ NSString            *_segueMutex =@"mutex";
         NSDictionary * d = [PetConnection streamVideo];
         if ([d objectForKey:@"rtsp"]==nil) {
             _missed_rtsp_key++;
-            if (_missed_rtsp_key>10) {
+            NSLog(@"Missing RTSP KEY");
+            if (_missed_rtsp_key>2) {
                 NSLog(@"missed rtsp key too many times");
                 NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
                 NSError *error = [NSError errorWithDomain:@"PetBot.ca"
@@ -217,8 +219,8 @@ NSString            *_segueMutex =@"mutex";
     _frameSemaphore =  dispatch_semaphore_create( 0 ); //semaphore for frames
     _drawSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill draw thread
     _decodeSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill decode thread
-    _frameMutex = dispatch_semaphore_create(1);
-    dispatch_semaphore_signal(_frameMutex);
+    _frameMutex = [[NSLock alloc] init]; //dispatch_semaphore_create(1);
+    //dispatch_semaphore_signal(_frameMutex);
     
     STUNClient *stunClient = [[STUNClient alloc] init];
     [stunClient requestPublicIPandPortWithUDPSocket:udpSocket delegate:self];
@@ -457,9 +459,11 @@ NSString            *_segueMutex =@"mutex";
 -(BOOL)snapshot {
     dispatch_async(dispatch_get_main_queue(), ^{
         UIImage * img=nil;
-        dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+        //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+        [_frameMutex lock];
         img= [self maskImage:[_decoder currentImage] ];
-        dispatch_semaphore_signal(_frameMutex);
+        //dispatch_semaphore_signal(_frameMutex);
+        [_frameMutex unlock];
         NSMutableArray *sharingItems = [NSMutableArray new];
 
         
@@ -642,7 +646,7 @@ NSString            *_segueMutex =@"mutex";
         if ([streamVideoTimer isValid]) {
             [streamVideoTimer invalidate];
         }
-        streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:5.0f
+        streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:4.0f
                                                             target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
         
         _decodeFramesRunning = true;
@@ -805,17 +809,19 @@ NSString            *_segueMutex =@"mutex";
 
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
-    [self suspendQs];
-    [_glView removeFromSuperview];
-    _glView=nil;
+    //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+    [_frameMutex lock];
+    //[self suspendQs];
+    //[_glView removeFromSuperview];
+    //_glView=nil;
 }
 
 - (void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation {
-    CGRect bounds = self.view.bounds;
-    _glView = [[KxMovieGLView alloc] initWithFrame:bounds decoder:_decoder];
-    dispatch_semaphore_signal(_frameMutex);
-    [self resumeQs];
+    //CGRect bounds = self.view.bounds;
+    //_glView = [[KxMovieGLView alloc] initWithFrame:bounds decoder:_decoder];
+    //dispatch_semaphore_signal(_frameMutex);
+    [_frameMutex unlock];
+    //[self resumeQs];
 }
 
 - (void) asyncDecodeFrames
@@ -877,28 +883,38 @@ NSString            *_segueMutex =@"mutex";
     });
 }
 
+
+-(BOOL) tickHelper {
+    dispatch_semaphore_wait(_frameSemaphore,DISPATCH_TIME_FOREVER);
+    //have a frame! or need to exit
+    if (_shutdown) {
+        //shut it down
+        NSLog(@"Killing draw thread");
+        _drawFramesRunning=false;
+        dispatch_semaphore_signal(_drawSemaphore);
+        return false;
+    } else {
+        //draw the frame
+        [self presentFrame];
+    }
+    return true;
+}
+
+
 - (void) tick
 {
     BOOL good=true;
     while (good) {
         
-        dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+        //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+        [_frameMutex lock];
         @autoreleasepool {
-            
-            dispatch_semaphore_wait(_frameSemaphore,DISPATCH_TIME_FOREVER);
-            //have a frame! or need to exit
-            if (_shutdown) {
-                //shut it down
-                NSLog(@"Killing draw thread");
-                _drawFramesRunning=false;
-                dispatch_semaphore_signal(_drawSemaphore);
-                good=false;
-            } else {
-                //draw the frame
-                [self presentFrame];
+            for (int i=0; i<5 && good; i++ ) {
+                good=[self tickHelper];
             }
         }
-        dispatch_semaphore_signal(_frameMutex);
+        //dispatch_semaphore_signal(_frameMutex);
+        [_frameMutex unlock];
     }
     return;
 }
