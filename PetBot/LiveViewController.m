@@ -158,6 +158,7 @@ NSString            *_segueMutex =@"mutex";
             NSLog(@" RTSP STREAM AVAILABLE %@" , [d objectForKey:@"rtsp"]);
             if (_path==nil) { //TODO check if path changed?
                 _path=[d objectForKey:@"rtsp"];
+                //_path=[d objectForKey:@"rtmp"];
                 _state=2;
                 [self initWithContent];
             }
