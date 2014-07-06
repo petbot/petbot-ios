@@ -264,6 +264,46 @@ static NSString *streamUrl=@"";
     return nil;
 }
 
++(NSArray *)get_quotes {
+    NSData * responseData = [PetConnection postDataToUrl:[NSString stringWithFormat:@"%@%@", baseUrl , @"get_quotes"] jsonData:nil];
+    if (responseData==nil) {
+        return nil;
+    }
+    
+    NSError* error = nil;
+    
+    NSDictionary* dictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+    NSLog(@"array : %@",dictionary);
+    if ([dictionary valueForKey:@"result"]!=nil) {
+        NSDictionary * d = [dictionary valueForKey:@"result"];
+        NSArray * a = [d valueForKey:@"quotes"];
+        return a;
+    }
+    return nil;
+}
+
+
++(BOOL)mobile_version_supported {
+    NSData * responseData = [PetConnection postDataToUrl:[NSString stringWithFormat:@"%@%@", baseUrl , @"mobile_app_supported"] jsonData:nil];
+    if (responseData==nil) {
+        return false;
+    }
+    
+    NSError* error = nil;
+    
+    
+    NSDictionary* dictionary = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+    NSLog(@"array : %@",dictionary);
+    if ([dictionary valueForKey:@"result"]!=nil) {
+        NSDictionary * d = [dictionary valueForKey:@"result"];
+        NSLog(@"Mobile version %@",[d valueForKey:@"version"]);
+        NSNumber * num = [d valueForKey:@"version"];
+        BOOL b = [num boolValue];
+        return b;
+    }
+    return false;
+}
+
 
 +(NSString*) soundURLFromFilename:(NSString* )soundfile {
     return [NSString stringWithFormat:@"%@get_sound/%@",baseUrl,soundfile];

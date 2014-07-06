@@ -47,7 +47,7 @@
     
     
     // Disable Stop/Play button when application launches
-    [_stopButton setEnabled:NO];
+    //[_stopButton setEnabled:NO];
     [_playButton setEnabled:NO];
     
     // Set the audio file
@@ -174,12 +174,14 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         [audioSession setActive:NO error:nil];
     }
     
-    [_stopButton setEnabled:YES];
+    //[_stopButton setEnabled:YES];
     [_playButton setEnabled:NO];
 }
 
 - (IBAction)backTapped:(id)sender {
-    [self dismissViewControllerAnimated:true completion:nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self dismissViewControllerAnimated:true completion:nil];
+    });
 }
 
 //audio delegates
@@ -197,7 +199,7 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 - (void) audioRecorderDidFinishRecording:(AVAudioRecorder *)avrecorder successfully:(BOOL)flag{
     [_recordPauseButton setTitle:@"Record" forState:UIControlStateNormal];
     
-    [_stopButton setEnabled:NO];
+    //[_stopButton setEnabled:NO];
     [_playButton setEnabled:YES];
 }
 

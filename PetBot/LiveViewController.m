@@ -54,6 +54,8 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     //dispatch_semaphore_t _frameMutex;
     NSLock *_frameMutex;
     
+    NSArray             *_quotes;
+    
     NSMutableArray      *_videoFrames;
     CGFloat             _moviePosition;
     BOOL                _fitMode;
@@ -64,6 +66,9 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     NSString            *_path;
     
     NSInteger           _state;
+    
+    BOOL                _takeSnapshot;
+    BOOL                _wantRotate;
     
     
     NSInteger           _missed_rtsp_key;
@@ -146,6 +151,7 @@ NSString            *_segueMutex =@"mutex";
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self handleDecoderMovieError:error];
                 });
+                [timer invalidate];
             }
             //NSLog(@"NO RTSP STREAM AVAILABLE");
         } else {
@@ -172,43 +178,43 @@ NSString            *_segueMutex =@"mutex";
 - (void) finishInit {
     NSLog(@"setting advertised to %d and local to %d", _advertised_port,_local_port);
     
-        _moviePosition = 0;
-        //        self.wantsFullScreenLayout = YES;
-        
-        
-        __weak LiveViewController *weakSelf = self;
+    _moviePosition = 0;
+    //        self.wantsFullScreenLayout = YES;
     
     
-
-        KxMovieDecoder *decoder = [[KxMovieDecoder alloc] init];
-        
+    __weak LiveViewController *weakSelf = self;
+    
+    
+    
+    KxMovieDecoder *decoder = [[KxMovieDecoder alloc] init];
+    
     decoder.local_port=_local_port;
     decoder.advertised_port=_advertised_port;
     
-        decoder.interruptCallback = ^BOOL(){
-            
-            __strong LiveViewController *strongSelf = weakSelf;
-            return strongSelf ? [strongSelf interruptDecoder] : YES;
-        };
+    decoder.interruptCallback = ^BOOL(){
         
-        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        __strong LiveViewController *strongSelf = weakSelf;
+        return strongSelf ? [strongSelf interruptDecoder] : YES;
+    };
+    
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        
+        NSError *error = nil;
+        [decoder openFile:_path error:&error ];
+        
+        if (error) {
+            NSLog(@"something bad happened should probably stop and kill it");
+        }
+        
+        __strong LiveViewController *strongSelf = weakSelf;
+        if (strongSelf) {
             
-            NSError *error = nil;
-            [decoder openFile:_path error:&error ];
-            
-            if (error) {
-                NSLog(@"something bad happened should probably stop and kill it");
-            }
-            
-            __strong LiveViewController *strongSelf = weakSelf;
-            if (strongSelf) {
+            dispatch_sync(dispatch_get_main_queue(), ^{
                 
-                dispatch_sync(dispatch_get_main_queue(), ^{
-                    
-                    [strongSelf setMovieDecoder:decoder withError:error];
-                });
-            }
-        });
+                [strongSelf setMovieDecoder:decoder withError:error];
+            });
+        }
+    });
 }
 
 - (id) initWithContent
@@ -283,6 +289,10 @@ NSString            *_segueMutex =@"mutex";
                            alpha:1.0f];
 }
 
+-(void)getQuotes {
+    _quotes = [PetConnection get_quotes];
+}
+
 - (void) dropCookie {
     dispatch_async(dispatch_get_main_queue(), ^{
         [PetConnection cookieDrop];
@@ -291,24 +301,26 @@ NSString            *_segueMutex =@"mutex";
 
 - (void) playSound {
     dispatch_async(dispatch_get_main_queue(), ^{
-    [self performSegueWithIdentifier:@"toSoundPicker" sender:self];
-    //[PetConnection playSound:8];
+        [self performSegueWithIdentifier:@"toSoundPicker" sender:self];
+        //[PetConnection playSound:8];
     });
 }
 
 - (void) logout {
     dispatch_async(dispatch_get_main_queue(), ^{
-    if ([self stopStream]) {
-        [PetConnection logout];
-        
-        @synchronized(_segueMutex) {
-            NSLog(@"logging out");
-            //[self performSegueWithIdentifier:@"logout" sender:self];
-            [self dismissViewControllerAnimated:true completion:nil];
+        if ([self stopStream]) {
+            [PetConnection logout];
+            
+            @synchronized(_segueMutex) {
+                NSLog(@"logging out");
+                //[self performSegueWithIdentifier:@"logout" sender:self];
+                _state=-1;
+                [streamVideoTimer invalidate];
+                [self dismissViewControllerAnimated:true completion:nil];
+            }
         }
-    }
     });
-
+    
 }
 
 - (void)loadView
@@ -322,7 +334,7 @@ NSString            *_segueMutex =@"mutex";
     _activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle: UIActivityIndicatorViewStyleWhiteLarge];
     _activityIndicatorView.center = self.view.center;
     _activityIndicatorView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-    
+    _activityIndicatorView.transform = CGAffineTransformMakeScale(2, 2);
     [self.view addSubview:_activityIndicatorView];
     
     CGFloat width = bounds.size.width;
@@ -351,7 +363,7 @@ NSString            *_segueMutex =@"mutex";
     _cookieButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
     _cookieButton.showsTouchWhenHighlighted = YES;
     [_cookieButton addTarget:self action:@selector(dropCookie)
-          forControlEvents:UIControlEventTouchUpInside];
+            forControlEvents:UIControlEventTouchUpInside];
     _cookieButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleRightMargin;// | UIViewAutoresizingFlexibleWidth;
     _cookieButton.alpha=0.8;
     _cookieButton.layer.cornerRadius=10;
@@ -366,7 +378,7 @@ NSString            *_segueMutex =@"mutex";
     _soundButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
     _soundButton.showsTouchWhenHighlighted = YES;
     [_soundButton addTarget:self action:@selector(playSound)
-          forControlEvents:UIControlEventTouchUpInside];
+           forControlEvents:UIControlEventTouchUpInside];
     _soundButton.autoresizingMask = UIViewAutoresizingFlexibleTopMargin |  UIViewAutoresizingFlexibleLeftMargin;// | UIViewAutoresizingFlexibleWidth;
     _soundButton.alpha=0.8;
     _soundButton.layer.cornerRadius=10;
@@ -382,7 +394,7 @@ NSString            *_segueMutex =@"mutex";
     _logoutButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
     _logoutButton.showsTouchWhenHighlighted = YES;
     [_logoutButton addTarget:self action:@selector(logout)
-          forControlEvents:UIControlEventTouchUpInside];
+            forControlEvents:UIControlEventTouchUpInside];
     _logoutButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |   UIViewAutoresizingFlexibleLeftMargin;// | UIViewAutoresizingFlexibleWidth;
     _logoutButton.alpha=0.8;
     _logoutButton.layer.cornerRadius=10;
@@ -398,7 +410,7 @@ NSString            *_segueMutex =@"mutex";
     _snapButton.titleLabel.font = [UIFont boldSystemFontOfSize:27.0]; //[UIFont systemFontOfSize:18];
     _snapButton.showsTouchWhenHighlighted = YES;
     [_snapButton addTarget:self action:@selector(snapshot)
-            forControlEvents:UIControlEventTouchUpInside];
+          forControlEvents:UIControlEventTouchUpInside];
     _snapButton.autoresizingMask = UIViewAutoresizingFlexibleBottomMargin |  UIViewAutoresizingFlexibleRightMargin;// | UIViewAutoresizingFlexibleWidth;
     _snapButton.alpha=0.8;
     _snapButton.layer.cornerRadius=10;
@@ -456,37 +468,49 @@ NSString            *_segueMutex =@"mutex";
     dispatch_resume(_drawDispatchQueue);
 }
 
--(BOOL)snapshot {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIImage * img=nil;
-        //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
-        [_frameMutex lock];
-        img= [self maskImage:[_decoder currentImage] ];
-        //dispatch_semaphore_signal(_frameMutex);
-        [_frameMutex unlock];
-        NSMutableArray *sharingItems = [NSMutableArray new];
-
-        
+-(BOOL)snapshotWithImg:(UIImage *)img {
+    //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+    //[_frameMutex lock]; //have this lock going in!
+    //img= [self maskImage:[_decoder currentImage] ];
+    //dispatch_semaphore_signal(_frameMutex);
+    //[_frameMutex unlock];
+    NSMutableArray *sharingItems = [NSMutableArray new];
+    
+    
+    NSString * quote;
+    if (_quotes==nil) {
         NSArray *quotes; //TODO download more quotes
         quotes = [NSArray arrayWithObjects:
-                @"Another awesome PetSelfie! #petbot",
-                @"Where my treats at dawg? #petbot",
-                @"Who let the dog out? #petbot",
-                @"My best puppy face. #petbot",
-                @"What I do when you're not here. #petbot",
-                nil];
+                  @"Another awesome PetSelfie! #petbot",
+                  @"Where my treats at dawg? #petbot",
+                  @"Who let the dog out? #petbot",
+                  @"My best puppy face. #petbot",
+                  @"What I do when you're not here. #petbot",
+                  nil];
         uint32_t rnd = arc4random_uniform([quotes count]);
-        NSString *randomQuote = [quotes objectAtIndex:rnd];
-        
-        [sharingItems addObject:randomQuote];
-        [sharingItems addObject:img];
-        //[sharingItems addObject:url];
-        
-        UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
-        [self presentViewController:activityController animated:YES completion:nil];
-    });
+        quote = [quotes objectAtIndex:rnd];
+    } else {
+        NSLog(@"have quotes from server");
+        uint32_t rnd = arc4random_uniform([_quotes count]);
+        quote = [_quotes objectAtIndex:rnd];
+    }
+    
+    [sharingItems addObject:quote];
+    [sharingItems addObject:img];
+    //[sharingItems addObject:url];
+    
+    UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
+    [self presentViewController:activityController animated:YES completion:nil];
     //[_glView captureToPhotoAlbum];
     return true;
+}
+
+-(BOOL)snapshot {
+    if (_takeSnapshot==false) {
+        _takeSnapshot=true;
+        return true;
+    }
+    return false;
 }
 
 - (void)didReceiveMemoryWarning
@@ -495,7 +519,7 @@ NSString            *_segueMutex =@"mutex";
     
     if (self.playing) {
         
-            LoggerStream(0, @"didReceiveMemoryWarning, disable buffering and continue playing");
+        LoggerStream(0, @"didReceiveMemoryWarning, disable buffering and continue playing");
         
     } else {
         
@@ -516,7 +540,11 @@ NSString            *_segueMutex =@"mutex";
             NSLog(@"ViewDidLoad state is %ul",_state);
             _missed_rtsp_key=0;
             streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
-                                                        target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
+                                                                target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
+            dispatch_async(dispatch_get_main_queue(),^(void){
+                [self getQuotes];
+            });
+            
         }
     }
     LoggerStream(1, @"ViewDidload");
@@ -526,32 +554,32 @@ NSString            *_segueMutex =@"mutex";
 
 - (void) viewDidAppear:(BOOL)animated
 {
- 
+    
     @synchronized(_segueMutex) {
-    LoggerStream(1, @"viewDidAppear");
-    
-    [super viewDidAppear:animated];
-    
-
-    _savedIdleTimer = [[UIApplication sharedApplication] isIdleTimerDisabled];
-    
-    if (_decoder) {
-        NSLog(@"starting play");
-        [self restorePlay];
-    } else {
-        [_activityIndicatorView startAnimating];
-    }
-    
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationWillResignActive:)
-                                                 name:UIApplicationWillResignActiveNotification
-                                               object:[UIApplication sharedApplication]];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationDidBecomeActive:)
-                                                 name:UIApplicationDidBecomeActiveNotification
-                                               object:[UIApplication sharedApplication]];
+        LoggerStream(1, @"viewDidAppear");
+        
+        [super viewDidAppear:animated];
+        
+        
+        _savedIdleTimer = [[UIApplication sharedApplication] isIdleTimerDisabled];
+        
+        if (_decoder) {
+            NSLog(@"starting play");
+            //[self restorePlay];
+        } else {
+            [_activityIndicatorView startAnimating];
+        }
+        
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWillResignActive:)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:[UIApplication sharedApplication]];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationDidBecomeActive:)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:[UIApplication sharedApplication]];
     }
 }
 
@@ -560,30 +588,30 @@ NSString            *_segueMutex =@"mutex";
     NSLog(@"View will disappear");
     //[self stopStream];
     /*[[NSNotificationCenter defaultCenter] removeObserver:self];
-    
-    [super viewWillDisappear:animated];
-    
-    [_activityIndicatorView stopAnimating];
-    
-    if (_decoder) {
-        
-        [self pause];
-        
-        if (_moviePosition == 0 || _decoder.isEOF)
-            [gHistory removeObjectForKey:_decoder.path];
-        else if (!_decoder.isNetwork)
-            [gHistory setValue:[NSNumber numberWithFloat:_moviePosition]
-                        forKey:_decoder.path];
-    }
-    
-    if (_fullscreen)
-        [self fullscreenMode:NO];
-    
-    [[UIApplication sharedApplication] setIdleTimerDisabled:_savedIdleTimer];
-    
-    [_activityIndicatorView stopAnimating];
-    _buffered = NO;
-    _interrupted = YES;*/
+     
+     [super viewWillDisappear:animated];
+     
+     [_activityIndicatorView stopAnimating];
+     
+     if (_decoder) {
+     
+     [self pause];
+     
+     if (_moviePosition == 0 || _decoder.isEOF)
+     [gHistory removeObjectForKey:_decoder.path];
+     else if (!_decoder.isNetwork)
+     [gHistory setValue:[NSNumber numberWithFloat:_moviePosition]
+     forKey:_decoder.path];
+     }
+     
+     if (_fullscreen)
+     [self fullscreenMode:NO];
+     
+     [[UIApplication sharedApplication] setIdleTimerDisabled:_savedIdleTimer];
+     
+     [_activityIndicatorView stopAnimating];
+     _buffered = NO;
+     _interrupted = YES;*/
     
     LoggerStream(1, @"viewWillDisappear %@", self);
 }
@@ -601,7 +629,7 @@ NSString            *_segueMutex =@"mutex";
 -(BOOL) stopStream {
     if (!_shutdown) {
         @synchronized(self) {
-            //_state=0;
+            _state=-1;
             _shutdown=true;
             NSLog(@"Waiting to kill decode thread");
             //TODO should set timeout on av_read_frame?
@@ -636,8 +664,8 @@ NSString            *_segueMutex =@"mutex";
     } else {
         return false;
     }
-
-
+    
+    
 }
 
 -(void) startStream {
@@ -645,6 +673,9 @@ NSString            *_segueMutex =@"mutex";
         //start the stream pulse
         if ([streamVideoTimer isValid]) {
             [streamVideoTimer invalidate];
+        }
+        if (_state<0) { //should probably check this better
+            return;
         }
         streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:4.0f
                                                             target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
@@ -662,12 +693,6 @@ NSString            *_segueMutex =@"mutex";
     }
 }
 
--(void) restartStream {
-        NSLog(@"SSSSTARRTTTTT");
-        [self stopStream];
-        [self startStream];
-        NSLog(@"FINIHSSHSHSHSH");
-}
 
 - (void) applicationDidBecomeActive: (NSNotification *)notification
 {
@@ -744,7 +769,7 @@ NSString            *_segueMutex =@"mutex";
             
             if (_activityIndicatorView.isAnimating) {
                 
-                [_activityIndicatorView stopAnimating];
+                //[_activityIndicatorView stopAnimating];
                 // if (self.view.window)
                 [self restorePlay];
             }
@@ -775,7 +800,7 @@ NSString            *_segueMutex =@"mutex";
     CGRect bounds = self.view.bounds;
     
     if (_decoder.validVideo) {
-    
+        
         //[[self sbglview] initWithFrame:bounds decoder:_decoder];
         @synchronized(self) {
             if (_glView!=nil) {
@@ -799,7 +824,7 @@ NSString            *_segueMutex =@"mutex";
     }
     
     self.view.backgroundColor = [UIColor clearColor];
-
+    
 }
 
 - (UIView *) frameView
@@ -810,7 +835,9 @@ NSString            *_segueMutex =@"mutex";
 
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
     //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
+    _wantRotate=true;
     [_frameMutex lock];
+    _wantRotate=false;
     //[self suspendQs];
     //[_glView removeFromSuperview];
     //_glView=nil;
@@ -830,8 +857,8 @@ NSString            *_segueMutex =@"mutex";
     __weak KxMovieDecoder *weakDecoder = _decoder;
     
     dispatch_async(_dispatchQueue, ^{ //TODO make this higher priority queue?
-
-    
+        
+        
         int nil_frames=0;
         BOOL good=true;
         while (good) { //TODO test on some sort of play condition?
@@ -859,21 +886,22 @@ NSString            *_segueMutex =@"mutex";
                             [self handleDecoderMovieError:error];
                         });
                         dispatch_semaphore_signal(_frameSemaphore);
-                        good=false;
+                        return;
                     } else if (_shutdown) {
                         NSLog(@"Killing decode thread - shutdown");
                         _decodeFramesRunning=false;
                         dispatch_semaphore_signal(_frameSemaphore);
                         dispatch_semaphore_signal(_decodeSemaphore);
-                        good=false;
+                        return;
+                        //good=false;
                     } else if (kf!=nil) {
                         nil_frames-=10;
                         @synchronized(_videoFrames) {
-                                if (kf.type == KxMovieFrameTypeVideo) {
-                                    [_videoFrames addObject:kf];
-                                    dispatch_semaphore_signal(_frameSemaphore);
-                                    //NSLog(@"Have %lu frames buffered",(unsigned long)[_videoFrames count]);
-                                }
+                            if (kf.type == KxMovieFrameTypeVideo) {
+                                [_videoFrames addObject:kf];
+                                dispatch_semaphore_signal(_frameSemaphore);
+                                //NSLog(@"Have %lu frames buffered",(unsigned long)[_videoFrames count]);
+                            }
                         }
                     }
                 }
@@ -905,16 +933,40 @@ NSString            *_segueMutex =@"mutex";
 {
     BOOL good=true;
     while (good) {
-        
-        //dispatch_semaphore_wait(_frameMutex, DISPATCH_TIME_FOREVER);
         [_frameMutex lock];
         @autoreleasepool {
             for (int i=0; i<5 && good; i++ ) {
                 good=[self tickHelper];
+                if (_takeSnapshot) {
+                    //make a new tick instance, will wait on lock while we grab snapshot
+                    dispatch_async(_drawDispatchQueue,^(void){
+                        [self tick];
+                    });
+                    //grab snapshot
+                    UIImage * img= [self maskImage:[_decoder currentImage] ];
+                    //let the new tick instance run
+                    [_frameMutex unlock];
+                    //process the snapshot
+                    [self snapshotWithImg:[img copy]];
+                    _takeSnapshot=false;
+                    return;
+                } else if (_wantRotate) {
+                    //first unlock to let rotate get a good chance to grab lock
+                    //then restart ourselves
+                    [_frameMutex unlock];
+                    dispatch_async(_drawDispatchQueue,^(void){
+                        [self tick];
+                    });
+                    return;
+                }
             }
         }
-        //dispatch_semaphore_signal(_frameMutex);
         [_frameMutex unlock];
+        if ([_activityIndicatorView isAnimating]) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [_activityIndicatorView stopAnimating];
+            });
+        }
     }
     return;
 }
@@ -926,25 +978,25 @@ NSString            *_segueMutex =@"mutex";
 - (CGFloat) presentFrame
 {
     CGFloat interval = 0;
+    
+    if (_decoder.validVideo) {
         
-        if (_decoder.validVideo) {
+        KxVideoFrame *frame;
+        
+        @synchronized(_videoFrames) {
             
-            KxVideoFrame *frame;
-            
-            @synchronized(_videoFrames) {
-                
-                if (_videoFrames.count > 0) {
-                    //NSLog(@"have %d frames",_videoFrames.count);
-                    frame = _videoFrames[0];
-                    [_videoFrames removeObjectAtIndex:0];
-                    _bufferedDuration -= frame.duration;
-                }
+            if (_videoFrames.count > 0) {
+                //NSLog(@"have %d frames",_videoFrames.count);
+                frame = _videoFrames[0];
+                [_videoFrames removeObjectAtIndex:0];
+                _bufferedDuration -= frame.duration;
             }
-            
-            if (frame)
-                interval = [self presentVideoFrame:frame];
-            
         }
+        
+        if (frame)
+            interval = [self presentVideoFrame:frame];
+        
+    }
     
     return interval;
 }
@@ -962,9 +1014,9 @@ NSString            *_segueMutex =@"mutex";
 
 - (void) setMoviePositionFromDecoder
 {
-
+    
     NSLog(@"%0.2f %0.2f %0.2f %0.2f %0.2f" , _moviePosition, _decoder.position, [_decoder position], [_decoder duration],
-_bufferedDuration);
+          _bufferedDuration);
     if ([self playing]) {
         [self pause];
     }else {
@@ -1045,6 +1097,8 @@ _bufferedDuration);
         @synchronized(_segueMutex) {
             NSLog(@"Logging out x2");
             //[self performSegueWithIdentifier:@"logout" sender:self];
+            _state=-1;
+            [streamVideoTimer invalidate];
             [self dismissViewControllerAnimated:true completion:nil];
         }
     }

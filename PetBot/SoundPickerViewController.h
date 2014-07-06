@@ -12,7 +12,6 @@
 
 @interface SoundPickerViewController : UIViewController<UIPickerViewDelegate,AVAudioRecorderDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *playButton;
-@property (weak, nonatomic) IBOutlet UIButton *stopButton;
 @property (weak, nonatomic) IBOutlet UIButton *recordPauseButton;
 - (IBAction)playSoundPressed:(id)sender;
 - (IBAction)recordPauseTapped:(id)sender;

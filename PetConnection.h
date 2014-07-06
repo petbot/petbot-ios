@@ -32,5 +32,7 @@ enum {
 +(BOOL) removeSoundfile:(NSString * )soundfile;
 +(NSString*) soundURLFromFilename:(NSString* )soundfile;
 +(BOOL) uploadSoundURL:(NSURL *) soundfile withFilename:(NSString *)filename;
++(NSArray *)get_quotes;
++(BOOL)mobile_version_supported;
 @end
 

@@ -72,9 +72,27 @@
     }
 }
 
+-(void)checkVersion {
+    //BOOL x = [PetConnection mobile_version_supported];
+    
+    if (![PetConnection mobile_version_supported]) {
+        UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Version unsupported"
+                                                           message:@"Please update your mobile application."
+                                                          delegate:self
+                                                 cancelButtonTitle:@"ok"
+                                                 otherButtonTitles:nil];
+        [theAlert show];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self checkVersion];
+    });
+    
     _login_action = dispatch_semaphore_create(1); //make the login action semaphore
     NSLog(@"remember load: %@",[JNKeychain loadValueForKey:@"remember"]);
     loginButton.showsTouchWhenHighlighted = YES;
