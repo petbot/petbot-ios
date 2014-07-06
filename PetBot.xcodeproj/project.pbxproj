@@ -83,7 +83,7 @@
 		CC14C6361953E0D700BAEF6C /* STUN-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "STUN-Prefix.pch"; sourceTree = "<group>"; };
 		CC14C6371953E0D700BAEF6C /* STUNClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUNClient.h; sourceTree = "<group>"; };
 		CC14C6381953E0D700BAEF6C /* STUNClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = STUNClient.m; sourceTree = "<group>"; };
-		CC173510195131AD004B7B4B /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = kxmovie.bundle; path = ../kxmovie.bundle; sourceTree = "<group>"; };
+		CC173510195131AD004B7B4B /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = kxmovie.bundle; sourceTree = "<group>"; };
 		CC60826D1961E16B00B59839 /* SoundPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundPickerViewController.h; sourceTree = "<group>"; };
 		CC60826E1961E16B00B59839 /* SoundPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundPickerViewController.m; sourceTree = "<group>"; };
 		CCB97FF2195119E300BE8B45 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
@@ -154,7 +154,7 @@
 		CCF139DA1954183800AA9675 /* KxMovieGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMovieGLView.h; sourceTree = "<group>"; };
 		CCF139DB1954183800AA9675 /* KxMovieViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMovieViewController.h; sourceTree = "<group>"; };
 		CCF139DD1957AC7200AA9675 /* logo_smaller.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_smaller.png; sourceTree = SOURCE_ROOT; };
-		CCF139E11957CC2B00AA9675 /* dogs4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = dogs4.jpg; path = ../../../petbot/code/server/petbot/petbot/static/imgs/dogs4.jpg; sourceTree = "<group>"; };
+		CCF139E11957CC2B00AA9675 /* dogs4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = dogs4.jpg; path = ../dogs4.jpg; sourceTree = "<group>"; };
 		CCF139ED1957D57200AA9675 /* JNKeychain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JNKeychain.h; sourceTree = "<group>"; };
 		CCF139EE1957D57200AA9675 /* JNKeychain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JNKeychain.m; sourceTree = "<group>"; };
 		CCF139EF1957D57200AA9675 /* LICENSE */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
