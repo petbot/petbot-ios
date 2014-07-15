@@ -501,6 +501,11 @@ NSString            *_segueMutex =@"mutex";
     //[sharingItems addObject:url];
     
     UIActivityViewController *activityController = [[UIActivityViewController alloc] initWithActivityItems:sharingItems applicationActivities:nil];
+
+    if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
+        activityController.excludedActivityTypes = @[UIActivityTypeAirDrop];
+    }
+
     [self presentViewController:activityController animated:YES completion:nil];
     //[_glView captureToPhotoAlbum];
     return true;
