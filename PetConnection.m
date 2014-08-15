@@ -17,11 +17,21 @@
 AVAudioPlayer *player;
 static PetConnection *instance = nil;
 static NSTimer * streamVideoTimer=nil;
-static NSString *baseUrl=@"http://petbot.ca:5100/";
+
+//Dev settings
+/*static NSString *baseUrl=@"http://petbot.ca:5100/";
 static NSString *session=@"";
 static NSString *loginUrl=@"http://petbot.ca:5100/login";
 static NSString *relayUrl=@"http://petbot.ca:5100/relay";
 static NSString *logoutUrl=@"http://petbot.ca:5100/logout";
+static NSString *streamUrl=@"";*/
+
+//Release settings
+static NSString *baseUrl=@"https://petbot.ca/";
+static NSString *session=@"";
+static NSString *loginUrl=@"https://petbot.ca/login";
+static NSString *relayUrl=@"https://petbot.ca/relay";
+static NSString *logoutUrl=@"https://petbot.ca/logout";
 static NSString *streamUrl=@"";
 
 

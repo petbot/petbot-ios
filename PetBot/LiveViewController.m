@@ -70,6 +70,10 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     BOOL                _takeSnapshot;
     BOOL                _wantRotate;
     
+    long long           _frames;
+    long long           _interrupts_on_same_frame;
+    long long           _last_frame;
+    
     
     NSInteger           _missed_rtsp_key;
     BOOL                _frameDecode;
@@ -193,7 +197,13 @@ NSString            *_segueMutex =@"mutex";
     decoder.advertised_port=_advertised_port;
     
     decoder.interruptCallback = ^BOOL(){
-        
+        if (_last_frame==_frames) {
+            _interrupts_on_same_frame++;
+        } else {
+            NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
+            _interrupts_on_same_frame=0;
+        }
+        _last_frame=_frames;
         __strong LiveViewController *strongSelf = weakSelf;
         return strongSelf ? [strongSelf interruptDecoder] : YES;
     };
@@ -540,6 +550,9 @@ NSString            *_segueMutex =@"mutex";
 {
     [super viewDidLoad];
     NSLog(@"ViewDidLoad state is %ul",_state);
+    _frames=0;
+    _interrupts_on_same_frame=0;
+    _last_frame=0;
     @synchronized(self) {
         if (_state==0) {
             _state=1;
@@ -879,7 +892,7 @@ NSString            *_segueMutex =@"mutex";
                     if (kf==nil) {
                         nil_frames++;
                     }
-                    if (nil_frames>30) {
+                    if (nil_frames>0) {
                         NSLog(@"Killing decode thread - nil frames");
                         NSDictionary *userInfo = @{
                                                    NSLocalizedDescriptionKey: NSLocalizedString(@"Lost connection to PetBot.", nil)
@@ -901,7 +914,7 @@ NSString            *_segueMutex =@"mutex";
                         return;
                         //good=false;
                     } else if (kf!=nil) {
-                        nil_frames-=10;
+                        nil_frames=MAX(0,nil_frames-10);
                         @synchronized(_videoFrames) {
                             if (kf.type == KxMovieFrameTypeVideo) {
                                 [_videoFrames addObject:kf];
@@ -929,6 +942,7 @@ NSString            *_segueMutex =@"mutex";
         return false;
     } else {
         //draw the frame
+        _frames++;
         [self presentFrame];
     }
     return true;
