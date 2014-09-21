@@ -76,6 +76,7 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     
     
     NSInteger           _missed_rtsp_key;
+    NSInteger           _stun_timeout;
     BOOL                _frameDecode;
     
     NSTimer * streamVideoTimer;
@@ -131,22 +132,26 @@ NSString            *_segueMutex =@"mutex";
 -(void)didReceivePublicIPandPort:(NSDictionary *) data{
     NSLog(@"Public IP=%@, public Port=%@ ", [data objectForKey:publicIPKey],
           [data objectForKey:publicPortKey]);
-    NSNumber * nat_port =[data objectForKey:publicPortKey];
-    [udpSocket close];
-    _advertised_port=[nat_port integerValue];
-    _state=3;
-    [self finishInit];
+    if (_state<3) {
+        NSNumber * nat_port =[data objectForKey:publicPortKey];
+        [udpSocket close];
+        _advertised_port=[nat_port integerValue];
+        _state=3;
+        [self finishInit];
+    }
 }
 
 
 -(void)streamVideoTimerF: (NSTimer *)timer {
     @autoreleasepool {
-        
+        if (_state<3) {
+            _stun_timeout++;
+        }
         NSDictionary * d = [PetConnection streamVideo];
         if ([d objectForKey:@"rtsp"]==nil) {
             _missed_rtsp_key++;
             NSLog(@"Missing RTSP KEY");
-            if (_missed_rtsp_key>2) {
+            if (_missed_rtsp_key>4) {
                 NSLog(@"missed rtsp key too many times");
                 NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
                 NSError *error = [NSError errorWithDomain:@"PetBot.ca"
@@ -167,6 +172,15 @@ NSString            *_segueMutex =@"mutex";
                 [self initWithContent];
             }
         }
+        //NSLog(@" %ld stun timeout",(long)_state);
+        if (_state<3 && (_stun_timeout>2 || _missed_rtsp_key>2) && [d objectForKey:@"rtmp"]!=nil)  {
+            NSLog(@" Going with RTMP STREAM %@" , [d objectForKey:@"rtmp"]);
+                //_path=[d objectForKey:@"rtsp"];
+                _path=[d objectForKey:@"rtmp"];
+                _state=3;
+                [self finishInit];
+        }
+        
         d=nil;
     }
 }
@@ -182,6 +196,7 @@ NSString            *_segueMutex =@"mutex";
 
 - (void) finishInit {
     NSLog(@"setting advertised to %d and local to %d", _advertised_port,_local_port);
+    
     
     _moviePosition = 0;
     //        self.wantsFullScreenLayout = YES;
@@ -200,7 +215,7 @@ NSString            *_segueMutex =@"mutex";
         if (_last_frame==_frames) {
             _interrupts_on_same_frame++;
         } else {
-            NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
+            //NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
             _interrupts_on_same_frame=0;
         }
         _last_frame=_frames;
@@ -240,11 +255,11 @@ NSString            *_segueMutex =@"mutex";
     //dispatch_semaphore_signal(_frameMutex);
     
     STUNClient *stunClient = [[STUNClient alloc] init];
+    
     [stunClient requestPublicIPandPortWithUDPSocket:udpSocket delegate:self];
     NSLog(@"Local port %d", [udpSocket localPort_IPv4]);
     _local_port=[udpSocket localPort_IPv4];
     
-    /*path=@"rtsp://162.243.126.214/proxyStream?max_port=19091&min_port=19092"*/
     _missed=0;
     NSAssert(_path.length > 0, @"empty path");
     
@@ -558,6 +573,7 @@ NSString            *_segueMutex =@"mutex";
             _state=1;
             NSLog(@"ViewDidLoad state is %ul",_state);
             _missed_rtsp_key=0;
+            _stun_timeout=0;
             streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                                 target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
             dispatch_async(dispatch_get_main_queue(),^(void){
@@ -687,7 +703,22 @@ NSString            *_segueMutex =@"mutex";
     
 }
 
--(void) startStream {
+
+
+- (void) applicationDidBecomeActive: (NSNotification *)notification
+{
+    //[self startStream];
+    LoggerStream(1, @"applicationDidBecomeActive");
+}
+
+#pragma mark - public
+
+-(void) play
+{
+    
+    self.playing = YES;
+    _interrupted = NO;
+    
     @synchronized(self) {
         //start the stream pulse
         if ([streamVideoTimer isValid]) {
@@ -696,6 +727,8 @@ NSString            *_segueMutex =@"mutex";
         if (_state<0) { //should probably check this better
             return;
         }
+        _missed_rtsp_key=0;
+        _stun_timeout=0;
         streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:4.0f
                                                             target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
         
@@ -710,25 +743,6 @@ NSString            *_segueMutex =@"mutex";
             [self tick];
         });
     }
-}
-
-
-- (void) applicationDidBecomeActive: (NSNotification *)notification
-{
-    //[self startStream];
-    LoggerStream(1, @"applicationDidBecomeActive");
-}
-
-#pragma mark - public
-
--(void) play
-{
-    
-    
-    self.playing = YES;
-    _interrupted = NO;
-    
-    [self startStream];
     
     LoggerStream(1, @"play movie");
 }

@@ -345,6 +345,7 @@ static NSString *streamUrl=@"";
     [session setCategory:AVAudioSessionCategoryPlayback error:nil];
     
     NSURL *mp3URL = [NSURL URLWithString:[PetConnection soundURLFromFilename:soundfile]];
+    NSLog(@"url used is %@",[PetConnection soundURLFromFilename:soundfile]);
     NSData *audioData = [NSData dataWithContentsOfURL:mp3URL];
     //dispatch_async(dispatch_get_main_queue(), ^{
     error = nil;
