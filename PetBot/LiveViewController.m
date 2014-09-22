@@ -164,7 +164,7 @@ NSString            *_segueMutex =@"mutex";
             }
             //NSLog(@"NO RTSP STREAM AVAILABLE");
         } else {
-            NSLog(@" RTSP STREAM AVAILABLE %@" , [d objectForKey:@"rtsp"]);
+            //NSLog(@" RTSP STREAM AVAILABLE %@" , [d objectForKey:@"rtsp"]);
             if (_path==nil) { //TODO check if path changed?
                 _path=[d objectForKey:@"rtsp"];
                 //_path=[d objectForKey:@"rtmp"];
@@ -174,7 +174,7 @@ NSString            *_segueMutex =@"mutex";
         }
         //NSLog(@" %ld stun timeout",(long)_state);
         if (_state<3 && (_stun_timeout>2 || _missed_rtsp_key>2) && [d objectForKey:@"rtmp"]!=nil)  {
-            NSLog(@" Going with RTMP STREAM %@" , [d objectForKey:@"rtmp"]);
+            //NSLog(@" Going with RTMP STREAM %@" , [d objectForKey:@"rtmp"]);
                 //_path=[d objectForKey:@"rtsp"];
                 _path=[d objectForKey:@"rtmp"];
                 _state=3;
@@ -957,6 +957,21 @@ NSString            *_segueMutex =@"mutex";
     } else {
         //draw the frame
         _frames++;
+        if (_frames%1000==0) {
+            NSDate* date = [NSDate date];
+            
+            //Create the dateformatter object
+            NSDateFormatter* formatter = [[NSDateFormatter alloc] init] ;
+            
+            //Set the required date format
+            [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+            
+            //Get the string date
+            NSString* str = [formatter stringFromDate:date];
+            
+            //Display on the console
+            NSLog(@"%@ %lld", str, _frames);
+        }
         [self presentFrame];
     }
     return true;
