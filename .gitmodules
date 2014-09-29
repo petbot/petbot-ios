@@ -1,4 +1,4 @@
 [submodule "kxmovie"]
 	path = kxmovie
-	url = https://github.com/petbot/kxmovie/tree/master
+	url = https://github.com/petbot/kxmovie
 	branch = master
