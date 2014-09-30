@@ -11,6 +11,7 @@
 		CC14C63E1953E0D700BAEF6C /* STUNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CC14C6381953E0D700BAEF6C /* STUNClient.m */; };
 		CC173517195131AD004B7B4B /* kxmovie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC173510195131AD004B7B4B /* kxmovie.bundle */; };
 		CC60826F1961E16B00B59839 /* SoundPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC60826E1961E16B00B59839 /* SoundPickerViewController.m */; };
+		CC9261CC19DAFB1D0049DA90 /* petbot blue_60.png in Resources */ = {isa = PBXBuildFile; fileRef = CC9261CB19DAFB1D0049DA90 /* petbot blue_60.png */; };
 		CCB97FFF195119E300BE8B45 /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */; };
 		CCB98000195119E300BE8B45 /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF5195119E300BE8B45 /* WPStringUtils.m */; };
 		CCB98001195119E300BE8B45 /* WPXMLRPCDataCleaner.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF8195119E300BE8B45 /* WPXMLRPCDataCleaner.m */; };
@@ -85,6 +86,7 @@
 		CC173510195131AD004B7B4B /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = kxmovie.bundle; sourceTree = "<group>"; };
 		CC60826D1961E16B00B59839 /* SoundPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundPickerViewController.h; sourceTree = "<group>"; };
 		CC60826E1961E16B00B59839 /* SoundPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundPickerViewController.m; sourceTree = "<group>"; };
+		CC9261CB19DAFB1D0049DA90 /* petbot blue_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_60.png"; path = "../petbot blue_60.png"; sourceTree = "<group>"; };
 		CCB97FF2195119E300BE8B45 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
 		CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
 		CCB97FF4195119E300BE8B45 /* WPStringUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPStringUtils.h; sourceTree = "<group>"; };
@@ -294,6 +296,7 @@
 				CCF139DB1954183800AA9675 /* KxMovieViewController.h */,
 				CCB9800819511A1500BE8B45 /* petbot blue_58.png */,
 				CCB9800919511A1500BE8B45 /* petbot blue_76.png */,
+				CC9261CB19DAFB1D0049DA90 /* petbot blue_60.png */,
 				CCB9800A19511A1500BE8B45 /* petbot blue_80.png */,
 				CCB9800B19511A1500BE8B45 /* petbot blue_120.png */,
 				CCB9800C19511A1500BE8B45 /* petbot blue_152.png */,
@@ -435,6 +438,7 @@
 			files = (
 				CCB9801A19511A6F00BE8B45 /* petbot_logo.png in Resources */,
 				CCB9800E19511A1500BE8B45 /* petbot blue.png in Resources */,
+				CC9261CC19DAFB1D0049DA90 /* petbot blue_60.png in Resources */,
 				CCC4EAFA19424B550012F4F3 /* Main_iPad.storyboard in Resources */,
 				CCF139F31957D57200AA9675 /* README.md in Resources */,
 				CCB9801419511A1500BE8B45 /* petbot blue_120.png in Resources */,
