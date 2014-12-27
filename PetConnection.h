@@ -19,9 +19,9 @@ enum {
 @interface PetConnection : NSObject
 
 +(PetConnection*)getInstance;
-+(NSInteger)loginUsername:(NSString *)username password:(NSString *)password;
++(void)loginUsername:(NSString *)username password:(NSString *)password;
 +(NSData *)getUrl:(NSString*)urlString;
-+(NSData *)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData;
++(void)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData;
 +(BOOL)cookieDrop;
 +(BOOL)logout;
 +(BOOL)playSound:(NSInteger)index;

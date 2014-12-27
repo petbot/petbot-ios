@@ -64,6 +64,7 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     BOOL                _interrupted;
     BOOL                _shutdown;
     NSString            *_path;
+    NSString            *_altPath;
     
     NSInteger           _state;
     
@@ -78,6 +79,7 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     NSInteger           _missed_rtsp_key;
     NSInteger           _stun_timeout;
     BOOL                _frameDecode;
+    BOOL                _useUDP;
     
     NSTimer * streamVideoTimer;
     
@@ -113,7 +115,6 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     BOOL                _buffered;
     
     BOOL                _savedIdleTimer;
-    double             _missed;
     double             _stream_time;
     double             _prog_time;
     
@@ -126,20 +127,27 @@ static dispatch_queue_t _streamVideoDispatchQueue;
 @end
 
 NSString            *_segueMutex =@"mutex";
+NSString            *_openMutex =@"mutex";
 
 @implementation LiveViewController
 
 -(void)didReceivePublicIPandPort:(NSDictionary *) data{
     NSLog(@"Public IP=%@, public Port=%@ ", [data objectForKey:publicIPKey],
           [data objectForKey:publicPortKey]);
-    if (_state<3) {
-        NSNumber * nat_port =[data objectForKey:publicPortKey];
-        [udpSocket close];
-        _advertised_port=[nat_port integerValue];
-        _state=3;
-        [self finishInit];
+    @synchronized(_openMutex) {
+        if (_state<3) {
+            NSNumber * nat_port =[data objectForKey:publicPortKey];
+            [udpSocket close];
+            _advertised_port=[nat_port integerValue];
+            _state=3;
+            [self openStream];
+            //[_decoder closeFile];
+            //_altPath=@"rtmp://petbot.ca/rtmp/000000002fb9a0bb";
+            //[self openStream];
+        }
     }
 }
+
 
 
 -(void)streamVideoTimerF: (NSTimer *)timer {
@@ -148,38 +156,49 @@ NSString            *_segueMutex =@"mutex";
             _stun_timeout++;
         }
         NSDictionary * d = [PetConnection streamVideo];
-        if ([d objectForKey:@"rtsp"]==nil) {
-            _missed_rtsp_key++;
-            NSLog(@"Missing RTSP KEY");
-            if (_missed_rtsp_key>4) {
-                NSLog(@"missed rtsp key too many times");
-                NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
-                NSError *error = [NSError errorWithDomain:@"PetBot.ca"
-                                                     code:-57
-                                                 userInfo:userInfo];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self handleDecoderMovieError:error];
-                });
-                [timer invalidate];
-            }
-            //NSLog(@"NO RTSP STREAM AVAILABLE");
-        } else {
-            //NSLog(@" RTSP STREAM AVAILABLE %@" , [d objectForKey:@"rtsp"]);
-            if (_path==nil) { //TODO check if path changed?
-                _path=[d objectForKey:@"rtsp"];
-                //_path=[d objectForKey:@"rtmp"];
-                _state=2;
-                [self initWithContent];
+        
+        if ([d objectForKey:@"rtmp"]!=nil) {
+            _altPath=[d objectForKey:@"rtmp"];
+        }
+        
+        if (_useUDP) {
+            if ([d objectForKey:@"rtsp"]==nil) {
+                _missed_rtsp_key++;
+                NSLog(@"Missing RTSP KEY");
+                if (_missed_rtsp_key>4) {
+                    NSLog(@"missed rtsp key too many times");
+                    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
+                    NSError *error = [NSError errorWithDomain:@"PetBot.ca"
+                                                         code:-57
+                                                     userInfo:userInfo];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self handleDecoderMovieError:error];
+                    });
+                    [timer invalidate];
+                }
+            } else {
+                if (_path==nil) {
+                    _path=[d objectForKey:@"rtsp"];
+                    _state=2;
+                    //[self initWithContent];
+                    [self querySTUN];
+                }
             }
         }
-        //NSLog(@" %ld stun timeout",(long)_state);
-        if (_state<3 && (_stun_timeout>2 || _missed_rtsp_key>2) && [d objectForKey:@"rtmp"]!=nil)  {
-            //NSLog(@" Going with RTMP STREAM %@" , [d objectForKey:@"rtmp"]);
-                //_path=[d objectForKey:@"rtsp"];
-                _path=[d objectForKey:@"rtmp"];
-                _state=3;
-                [self finishInit];
-        }
+        
+        
+                if ((_stun_timeout>3 || _missed_rtsp_key>3) && [d objectForKey:@"rtmp"]!=nil) {
+                    NSLog(@"TIME OUT");
+                    _useUDP=false;
+                }
+            @synchronized(_openMutex) {
+                //if we timed out on stun the lets go to RTMP
+                if (_state<3 && !_useUDP)  {
+                        _path=[d objectForKey:@"rtmp"];
+                        _state=3;
+                        [self openStream];
+                }
+            }
         
         d=nil;
     }
@@ -194,17 +213,18 @@ NSString            *_segueMutex =@"mutex";
 - (BOOL)prefersStatusBarHidden { return YES; }
 
 
-- (void) finishInit {
+
+- (void) openStream {
+    _frameSemaphore =  dispatch_semaphore_create( 0 ); //semaphore for frames
+    _drawSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill draw thread
+    _decodeSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill decode thread
+    _frameMutex = [[NSLock alloc] init]; //dispatch_semaphore_create(1);
+    
     NSLog(@"setting advertised to %d and local to %d", _advertised_port,_local_port);
     
-    
     _moviePosition = 0;
-    //        self.wantsFullScreenLayout = YES;
-    
     
     __weak LiveViewController *weakSelf = self;
-    
-    
     
     KxMovieDecoder *decoder = [[KxMovieDecoder alloc] init];
     
@@ -212,11 +232,14 @@ NSString            *_segueMutex =@"mutex";
     decoder.advertised_port=_advertised_port;
     
     decoder.interruptCallback = ^BOOL(){
-        if (_last_frame==_frames) {
-            _interrupts_on_same_frame++;
-        } else {
-            //NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
-            _interrupts_on_same_frame=0;
+        if (rand()%1000==0) {
+            if (_last_frame==_frames) {
+                _interrupts_on_same_frame++;
+                NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
+            } else {
+                //NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
+                _interrupts_on_same_frame=0;
+            }
         }
         _last_frame=_frames;
         __strong LiveViewController *strongSelf = weakSelf;
@@ -226,7 +249,10 @@ NSString            *_segueMutex =@"mutex";
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
         NSError *error = nil;
-        [decoder openFile:_path error:&error ];
+        //[decoder openFile:_path altFile:_altPath error:&error ];
+        //NSLog(@"RTMP ONLY!!!");
+        [decoder openFile:_altPath altFile:_path error:&error ];
+        //[decoder openFile:@"http://testthis.com" altFile:@"http://testthis.com" error:&error ];
         
         if (error) {
             NSLog(@"something bad happened should probably stop and kill it");
@@ -243,16 +269,11 @@ NSString            *_segueMutex =@"mutex";
     });
 }
 
-- (id) initWithContent
+
+- (id) querySTUN
 {
-    self = [super init];
+    //self = [super init];
     udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-    
-    _frameSemaphore =  dispatch_semaphore_create( 0 ); //semaphore for frames
-    _drawSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill draw thread
-    _decodeSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill decode thread
-    _frameMutex = [[NSLock alloc] init]; //dispatch_semaphore_create(1);
-    //dispatch_semaphore_signal(_frameMutex);
     
     STUNClient *stunClient = [[STUNClient alloc] init];
     
@@ -260,10 +281,8 @@ NSString            *_segueMutex =@"mutex";
     NSLog(@"Local port %d", [udpSocket localPort_IPv4]);
     _local_port=[udpSocket localPort_IPv4];
     
-    _missed=0;
     NSAssert(_path.length > 0, @"empty path");
     
-    self = [super initWithNibName:nil bundle:nil];
     return self;
 }
 
@@ -328,13 +347,12 @@ NSString            *_segueMutex =@"mutex";
 - (void) playSound {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self performSegueWithIdentifier:@"toSoundPicker" sender:self];
-        //[PetConnection playSound:8];
     });
 }
 
 - (void) logout {
     dispatch_async(dispatch_get_main_queue(), ^{
-        if ([self stopStream]) {
+        if ([self shutdownVideo]) {
             [PetConnection logout];
             
             @synchronized(_segueMutex) {
@@ -530,7 +548,8 @@ NSString            *_segueMutex =@"mutex";
     if (floor(NSFoundationVersionNumber) > NSFoundationVersionNumber_iOS_6_1) {
         activityController.excludedActivityTypes = @[UIActivityTypeAirDrop];
     }
-
+    
+    activityController.popoverPresentationController.sourceView = self.view;
     [self presentViewController:activityController animated:YES completion:nil];
     //[_glView captureToPhotoAlbum];
     return true;
@@ -574,6 +593,7 @@ NSString            *_segueMutex =@"mutex";
             NSLog(@"ViewDidLoad state is %ul",_state);
             _missed_rtsp_key=0;
             _stun_timeout=0;
+            _useUDP=true;
             streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                                 target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
             dispatch_async(dispatch_get_main_queue(),^(void){
@@ -661,7 +681,9 @@ NSString            *_segueMutex =@"mutex";
     LoggerStream(1, @"applicationWillResignActive");
 }
 
--(BOOL) stopStream {
+
+
+-(BOOL) shutdownVideo {
     if (!_shutdown) {
         @synchronized(self) {
             _state=-1;
@@ -699,8 +721,6 @@ NSString            *_segueMutex =@"mutex";
     } else {
         return false;
     }
-    
-    
 }
 
 
@@ -906,7 +926,7 @@ NSString            *_segueMutex =@"mutex";
                     if (kf==nil) {
                         nil_frames++;
                     }
-                    if (nil_frames>0) {
+                    if (nil_frames>20) {
                         NSLog(@"Killing decode thread - nil frames");
                         NSDictionary *userInfo = @{
                                                    NSLocalizedDescriptionKey: NSLocalizedString(@"Lost connection to PetBot.", nil)
@@ -1140,7 +1160,7 @@ NSString            *_segueMutex =@"mutex";
     [alertView show];
     
     //logout properly
-    if ([self stopStream]) {
+    if ([self shutdownVideo]) {
         [PetConnection logout];
         
         @synchronized(_segueMutex) {

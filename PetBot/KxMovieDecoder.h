@@ -113,7 +113,7 @@ typedef BOOL(^KxMovieDecoderInterruptCallback)();
 + (id) movieDecoderWithContentPath: (NSString *) path
                              error: (NSError **) perror;
 
-- (BOOL) openFile: (NSString *) path
+- (BOOL) openFile: (NSString *) path altFile: (NSString*) altPath
             error: (NSError **) perror;
 - (UIImage*)uiimageFromStream;
 -(UIImage *)currentImage;

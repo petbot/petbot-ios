@@ -27,11 +27,11 @@ static NSString *logoutUrl=@"http://petbot.ca:5100/logout";
 static NSString *streamUrl=@"";*/
 
 //Release settings
-static NSString *baseUrl=@"https://petbot.ca/";
+static NSString *baseUrl=@"https://petbot.ca:1010/";
 static NSString *session=@"";
-static NSString *loginUrl=@"https://petbot.ca/login";
-static NSString *relayUrl=@"https://petbot.ca/relay";
-static NSString *logoutUrl=@"https://petbot.ca/logout";
+static NSString *loginUrl=@"https://petbot.ca:1010/login";
+static NSString *relayUrl=@"https://petbot.ca:1010/relay";
+static NSString *logoutUrl=@"https://petbot.ca:1010/logout";
 static NSString *streamUrl=@"";
 
 
@@ -109,7 +109,7 @@ static NSString *streamUrl=@"";
 }
 
 
-+(NSData *)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData
+/*+(NSData *)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData withcb:(void (^)(NSURLResponse *, NSData *, NSError *))cb
 {
     NSData* responseData = nil;
     NSURL *url=[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -125,7 +125,8 @@ static NSString *streamUrl=@"";
     }
     NSURLResponse* response;
     NSError* error = nil;
-    responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:cb];
+    //responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
     if (error) {
         NSLog(@"Error in conection");
         return nil;
@@ -147,6 +148,42 @@ static NSString *streamUrl=@"";
     NSLog(@"the final output is:%@",responseString);
     
     return responseData;
+}*/
+
+
++(void) checkHeadersFromResponse:(NSURLResponse *)response withData:(NSData *)data andError:(NSError *)error andCB:(void (^)(NSURLResponse *, NSData *, NSError *))cb {
+    if (error) {
+        cb(response, data, error);
+    }
+    NSDictionary* headers = [(NSHTTPURLResponse *)response allHeaderFields];
+    if ([headers valueForKey:@"Set-Cookie"]) {
+        session =[headers valueForKey:@"Set-Cookie"];
+    }
+    cb(response, data, error);
+}
+
++(void)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData withcb:(void (^)(NSURLResponse *, NSData *, NSError *))cb
+{
+    NSData* responseData = nil;
+    NSURL *url=[NSURL URLWithString:[urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    //responseData = [NSMutableData data] ;
+    NSMutableURLRequest *request=[NSMutableURLRequest requestWithURL:url];
+    
+    [request setHTTPMethod:@"POST"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    if (jsonData!=nil) {
+        [request setValue:[NSString stringWithFormat:@"%d", [jsonData length]] forHTTPHeaderField:@"Content-Length"];
+        [request setHTTPBody:jsonData];
+    }
+    NSURLResponse* response;
+    NSError* error = nil;
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        [PetConnection checkHeadersFromResponse:response withData:data andError:error andCB:cb];
+    }
+    ];
+    //responseData = [NSURLConnection sendSynchronousRequest:request     returningResponse:&response error:&error];
+
 }
 
 +(NSString*)streamURL {
