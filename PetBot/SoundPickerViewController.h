@@ -20,6 +20,7 @@
 - (IBAction)playTapped:(id)sender;
 - (IBAction)uploadTapped:(id)sender;
 - (IBAction)removeTapped:(id)sender;
+@property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 
 
 @end

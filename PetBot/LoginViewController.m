@@ -16,6 +16,7 @@
     __weak IBOutlet UIButton *loginButton;
     __weak IBOutlet UISwitch *rememberSwitch;
     dispatch_semaphore_t _login_action;
+    dispatch_semaphore_t _logged_in;
 }
 
 @end
@@ -28,6 +29,10 @@
         [self forgetLogin];
     }
 }
+
+
+
+//   JNKeychain interface for saving / loading
 - (IBAction)rememberSwitched:(id)sender {
     NSLog(@"remember save: %@",[NSNumber numberWithBool:rememberSwitch.isOn]);
     [JNKeychain saveValue:[NSNumber numberWithBool:rememberSwitch.isOn] forKey:@"remember"];
@@ -46,6 +51,10 @@
 -(NSString *) loadPassword {
     return [JNKeychain loadValueForKey:@"password"];
 }
+
+
+
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -70,30 +79,42 @@
         self.password.text=saved_password;
         passwordEdited=true;
     }
+    
+    //reset the locks
+    long acquired = dispatch_semaphore_wait(_logged_in, DISPATCH_TIME_NOW);
+    if (acquired!=0) {
+        NSLog(@"Releasing lock for logged_in");
+    }
+    dispatch_semaphore_signal(_logged_in);
+    [super viewDidAppear:animated];
 }
 
 -(void)checkVersion {
     //BOOL x = [PetConnection mobile_version_supported];
-    
-    if (![PetConnection mobile_version_supported]) {
-        UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Version unsupported"
-                                                           message:@"Please update your mobile application."
-                                                          delegate:self
-                                                 cancelButtonTitle:@"ok"
-                                                 otherButtonTitles:nil];
-        [theAlert show];
-    }
+    [PetConnection mobileVersionSupportedWithCallBack:^(NSArray * a ) {
+        if (a==nil) {
+            //this is a different conneciton error , caught by something else on login ? // TODO
+        } else if (![a objectAtIndex:0]) {
+            UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Version unsupported"
+                                                               message:@"Please update your mobile application."
+                                                              delegate:self
+                                                     cancelButtonTitle:@"ok"
+                                                     otherButtonTitles:nil];
+            [theAlert show];
+        }
+    }];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), ^{
         [self checkVersion];
     });
     
     _login_action = dispatch_semaphore_create(1); //make the login action semaphore
+    _logged_in = dispatch_semaphore_create(1); //make the login action semaphore
     NSLog(@"remember load: %@",[JNKeychain loadValueForKey:@"remember"]);
     loginButton.showsTouchWhenHighlighted = YES;
     if ([JNKeychain loadValueForKey:@"remember"]!=nil) {
@@ -127,8 +148,8 @@
 }
 */
 
--(void) helperLoginUsername:(NSString*)given_username password:(NSString*)given_password {
-    switch ([PetConnection loginUsername:given_username password:given_password]) {
+-(void) loginResponse:(NSInteger)error_no withUsername:(NSString *)given_username withPassword:(NSString *)given_password {
+    switch (error_no) {
         case CONNECTION_BAD_PASSWORD: {
             [[NSUserDefaults standardUserDefaults] setValue:nil forKey:@"username"];
             [[NSUserDefaults standardUserDefaults] synchronize];
@@ -160,23 +181,30 @@
             break;
         }
         case CONNECTION_OK: {
-            if ([PetConnection streamVideo]==nil) {
-                UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Failed to connect"
-                                                                   message:@"Connection to PetBot has failed"
-                                                                  delegate:self
-                                                         cancelButtonTitle:@"ok"
-                                                         otherButtonTitles:nil];
-                [theAlert show];
-            } else {
-                NSLog(@"Stream video");
+            [PetConnection streamVideoWithCallBack:^(NSDictionary *d ) {
+                if (d==nil) {
+                    UIAlertView *theAlert = [[UIAlertView alloc] initWithTitle:@"Failed to connect"
+                                                                       message:@"Connection to petbot has failed"
+                                                                      delegate:self
+                                                             cancelButtonTitle:@"ok"
+                                                             otherButtonTitles:nil];
+                    [theAlert show];
+                    return;
+                }
                 if (rememberSwitch.isOn) {
                     [self saveLogin:given_username password:given_password];
                 }
-                /*[[NSUserDefaults standardUserDefaults] setValue:given_username forKey:@"username"];
-                 [[NSUserDefaults standardUserDefaults] synchronize];*/
-
-                [self performSegueWithIdentifier:@"login" sender:self];
-            }
+                
+                //see if we are already logged in, if not then actually perform the Segue
+                long acquired = dispatch_semaphore_wait(_logged_in, DISPATCH_TIME_NOW);
+                NSLog(@"sempahore result is %ld",acquired);
+                if (acquired==0) {
+                    NSLog(@"TRYING TO SEGUE");
+                    [self performSegueWithIdentifier:@"login" sender:self];
+                }
+                NSLog(@"DONE SEGUING ");
+            }];
+            
             break;
         }
             
@@ -193,20 +221,10 @@
             
             
     }
+
 }
 
--(void) loginUsername:(NSString*)given_username password:(NSString*)given_password
-{
-    long acquired = dispatch_semaphore_wait(_login_action, DISPATCH_TIME_NOW);
-    if (acquired==0) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-        [self helperLoginUsername:given_username password:given_password];
-         dispatch_semaphore_signal(_login_action);
-        });
-    } else {
-        NSLog(@"dropping login event");
-    }
-}
+
 
 - (IBAction)loginButtonPress:(id)sender {
     [loginButton setHighlighted:true]; //maybe should fork a thread for rest? otherwise no highlight :(
@@ -214,9 +232,21 @@
     // Do any additional setup after loading the view, typically from a nib.
     NSString * given_username = self.username.text;
     NSString * given_password = self.password.text;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self loginUsername:given_username password:given_password];
-    });
+    
+    long acquired = dispatch_semaphore_wait(_login_action, DISPATCH_TIME_NOW);
+    NSLog(@"DISPATCH LOGIN!");
+    if (acquired==0) {
+        NSLog(@"DISPATCH LOGIN2!");
+            [PetConnection loginUsername:given_username password:given_password withCallBack:^(NSInteger error_no) {
+                
+                NSLog(@"DISPATCH LOGIN RESPONSE!");
+                [self loginResponse:error_no withUsername:given_username withPassword:given_password];
+                dispatch_semaphore_signal(_login_action);
+            }];
+        
+    } else {
+        NSLog(@"dropping login event");
+    }
 }
 
 

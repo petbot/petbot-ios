@@ -12,7 +12,7 @@
 #import "KxMovieGLView.h"
 @class KxMovieDecoder;
 
-@interface LiveViewController : UIViewController <STUNClientDelegate,UIPickerViewDelegate>
+@interface LiveViewController : UIViewController <STUNClientDelegate>
 @property (readonly) BOOL playing;
 
 - (void) play;

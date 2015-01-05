@@ -53,6 +53,7 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     
     //dispatch_semaphore_t _frameMutex;
     NSLock *_frameMutex;
+    NSLock *_videoMutex;
     
     NSArray             *_quotes;
     
@@ -73,7 +74,10 @@ static dispatch_queue_t _streamVideoDispatchQueue;
     
     long long           _frames;
     long long           _interrupts_on_same_frame;
+    unsigned long long  _interrupts;
+    double                _effective_fps;
     long long           _last_frame;
+    double              _last_frame_time;
     
     
     NSInteger           _missed_rtsp_key;
@@ -155,52 +159,52 @@ NSString            *_openMutex =@"mutex";
         if (_state<3) {
             _stun_timeout++;
         }
-        NSDictionary * d = [PetConnection streamVideo];
-        
-        if ([d objectForKey:@"rtmp"]!=nil) {
-            _altPath=[d objectForKey:@"rtmp"];
-        }
-        
-        if (_useUDP) {
-            if ([d objectForKey:@"rtsp"]==nil) {
-                _missed_rtsp_key++;
-                NSLog(@"Missing RTSP KEY");
-                if (_missed_rtsp_key>4) {
-                    NSLog(@"missed rtsp key too many times");
-                    NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
-                    NSError *error = [NSError errorWithDomain:@"PetBot.ca"
-                                                         code:-57
-                                                     userInfo:userInfo];
-                    dispatch_async(dispatch_get_main_queue(), ^{
-                        [self handleDecoderMovieError:error];
-                    });
-                    [timer invalidate];
-                }
-            } else {
-                if (_path==nil) {
-                    _path=[d objectForKey:@"rtsp"];
-                    _state=2;
-                    //[self initWithContent];
-                    [self querySTUN];
+        //NSDictionary * d = [PetConnection streamVideo];
+        [PetConnection streamVideoWithCallBack:^(NSDictionary * d) {
+            if ([d objectForKey:@"rtmp"]!=nil) {
+                _altPath=[d objectForKey:@"rtmp"];
+            }
+            
+            if (_useUDP) {
+                if ([d objectForKey:@"rtsp"]==nil) {
+                    _missed_rtsp_key++;
+                    NSLog(@"Missing RTSP KEY");
+                    if (_missed_rtsp_key>4) {
+                        NSLog(@"missed rtsp key too many times");
+                        NSDictionary *userInfo = @{NSLocalizedDescriptionKey: NSLocalizedString(@"Cannot connect to PetBot Video.", nil)};
+                        NSError *error = [NSError errorWithDomain:@"PetBot.ca"
+                                                             code:-57
+                                                         userInfo:userInfo];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self handleDecoderMovieError:error];
+                        });
+                        [timer invalidate];
+                    }
+                } else {
+                    if (_path==nil) {
+                        _path=[d objectForKey:@"rtsp"];
+                        _state=2;
+                        //[self initWithContent];
+                        [self querySTUN];
+                    }
                 }
             }
-        }
-        
-        
-                if ((_stun_timeout>3 || _missed_rtsp_key>3) && [d objectForKey:@"rtmp"]!=nil) {
-                    NSLog(@"TIME OUT");
-                    _useUDP=false;
-                }
+            
+            
+            if ((_stun_timeout>3 || _missed_rtsp_key>3) && [d objectForKey:@"rtmp"]!=nil) {
+                NSLog(@"TIME OUT");
+                _useUDP=false;
+            }
             @synchronized(_openMutex) {
                 //if we timed out on stun the lets go to RTMP
                 if (_state<3 && !_useUDP)  {
-                        _path=[d objectForKey:@"rtmp"];
-                        _state=3;
-                        [self openStream];
+                    _path=[d objectForKey:@"rtmp"];
+                    _state=3;
+                    [self openStream];
                 }
             }
-        
-        d=nil;
+        }];
+
     }
 }
 
@@ -219,8 +223,9 @@ NSString            *_openMutex =@"mutex";
     _drawSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill draw thread
     _decodeSemaphore = dispatch_semaphore_create( 0 ); //semaphore for kill decode thread
     _frameMutex = [[NSLock alloc] init]; //dispatch_semaphore_create(1);
+    _videoMutex =[[NSLock alloc] init];
     
-    NSLog(@"setting advertised to %d and local to %d", _advertised_port,_local_port);
+    NSLog(@"setting advertised to %ld and local to %ld", _advertised_port,_local_port);
     
     _moviePosition = 0;
     
@@ -232,26 +237,45 @@ NSString            *_openMutex =@"mutex";
     decoder.advertised_port=_advertised_port;
     
     decoder.interruptCallback = ^BOOL(){
-        if (rand()%1000==0) {
-            if (_last_frame==_frames) {
+        _interrupts++;
+        if ((_interrupts%50)==0 && _last_frame==_frames ) {
+                //TODO need to do time, interrupts not reliable on time spacing!
                 _interrupts_on_same_frame++;
-                NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
+            if (_last_frame_time>0) {
+                double time_on_last_frame = CFAbsoluteTimeGetCurrent()-_last_frame_time;
+                if (_last_frame>30) {
+                    //already started streaming
+                    if (time_on_last_frame>6) {
+                        _interrupted=YES;
+                    }
+                } else {
+                    //have not started streaming give it some more time
+                    if (time_on_last_frame>30) {
+                        _interrupted=YES;
+                    }
+                }
+                //NSLog(@"%lf" , time_on_last_frame);
             } else {
-                //NSLog(@"interrupt callback %lld",_interrupts_on_same_frame);
-                _interrupts_on_same_frame=0;
+                _last_frame_time=CFAbsoluteTimeGetCurrent();
             }
+            //NSLog(@"interrupt callback %lld %lld",_interrupts_on_same_frame,_last_frame);
         }
-        _last_frame=_frames;
-        __strong LiveViewController *strongSelf = weakSelf;
-        return strongSelf ? [strongSelf interruptDecoder] : YES;
+        if (_last_frame!=_frames) {
+            _last_frame_time=CFAbsoluteTimeGetCurrent();
+            _last_frame=_frames;
+            _interrupts_on_same_frame=0;
+        }
+        //__strong LiveViewController *strongSelf = weakSelf;
+        return _interrupted;
+        //return strongSelf ? [strongSelf interruptDecoder] : YES;
     };
     
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         
         NSError *error = nil;
-        //[decoder openFile:_path altFile:_altPath error:&error ];
+        [decoder openFile:_path altFile:_altPath error:&error ];
         //NSLog(@"RTMP ONLY!!!");
-        [decoder openFile:_altPath altFile:_path error:&error ];
+        //[decoder openFile:_altPath altFile:_path error:&error ];
         //[decoder openFile:@"http://testthis.com" altFile:@"http://testthis.com" error:&error ];
         
         if (error) {
@@ -273,7 +297,7 @@ NSString            *_openMutex =@"mutex";
 - (id) querySTUN
 {
     //self = [super init];
-    udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
+    udpSocket = [[GCDAsyncUdpSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0)];
     
     STUNClient *stunClient = [[STUNClient alloc] init];
     
@@ -335,33 +359,50 @@ NSString            *_openMutex =@"mutex";
 }
 
 -(void)getQuotes {
-    _quotes = [PetConnection get_quotes];
+    [PetConnection getQuotesWithCallBack:^(NSArray * d) {
+        if (d==nil) {
+            //there has been an error : TODO
+        } else {
+            _quotes=d;
+        }
+    }];
 }
 
 - (void) dropCookie {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [PetConnection cookieDrop];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
+        [PetConnection cookieDropWithCallBack:^(BOOL dropped) {
+            if (dropped) {
+                //TODO should do something
+            } else {
+                //TODO should do something else?
+                //try again?
+                //depends on what failed? no treats or error?
+            }
+        }];
     });
 }
 
 - (void) playSound {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
         [self performSegueWithIdentifier:@"toSoundPicker" sender:self];
     });
 }
 
 - (void) logout {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH,0), ^{
         if ([self shutdownVideo]) {
-            [PetConnection logout];
+            [PetConnection logoutWithCallBack:^(BOOL logged_out) {
+                //TODO should try again if fail?
+                @synchronized(_segueMutex) {
+                    NSLog(@"logging out");
+                    //[self performSegueWithIdentifier:@"logout" sender:self];
+                    _state=-1;
+                    [streamVideoTimer invalidate];
+                    [self dismissViewControllerAnimated:true completion:nil];
+                }
+            }];
             
-            @synchronized(_segueMutex) {
-                NSLog(@"logging out");
-                //[self performSegueWithIdentifier:@"logout" sender:self];
-                _state=-1;
-                [streamVideoTimer invalidate];
-                [self dismissViewControllerAnimated:true completion:nil];
-            }
+            
         }
     });
     
@@ -583,20 +624,23 @@ NSString            *_openMutex =@"mutex";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"ViewDidLoad state is %ul",_state);
+    NSLog(@"ViewDidLoad state is %ld",_state);
     _frames=0;
     _interrupts_on_same_frame=0;
+    _last_frame_time=0;
     _last_frame=0;
+    _interrupts=0;
+    _effective_fps=25;
     @synchronized(self) {
         if (_state==0) {
             _state=1;
-            NSLog(@"ViewDidLoad state is %ul",_state);
+            NSLog(@"ViewDidLoad state is %ld",_state);
             _missed_rtsp_key=0;
             _stun_timeout=0;
             _useUDP=true;
             streamVideoTimer = [NSTimer scheduledTimerWithTimeInterval:1.0f
                                                                 target:self selector:@selector(streamVideoTimerF:) userInfo:nil repeats:YES];
-            dispatch_async(dispatch_get_main_queue(),^(void){
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0),^(void){
                 [self getQuotes];
             });
             
@@ -669,6 +713,7 @@ NSString            *_openMutex =@"mutex";
      _interrupted = YES;*/
     
     LoggerStream(1, @"viewWillDisappear %@", self);
+    [super viewWillDisappear:animated];
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
@@ -687,6 +732,7 @@ NSString            *_openMutex =@"mutex";
     if (!_shutdown) {
         @synchronized(self) {
             _state=-1;
+            _interrupted=YES;
             _shutdown=true;
             NSLog(@"Waiting to kill decode thread");
             //TODO should set timeout on av_read_frame?
@@ -779,18 +825,7 @@ NSString            *_openMutex =@"mutex";
     LoggerStream(1, @"pause movie");
 }
 
-- (void) setMoviePosition: (CGFloat) position
-{
-    BOOL playMode = self.playing;
-    
-    self.playing = NO;
-    
-    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC);
-    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-        
-        [self updatePosition:position playMode:playMode];
-    });
-}
+
 
 #pragma mark - private
 
@@ -822,9 +857,10 @@ NSString            *_openMutex =@"mutex";
             
             if (_activityIndicatorView.isAnimating) {
                 
-                //[_activityIndicatorView stopAnimating];
+                [_activityIndicatorView stopAnimating];
                 // if (self.view.window)
-                [self restorePlay];
+                //[self restorePlay];
+                [self play];
             }
         }
         
@@ -839,14 +875,14 @@ NSString            *_openMutex =@"mutex";
     }
 }
 
-- (void) restorePlay
+/*- (void) restorePlay
 {
     NSNumber *n = [gHistory valueForKey:_decoder.path];
     if (n)
         [self updatePosition:n.floatValue playMode:YES];
     else
         [self play];
-}
+}*/
 
 - (void) setupPresentView
 {
@@ -910,8 +946,6 @@ NSString            *_openMutex =@"mutex";
     __weak KxMovieDecoder *weakDecoder = _decoder;
     
     dispatch_async(_dispatchQueue, ^{ //TODO make this higher priority queue?
-        
-        
         int nil_frames=0;
         BOOL good=true;
         while (good) { //TODO test on some sort of play condition?
@@ -949,13 +983,17 @@ NSString            *_openMutex =@"mutex";
                         //good=false;
                     } else if (kf!=nil) {
                         nil_frames=MAX(0,nil_frames-10);
-                        @synchronized(_videoFrames) {
+                        
+                        
                             if (kf.type == KxMovieFrameTypeVideo) {
+                                [_videoMutex lock];
                                 [_videoFrames addObject:kf];
+                                [_videoMutex unlock];
                                 dispatch_semaphore_signal(_frameSemaphore);
+                                kf=nil;
                                 //NSLog(@"Have %lu frames buffered",(unsigned long)[_videoFrames count]);
                             }
-                        }
+                        
                     }
                 }
             }
@@ -992,7 +1030,41 @@ NSString            *_openMutex =@"mutex";
             //Display on the console
             NSLog(@"%@ %lld", str, _frames);
         }
-        [self presentFrame];
+        
+            if (_decoder.validVideo) {
+                KxVideoFrame *frame;
+                
+                NSInteger frames = _videoFrames.count;
+                if (frames > 0) {
+                    //NSLog(@"have %ld frames",_videoFrames.count);
+                        [_videoMutex lock];
+                        frame = _videoFrames[0];
+                        [_videoFrames removeObjectAtIndex:0];
+                        [_videoMutex unlock];
+                }
+                
+                //_bufferedDuration -= frame.duration;
+                if (frame) {
+                    [_glView render:frame];
+                    
+                    _moviePosition = frame.position;
+                    if (frames<=_effective_fps/2) {
+                        //NSLog(@"Not enough frames!!!");
+                        _effective_fps-=0.3;
+                    } else if (frames>_effective_fps) { //means we have 1 second buffered?
+                        _effective_fps+=0.05*(frames/_effective_fps);
+                        //NSLog(@"WAy too many frames!!!");
+                    } else if (frames>_effective_fps/2) { //means we have half second buffered
+                        //NSLog(@"too many frames!!!");
+                        _effective_fps+=0.05;
+                    }
+                    //NSLog(@"%lf fps", _effective_fps);
+                    usleep(1000000/_effective_fps);
+                    
+                }
+                
+            }
+        
     }
     return true;
 }
@@ -1032,7 +1104,7 @@ NSString            *_openMutex =@"mutex";
         }
         [_frameMutex unlock];
         if ([_activityIndicatorView isAnimating]) {
-            dispatch_async(dispatch_get_main_queue(), ^{
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT,0), ^{
                 [_activityIndicatorView stopAnimating];
             });
         }
@@ -1044,40 +1116,6 @@ NSString            *_openMutex =@"mutex";
 
 
 
-- (CGFloat) presentFrame
-{
-    CGFloat interval = 0;
-    
-    if (_decoder.validVideo) {
-        
-        KxVideoFrame *frame;
-        
-        @synchronized(_videoFrames) {
-            
-            if (_videoFrames.count > 0) {
-                //NSLog(@"have %d frames",_videoFrames.count);
-                frame = _videoFrames[0];
-                [_videoFrames removeObjectAtIndex:0];
-                _bufferedDuration -= frame.duration;
-            }
-        }
-        
-        if (frame)
-            interval = [self presentVideoFrame:frame];
-        
-    }
-    
-    return interval;
-}
-
-- (CGFloat) presentVideoFrame: (KxVideoFrame *) frame
-{
-    [_glView render:frame];
-    
-    _moviePosition = frame.position;
-    
-    return frame.duration;
-}
 
 
 
@@ -1099,54 +1137,6 @@ NSString            *_openMutex =@"mutex";
 }
 
 
-- (void) updatePosition: (CGFloat) position
-               playMode: (BOOL) playMode
-{
-    
-    position = MIN(_decoder.duration - 1, MAX(0, position));
-    
-    __weak LiveViewController *weakSelf = self;
-    
-    dispatch_async(_dispatchQueue, ^{
-        
-        if (playMode) {
-            
-            {
-                __strong LiveViewController *strongSelf = weakSelf;
-                if (!strongSelf) return;
-                [strongSelf setDecoderPosition: position];
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                __strong LiveViewController *strongSelf = weakSelf;
-                if (strongSelf) {
-                    [strongSelf setMoviePositionFromDecoder];
-                    [strongSelf play];
-                }
-            });
-            
-        } else {
-            
-            {
-                __strong LiveViewController *strongSelf = weakSelf;
-                if (!strongSelf) return;
-                [strongSelf setDecoderPosition: position];
-                //[strongSelf decodeFrames]; MISKO!!
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                
-                __strong LiveViewController *strongSelf = weakSelf;
-                if (strongSelf) {
-                    
-                    [strongSelf setMoviePositionFromDecoder];
-                    [strongSelf presentFrame];
-                }
-            });
-        }
-    });
-}
 
 
 - (void) handleDecoderMovieError: (NSError *) error
@@ -1161,22 +1151,20 @@ NSString            *_openMutex =@"mutex";
     
     //logout properly
     if ([self shutdownVideo]) {
-        [PetConnection logout];
+        [PetConnection logoutWithCallBack:^(BOOL logged_out) {
+            @synchronized(_segueMutex) {
+                NSLog(@"Logging out x2");
+                //[self performSegueWithIdentifier:@"logout" sender:self];
+                _state=-1;
+                [streamVideoTimer invalidate];
+                [self dismissViewControllerAnimated:true completion:nil];
+            }
+        }];
         
-        @synchronized(_segueMutex) {
-            NSLog(@"Logging out x2");
-            //[self performSegueWithIdentifier:@"logout" sender:self];
-            _state=-1;
-            [streamVideoTimer invalidate];
-            [self dismissViewControllerAnimated:true completion:nil];
-        }
+        
     }
 }
 
-- (BOOL) interruptDecoder
-{
-    return _interrupted;
-}
 
 @end
 

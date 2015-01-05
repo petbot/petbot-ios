@@ -19,20 +19,20 @@ enum {
 @interface PetConnection : NSObject
 
 +(PetConnection*)getInstance;
-+(void)loginUsername:(NSString *)username password:(NSString *)password;
-+(NSData *)getUrl:(NSString*)urlString;
-+(void)postDataToUrl:(NSString*)urlString jsonData:(NSData*)jsonData;
-+(BOOL)cookieDrop;
-+(BOOL)logout;
-+(BOOL)playSound:(NSInteger)index;
-+(BOOL)playSoundfile:(NSString *)soundfile;
-+(NSArray *)listSounds;
-+(NSDictionary*)streamVideo;
++(void)loginUsername:(NSString *)username password:(NSString *)password withCallBack:(void (^)(NSInteger))cb;
++(void)playSound:(NSInteger)index withCallBack:(void (^)(BOOL played))cb;
++(void)playSoundfile:(NSString *)soundfile withCallBack:(void (^)(BOOL played))cb;
++(void)listSoundsWithCallBack:(void (^)(NSArray *))cb;
++(void)streamVideoWithCallBack:(void (^)(NSDictionary *))cb;
 +(NSString*)streamURL;
-+(BOOL) removeSoundfile:(NSString * )soundfile;
++(void) removeSoundfile:(NSString * )soundfile withCallBack:(void (^)(BOOL ok))cb;
 +(NSString*) soundURLFromFilename:(NSString* )soundfile;
-+(BOOL) uploadSoundURL:(NSURL *) soundfile withFilename:(NSString *)filename;
-+(NSArray *)get_quotes;
-+(BOOL)mobile_version_supported;
++(void) uploadSoundURL:(NSURL *) soundfile withFilename:(NSString *)filename withCallBack:(void (^)(BOOL ok))cb;
++(void)getQuotesWithCallBack:(void (^)(NSArray *))cb;
++(void)mobileVersionSupportedWithCallBack:(void (^)(NSArray *))cb;
++ (void)logoutWithCallBack:(void (^)(BOOL logged_out))cb;
+
++ (void)cookieDropWithCallBack:(void (^)(BOOL dropped))cb;
+
 @end
 

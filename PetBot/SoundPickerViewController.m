@@ -31,8 +31,14 @@
 
 -(void)populateSounds {
     //TODO lock and do something fancy?, critical section? drop later events, all the same
-    sounds = [PetConnection listSounds];
-    [_picker reloadAllComponents];
+    [PetConnection listSoundsWithCallBack:^(NSArray *a) {
+        if (a==nil) { //TODO THIS IS AN ERROR?
+            return;
+        }
+            sounds = a;
+            [_picker reloadAllComponents];
+    }];
+
 }
 
 - (void)viewDidLoad
@@ -41,7 +47,7 @@
     
     
     //Get a list of sounds
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
         [self populateSounds];
     });
     
@@ -80,8 +86,10 @@
 - (IBAction)playSoundPressed:(id)sender {
     NSInteger selected_row = [_picker selectedRowInComponent:0];
     
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [PetConnection playSoundfile:[sounds objectAtIndex:selected_row]];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
+        [PetConnection playSoundfile:[sounds objectAtIndex:selected_row] withCallBack:^(BOOL played) {
+            //TODO handle if played or not?
+        }];
     });
      
     
@@ -114,9 +122,10 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
         if (buttonIndex==0) {
             NSInteger selected_row = [_picker selectedRowInComponent:0];
             NSLog(@"should remove %@",[sounds objectAtIndex:selected_row]);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [PetConnection removeSoundfile:[sounds objectAtIndex:selected_row]];
-                [self populateSounds];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
+                [PetConnection removeSoundfile:[sounds objectAtIndex:selected_row] withCallBack:^(BOOL ok) {
+                    [self populateSounds];
+                }];
             });
             //[PetConnection playSoundfile:[sounds objectAtIndex:selected_row]];
         } else {
@@ -125,9 +134,11 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
     } else if ([[alertView title] isEqualToString:@"Sound name"]) {
         if (buttonIndex==0) {
         NSLog(@"Sound name is %@",[alertView textFieldAtIndex:0].text);
-            dispatch_async(dispatch_get_main_queue(), ^{
-            [PetConnection uploadSoundURL:outputFileURL withFilename:[alertView textFieldAtIndex:0].text];
-            [self populateSounds];
+            dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
+                [PetConnection uploadSoundURL:outputFileURL withFilename:[alertView textFieldAtIndex:0].text withCallBack:^(BOOL ok) {
+                    
+                    [self populateSounds];
+                }];
             });
         } else {
             //clicked cancel
@@ -247,8 +258,8 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 // tell the picker the title for a given component
 - (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    NSString *title;
-    title = [@"" stringByAppendingFormat:@"%d",row];
+    //NSString *title;
+    //title = [@"" stringByAppendingFormat:@"%d",row];
     
     return [sounds objectAtIndex:row];
 }
