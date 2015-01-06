@@ -85,7 +85,8 @@
 //Actions
 - (IBAction)playSoundPressed:(id)sender {
     NSInteger selected_row = [_picker selectedRowInComponent:0];
-    
+    NSLog(@"%ld selected\n",selected_row);
+    return;
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW,0), ^{
         [PetConnection playSoundfile:[sounds objectAtIndex:selected_row] withCallBack:^(BOOL played) {
             //TODO handle if played or not?
@@ -217,11 +218,16 @@ clickedButtonAtIndex:(NSInteger)buttonIndex {
 
 //orientation lock
 
--(NSUInteger)supportedInterfaceOrientations
-{
-    return UIInterfaceOrientationMaskPortrait; // UIInterfaceOrientationMaskLandscapeRight;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation{
+    return (toInterfaceOrientation == UIInterfaceOrientationPortrait);
 }
-
+-(BOOL)shouldAutorotate {
+    return YES;
+}
+- (NSUInteger)supportedInterfaceOrientations {
+    //return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskPortrait;
+}
 
 
 - (void)didReceiveMemoryWarning

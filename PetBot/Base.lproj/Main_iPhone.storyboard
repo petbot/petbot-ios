@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="Ns1-vR-UmZ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="Ns1-vR-UmZ">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
         <scene sceneID="STr-NK-qwL">
             <objects>
                 <viewController id="Ns1-vR-UmZ" customClass="LoginViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Aea-Hb-Jdd"/>
+                        <viewControllerLayoutGuide type="bottom" id="78S-Lj-2d9"/>
+                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="adm-UX-GnX">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dogs4.jpg" id="T18-9r-qMj">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="dogs4.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="T18-9r-qMj">
                                 <rect key="frame" x="0.0" y="59" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" id="L86-jD-of1">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="L86-jD-of1">
                                 <rect key="frame" x="15" y="60" width="173" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done"/>
@@ -27,9 +30,8 @@
                                     <outlet property="delegate" destination="Ns1-vR-UmZ" id="KKv-tN-rKj"/>
                                 </connections>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" id="vgI-bv-NHl">
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vgI-bv-NHl">
                                 <rect key="frame" x="15" y="91" width="173" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="textColor" white="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" returnKeyType="done" secureTextEntry="YES"/>
@@ -37,9 +39,8 @@
                                     <outlet property="delegate" destination="Ns1-vR-UmZ" id="yuR-de-fCY"/>
                                 </connections>
                             </textField>
-                            <button opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KCd-hA-bMM">
+                            <button opaque="NO" alpha="0.69999998807907104" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KCd-hA-bMM">
                                 <rect key="frame" x="196" y="60" width="104" height="61"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.53333336114883423" green="0.82745105028152466" blue="0.91372555494308472" alpha="1" colorSpace="deviceRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="19"/>
                                 <state key="normal" title="Login">
@@ -56,21 +57,18 @@
                                     <action selector="loginButtonPress:" destination="Ns1-vR-UmZ" eventType="touchDown" id="2C5-tg-XWa"/>
                                 </connections>
                             </button>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="petbot_logo.png" id="svb-8M-XIl">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="petbot_logo.png" translatesAutoresizingMaskIntoConstraints="NO" id="svb-8M-XIl">
                                 <rect key="frame" x="15" y="13" width="129" height="54"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" id="nRr-DG-1v1">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="nRr-DG-1v1">
                                 <rect key="frame" x="15" y="129" width="51" height="31"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="remeberSwitched:" destination="Ns1-vR-UmZ" eventType="valueChanged" id="Ekf-4Z-WMD"/>
                                     <action selector="rememberSwitched:" destination="Ns1-vR-UmZ" eventType="valueChanged" id="Ftv-QP-3tj"/>
                                 </connections>
                             </switch>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Remember" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8GM-Da-x4E">
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Remember" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8GM-Da-x4E">
                                 <rect key="frame" x="72" y="134" width="85" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
@@ -91,19 +89,24 @@
             <point key="canvasLocation" x="-402" y="149"/>
         </scene>
         <!--Sound Picker View Controller-->
-        <scene sceneID="zSh-oz-LRZ">
+        <scene sceneID="MJX-Qt-zEW">
             <objects>
-                <viewController id="r6T-nY-yI4" customClass="SoundPickerViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="blj-TN-3Hn">
+                <viewController id="4Q9-GA-APu" customClass="SoundPickerViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="HFb-Jb-6uB"/>
+                        <viewControllerLayoutGuide type="bottom" id="5Lm-h7-Ycg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="mI6-EY-9d1">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gKn-ec-FiO">
-                                <rect key="frame" x="74" y="37" width="97" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.63921570777893066" green="0.85490202903747559" blue="0.91764712333679199" alpha="1" colorSpace="deviceRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Play">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v6s-EG-89d">
+                                <rect key="frame" x="167" y="37" width="60" height="60"/>
+                                <color key="backgroundColor" red="0.63921570780000003" green="0.85490202900000001" blue="0.91764712329999998" alpha="0.0" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="hK8-hF-UeT"/>
+                                </constraints>
+                                <state key="normal" image="play.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -114,15 +117,41 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="playSoundPressed:" destination="r6T-nY-yI4" eventType="touchDown" id="PQa-iq-MV6"/>
+                                    <action selector="playSoundPressed:" destination="4Q9-GA-APu" eventType="touchUpInside" id="dfu-yQ-b04"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="IFS-M2-bYq">
-                                <rect key="frame" x="85" y="424" width="148" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.63921570780000003" green="0.85490202900000001" blue="0.91764712329999998" alpha="1" colorSpace="deviceRGB"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H6C-Tp-u46">
+                                <rect key="frame" x="244" y="37" width="60" height="60"/>
+                                <color key="backgroundColor" red="0.99607849120000003" green="0.79607850309999995" blue="0.43137258290000002" alpha="0.0" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="60" id="Az0-o6-dFY"/>
+                                </constraints>
+                                <state key="normal" image="trash.png">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="10"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="removeTapped:" destination="4Q9-GA-APu" eventType="touchUpInside" id="W5b-HK-RFf"/>
+                                </connections>
+                            </button>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="o85-ES-903">
+                                <rect key="frame" x="0.0" y="105" width="320" height="162"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.050000000000000003" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <connections>
+                                    <outlet property="delegate" destination="4Q9-GA-APu" id="AU9-43-j3A"/>
+                                </connections>
+                            </pickerView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Dpc-St-LR7">
+                                <rect key="frame" x="188" y="299" width="60" height="60"/>
+                                <color key="backgroundColor" red="0.63921570780000003" green="0.85490202900000001" blue="0.91764712329999998" alpha="0.0" colorSpace="deviceRGB"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Upload">
+                                <state key="normal" image="upload.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 </state>
                                 <userDefinedRuntimeAttributes>
@@ -132,15 +161,13 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="uploadTapped:" destination="r6T-nY-yI4" eventType="touchDown" id="Ur2-K2-PZU"/>
+                                    <action selector="uploadTapped:" destination="4Q9-GA-APu" eventType="touchUpInside" id="GY6-MX-2TJ"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="f4d-3g-yc1">
-                                <rect key="frame" x="164" y="366" width="148" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Play Back">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SSq-be-uWT">
+                                <rect key="frame" x="120" y="299" width="60" height="60"/>
+                                <color key="backgroundColor" red="1" green="0.80000001190000003" blue="0.40000000600000002" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="play.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -151,15 +178,13 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="playTapped:" destination="r6T-nY-yI4" eventType="touchDown" id="qFa-K3-KTy"/>
+                                    <action selector="playTapped:" destination="4Q9-GA-APu" eventType="touchUpInside" id="Lwj-E7-8By"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ljl-tT-Zgh">
-                                <rect key="frame" x="8" y="366" width="148" height="49"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="1" green="0.40000000600000002" blue="0.40000000600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Record">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kRF-i9-l8b">
+                                <rect key="frame" x="42" y="294" width="70" height="70"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="0.0" colorSpace="calibratedRGB"/>
+                                <state key="normal" image="record.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -169,30 +194,20 @@
                                     </userDefinedRuntimeAttribute>
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
                                 </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="recordPauseTapped:" destination="r6T-nY-yI4" eventType="touchDown" id="oFd-nJ-vgR"/>
-                                </connections>
                             </button>
-                            <pickerView contentMode="scaleToFill" id="HS1-uf-auI">
-                                <rect key="frame" x="0.0" y="115" width="320" height="162"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="r6T-nY-yI4" id="x8M-9R-kFp"/>
-                                </connections>
-                            </pickerView>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record sound:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yJL-8c-THd">
-                                <rect key="frame" x="8" y="331" width="167" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Record:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PgM-vL-zeI">
+                                <rect key="frame" x="120" y="270" width="97" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="YSb-lb-CnW">
-                                <rect key="frame" x="9" y="37" width="48" height="59"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.98823535442352295" green="0.40392160415649414" blue="0.41176474094390869" alpha="1" colorSpace="deviceRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="X">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h7A-Tt-GUs">
+                                <rect key="frame" x="7" y="37" width="40" height="40"/>
+                                <color key="backgroundColor" red="0.98823535439999999" green="0.40392160420000001" blue="0.41176474089999998" alpha="0.0" colorSpace="deviceRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="40" id="Jpu-dq-b3T"/>
+                                </constraints>
+                                <state key="normal" image="back.png">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
@@ -203,45 +218,51 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                                 <connections>
-                                    <action selector="backTapped:" destination="r6T-nY-yI4" eventType="touchDown" id="nwC-k6-iTq"/>
+                                    <action selector="backTapped:" destination="4Q9-GA-APu" eventType="touchUpInside" id="7of-1o-pZj"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Kmf-wH-YZX">
-                                <rect key="frame" x="184" y="38" width="116" height="58"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <color key="backgroundColor" red="0.9960784912109375" green="0.79607850313186646" blue="0.43137258291244507" alpha="1" colorSpace="deviceRGB"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="28"/>
-                                <state key="normal" title="Remove">
-                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <integer key="value" value="10"/>
-                                    </userDefinedRuntimeAttribute>
-                                    <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBorder" value="YES"/>
-                                </userDefinedRuntimeAttributes>
-                                <connections>
-                                    <action selector="removeTapped:" destination="r6T-nY-yI4" eventType="touchDown" id="DKT-Zf-XL5"/>
-                                </connections>
-                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playback:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rkJ-no-UiE">
+                                <rect key="frame" x="73" y="56" width="94" height="21"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="h7A-Tt-GUs" firstAttribute="top" secondItem="HFb-Jb-6uB" secondAttribute="bottom" constant="17" id="2hc-u1-Jz4"/>
+                            <constraint firstItem="h7A-Tt-GUs" firstAttribute="leading" secondItem="mI6-EY-9d1" secondAttribute="leadingMargin" constant="-9" id="2xM-aa-Ryg"/>
+                            <constraint firstItem="SSq-be-uWT" firstAttribute="top" secondItem="PgM-vL-zeI" secondAttribute="bottom" constant="8" symbolic="YES" id="CJA-V8-wDV"/>
+                            <constraint firstItem="kRF-i9-l8b" firstAttribute="centerY" secondItem="SSq-be-uWT" secondAttribute="centerY" id="Hx4-PW-KJH"/>
+                            <constraint firstItem="PgM-vL-zeI" firstAttribute="top" secondItem="o85-ES-903" secondAttribute="bottom" constant="3" id="IBf-c3-UeJ"/>
+                            <constraint firstItem="H6C-Tp-u46" firstAttribute="trailing" secondItem="mI6-EY-9d1" secondAttribute="trailingMargin" id="JTT-Le-Kep"/>
+                            <constraint firstItem="rkJ-no-UiE" firstAttribute="leading" secondItem="h7A-Tt-GUs" secondAttribute="trailing" constant="26" id="LDW-Lz-VxY"/>
+                            <constraint firstItem="o85-ES-903" firstAttribute="top" secondItem="v6s-EG-89d" secondAttribute="bottom" constant="8" symbolic="YES" id="Lrl-Ga-XeI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Dpc-St-LR7" secondAttribute="trailing" constant="56" id="NKL-Ry-et7"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="PgM-vL-zeI" secondAttribute="trailing" constant="87" id="cA4-mp-AlH"/>
+                            <constraint firstItem="o85-ES-903" firstAttribute="leading" secondItem="mI6-EY-9d1" secondAttribute="leading" id="ocT-11-2WX"/>
+                            <constraint firstItem="Dpc-St-LR7" firstAttribute="leading" secondItem="SSq-be-uWT" secondAttribute="trailing" constant="8" symbolic="YES" id="pr1-qz-wqI"/>
+                            <constraint firstItem="H6C-Tp-u46" firstAttribute="top" secondItem="v6s-EG-89d" secondAttribute="top" id="qCV-5N-8xq"/>
+                            <constraint firstItem="rkJ-no-UiE" firstAttribute="bottom" secondItem="h7A-Tt-GUs" secondAttribute="bottom" id="qJ8-lA-WVF"/>
+                            <constraint firstItem="h7A-Tt-GUs" firstAttribute="top" secondItem="v6s-EG-89d" secondAttribute="top" id="sO4-WZ-VzY"/>
+                            <constraint firstItem="SSq-be-uWT" firstAttribute="leading" secondItem="PgM-vL-zeI" secondAttribute="leading" id="u6z-pb-9wv"/>
+                            <constraint firstItem="SSq-be-uWT" firstAttribute="top" secondItem="Dpc-St-LR7" secondAttribute="top" id="uDl-gy-qSS"/>
+                            <constraint firstItem="H6C-Tp-u46" firstAttribute="leading" secondItem="v6s-EG-89d" secondAttribute="trailing" constant="17" id="uUL-fN-A4D"/>
+                            <constraint firstItem="SSq-be-uWT" firstAttribute="leading" secondItem="kRF-i9-l8b" secondAttribute="trailing" constant="8" symbolic="YES" id="vjV-gA-a1d"/>
+                            <constraint firstItem="v6s-EG-89d" firstAttribute="leading" secondItem="rkJ-no-UiE" secondAttribute="trailing" id="z7v-eX-J2b"/>
+                        </constraints>
                     </view>
-                    <simulatedOrientationMetrics key="simulatedOrientationMetrics"/>
-                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
-                    <size key="freeformSize" width="320" height="568"/>
+                    <navigationItem key="navigationItem" id="vaY-A9-A6p"/>
                     <connections>
-                        <outlet property="cancelButton" destination="YSb-lb-CnW" id="AzP-cO-1oX"/>
-                        <outlet property="picker" destination="HS1-uf-auI" id="QhS-Bh-Web"/>
-                        <outlet property="playButton" destination="f4d-3g-yc1" id="cef-Oi-whj"/>
-                        <outlet property="recordPauseButton" destination="ljl-tT-Zgh" id="PjC-h1-jtx"/>
-                        <outlet property="recordPauseTapped" destination="ljl-tT-Zgh" id="XFI-df-rAQ"/>
+                        <outlet property="picker" destination="o85-ES-903" id="q1I-Ub-ks7"/>
+                        <outlet property="playButton" destination="SSq-be-uWT" id="yNj-PU-GYO"/>
+                        <outlet property="recordPauseButton" destination="kRF-i9-l8b" id="Brz-zU-boS"/>
+                        <outlet property="recordPauseTapped" destination="kRF-i9-l8b" id="G34-65-WAJ"/>
                     </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="R8L-26-aab" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Gna-b8-Vkb" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="164" y="708"/>
+            <point key="canvasLocation" x="652" y="694"/>
         </scene>
         <!--Live View Controller-->
         <scene sceneID="ufC-wZ-h7g">
@@ -249,7 +270,7 @@
                 <viewController id="vXZ-lx-hvc" customClass="LiveViewController" sceneMemberID="viewController">
                     <connections>
                         <segue destination="Ns1-vR-UmZ" kind="modal" identifier="logout" id="4SB-G3-ztE"/>
-                        <segue destination="r6T-nY-yI4" kind="modal" identifier="toSoundPicker" id="k0w-D0-R9P"/>
+                        <segue destination="4Q9-GA-APu" kind="modal" identifier="toSoundPicker" id="Y9N-Eo-5tx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
@@ -258,8 +279,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="back.png" width="40" height="40"/>
         <image name="dogs4.jpg" width="1920" height="1200"/>
         <image name="petbot_logo.png" width="1024" height="292"/>
+        <image name="play.png" width="60" height="60"/>
+        <image name="record.png" width="70" height="70"/>
+        <image name="trash.png" width="60" height="60"/>
+        <image name="upload.png" width="60" height="60"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>

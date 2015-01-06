@@ -11,6 +11,17 @@
 		CC14C63E1953E0D700BAEF6C /* STUNClient.m in Sources */ = {isa = PBXBuildFile; fileRef = CC14C6381953E0D700BAEF6C /* STUNClient.m */; };
 		CC173517195131AD004B7B4B /* kxmovie.bundle in Resources */ = {isa = PBXBuildFile; fileRef = CC173510195131AD004B7B4B /* kxmovie.bundle */; };
 		CC60826F1961E16B00B59839 /* SoundPickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC60826E1961E16B00B59839 /* SoundPickerViewController.m */; };
+		CC63E2081A5BC18F002E2548 /* play.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2041A5BC18F002E2548 /* play.pxm */; };
+		CC63E21A1A5BC41C002E2548 /* back.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2101A5BC41C002E2548 /* back.pxm */; };
+		CC63E21B1A5BC41C002E2548 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2111A5BC41C002E2548 /* back.png */; };
+		CC63E21C1A5BC41C002E2548 /* play.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2121A5BC41C002E2548 /* play.pxm */; };
+		CC63E21D1A5BC41C002E2548 /* play.png in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2131A5BC41C002E2548 /* play.png */; };
+		CC63E21E1A5BC41C002E2548 /* record.png in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2141A5BC41C002E2548 /* record.png */; };
+		CC63E21F1A5BC41C002E2548 /* record.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2151A5BC41C002E2548 /* record.pxm */; };
+		CC63E2201A5BC41C002E2548 /* trash.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2161A5BC41C002E2548 /* trash.pxm */; };
+		CC63E2211A5BC41C002E2548 /* trash.png in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2171A5BC41C002E2548 /* trash.png */; };
+		CC63E2221A5BC41C002E2548 /* upload.png in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2181A5BC41C002E2548 /* upload.png */; };
+		CC63E2231A5BC41C002E2548 /* upload.pxm in Resources */ = {isa = PBXBuildFile; fileRef = CC63E2191A5BC41C002E2548 /* upload.pxm */; };
 		CC9261CC19DAFB1D0049DA90 /* petbot blue_60.png in Resources */ = {isa = PBXBuildFile; fileRef = CC9261CB19DAFB1D0049DA90 /* petbot blue_60.png */; };
 		CCB97FFF195119E300BE8B45 /* WPBase64Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */; };
 		CCB98000195119E300BE8B45 /* WPStringUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = CCB97FF5195119E300BE8B45 /* WPStringUtils.m */; };
@@ -86,6 +97,17 @@
 		CC173510195131AD004B7B4B /* kxmovie.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = kxmovie.bundle; sourceTree = "<group>"; };
 		CC60826D1961E16B00B59839 /* SoundPickerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SoundPickerViewController.h; sourceTree = "<group>"; };
 		CC60826E1961E16B00B59839 /* SoundPickerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SoundPickerViewController.m; sourceTree = "<group>"; };
+		CC63E2041A5BC18F002E2548 /* play.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = play.pxm; sourceTree = "<group>"; };
+		CC63E2101A5BC41C002E2548 /* back.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = back.pxm; sourceTree = "<group>"; };
+		CC63E2111A5BC41C002E2548 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
+		CC63E2121A5BC41C002E2548 /* play.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = play.pxm; sourceTree = "<group>"; };
+		CC63E2131A5BC41C002E2548 /* play.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = play.png; sourceTree = "<group>"; };
+		CC63E2141A5BC41C002E2548 /* record.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = record.png; sourceTree = "<group>"; };
+		CC63E2151A5BC41C002E2548 /* record.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = record.pxm; sourceTree = "<group>"; };
+		CC63E2161A5BC41C002E2548 /* trash.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = trash.pxm; sourceTree = "<group>"; };
+		CC63E2171A5BC41C002E2548 /* trash.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = trash.png; sourceTree = "<group>"; };
+		CC63E2181A5BC41C002E2548 /* upload.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = upload.png; sourceTree = "<group>"; };
+		CC63E2191A5BC41C002E2548 /* upload.pxm */ = {isa = PBXFileReference; lastKnownFileType = file; path = upload.pxm; sourceTree = "<group>"; };
 		CC9261CB19DAFB1D0049DA90 /* petbot blue_60.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "petbot blue_60.png"; path = "../petbot blue_60.png"; sourceTree = "<group>"; };
 		CCB97FF2195119E300BE8B45 /* WPBase64Utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WPBase64Utils.h; sourceTree = "<group>"; };
 		CCB97FF3195119E300BE8B45 /* WPBase64Utils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WPBase64Utils.m; sourceTree = "<group>"; };
@@ -212,6 +234,24 @@
 			path = STUN;
 			sourceTree = "<group>";
 		};
+		CC63E2031A5BC18F002E2548 /* graphics */ = {
+			isa = PBXGroup;
+			children = (
+				CC63E2041A5BC18F002E2548 /* play.pxm */,
+				CC63E2101A5BC41C002E2548 /* back.pxm */,
+				CC63E2111A5BC41C002E2548 /* back.png */,
+				CC63E2121A5BC41C002E2548 /* play.pxm */,
+				CC63E2131A5BC41C002E2548 /* play.png */,
+				CC63E2141A5BC41C002E2548 /* record.png */,
+				CC63E2151A5BC41C002E2548 /* record.pxm */,
+				CC63E2161A5BC41C002E2548 /* trash.pxm */,
+				CC63E2171A5BC41C002E2548 /* trash.png */,
+				CC63E2181A5BC41C002E2548 /* upload.png */,
+				CC63E2191A5BC41C002E2548 /* upload.pxm */,
+			);
+			path = graphics;
+			sourceTree = SOURCE_ROOT;
+		};
 		CCB97FF1195119E300BE8B45 /* WPXMLRPC */ = {
 			isa = PBXGroup;
 			children = (
@@ -303,6 +343,7 @@
 				CCB9800D19511A1500BE8B45 /* petbot blue_1024.png */,
 				CCB9801919511A6F00BE8B45 /* petbot_logo.png */,
 				CCF7005F19626E110010350A /* Main_iPhone.storyboard */,
+				CC63E2031A5BC18F002E2548 /* graphics */,
 				CCC4EAF819424B550012F4F3 /* Main_iPad.storyboard */,
 				CCF139E11957CC2B00AA9675 /* dogs4.jpg */,
 				CCB9801719511A6B00BE8B45 /* dogs6.jpg */,
@@ -442,22 +483,33 @@
 				CCB9801A19511A6F00BE8B45 /* petbot_logo.png in Resources */,
 				CCB9800E19511A1500BE8B45 /* petbot blue.png in Resources */,
 				CC9261CC19DAFB1D0049DA90 /* petbot blue_60.png in Resources */,
+				CC63E21C1A5BC41C002E2548 /* play.pxm in Resources */,
 				CCC4EAFA19424B550012F4F3 /* Main_iPad.storyboard in Resources */,
+				CC63E21A1A5BC41C002E2548 /* back.pxm in Resources */,
+				CC63E2231A5BC41C002E2548 /* upload.pxm in Resources */,
+				CC63E2221A5BC41C002E2548 /* upload.png in Resources */,
 				CCF139F31957D57200AA9675 /* README.md in Resources */,
 				CCB9801419511A1500BE8B45 /* petbot blue_120.png in Resources */,
 				CCF7006119626E110010350A /* Main_iPhone.storyboard in Resources */,
+				CC63E21B1A5BC41C002E2548 /* back.png in Resources */,
+				CC63E2201A5BC41C002E2548 /* trash.pxm in Resources */,
 				CCB9801619511A1500BE8B45 /* petbot blue_1024.png in Resources */,
 				CCB9801819511A6B00BE8B45 /* dogs6.jpg in Resources */,
 				CCF139E21957CC2B00AA9675 /* dogs4.jpg in Resources */,
 				CCB9801219511A1500BE8B45 /* petbot blue_76.png in Resources */,
 				CCC4EAFF19424B550012F4F3 /* Images.xcassets in Resources */,
+				CC63E2211A5BC41C002E2548 /* trash.png in Resources */,
+				CC63E21F1A5BC41C002E2548 /* record.pxm in Resources */,
 				CCB9801019511A1500BE8B45 /* petbot blue_40.png in Resources */,
 				CC173517195131AD004B7B4B /* kxmovie.bundle in Resources */,
+				CC63E21D1A5BC41C002E2548 /* play.png in Resources */,
 				CCB9801319511A1500BE8B45 /* petbot blue_80.png in Resources */,
+				CC63E2081A5BC18F002E2548 /* play.pxm in Resources */,
 				CCF139F21957D57200AA9675 /* LICENSE in Resources */,
 				CCB9800F19511A1500BE8B45 /* petbot blue_29.png in Resources */,
 				CCB9801519511A1500BE8B45 /* petbot blue_152.png in Resources */,
 				CCC4EAEE19424B550012F4F3 /* InfoPlist.strings in Resources */,
+				CC63E21E1A5BC41C002E2548 /* record.png in Resources */,
 				CCB9801119511A1500BE8B45 /* petbot blue_58.png in Resources */,
 				CCF139DE1957AC7200AA9675 /* logo_smaller.png in Resources */,
 			);
